@@ -1,5 +1,7 @@
 # video-kernel
 
+[![Test](https://github.com/cccp-education/video-kernel-gradle/actions/workflows/test.yml/badge.svg)](https://github.com/cccp-education/video-kernel-gradle/actions/workflows/test.yml)
+
 N1 shared library — the **engine-neutral kernel** extracted from `capsule-gradle`
 (EPIC `CAP-ENGINE-DECOUPLING`, US-5).
 

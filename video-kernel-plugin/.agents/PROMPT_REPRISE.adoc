@@ -25,8 +25,7 @@ _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
 == Points d'attention
 
-* **Remote GitHub à créer** : `github.com/cccp-education/video-kernel-gradle`
-  (le token de session ne peut pas créer de dépôt sous l'org — action admin requise).
+* Dépôt : `https://github.com/cccp-education/video-kernel-gradle.git` (poussé, CI verte).
 * **Local = Build, Tests = CI**. **Règle 2 — PUBLISH** : accord pilote.
 * Frontière du noyau : `capsule.kernel` n'importe que `java/kotlin/contracts`.
 

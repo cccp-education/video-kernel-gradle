@@ -38,11 +38,12 @@ de `capsule-gradle` en artefact publié `education.cccp:video-kernel:0.0.1`
 | D-189-4 | Dépendance N0 pure `i18n-contracts:0.0.4` en `api` (le modèle expose `SupportedLanguage`).
 |===
 
-== Blocage
+== Dépôt + CI
 
-La création du **dépôt GitHub** `github.com/cccp-education/video-kernel-gradle`
-est refusée par le token de session (droit d'org manquant). Le dépôt est
-initialisé **localement** ; le remote + CI seront activés par un admin.
+Le dépôt GitHub `github.com/cccp-education/video-kernel-gradle` a été mis à
+disposition par le pilote ; le borough y est poussé (`main`) et la **CI `Test`
+est verte** (run `38321797962`, 1m14s). Propagation Maven Central confirmée
+(repo1 HTTP 200 : `video-kernel-0.0.1.pom`/`.jar`).
 
 == Statut
 

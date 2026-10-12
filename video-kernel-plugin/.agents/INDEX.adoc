@@ -5,8 +5,9 @@ _Règles absolues_ : voir `AGENT.adoc`
 _DAG_ : N1 — lib utilitaire partagée (noyau vidéo engine-agnostique)
 _Coordonnées_ : `education.cccp:video-kernel:0.0.1` (Maven Central)
 
- _Derniere mise a jour_ : 2026-10-12 (création du borough — extraction du noyau de capsule, US-5).
+ _Derniere mise a jour_ : 2026-10-12 (création du borough — extraction du noyau de capsule, US-5 ; dépôt `github.com/cccp-education/video-kernel-gradle` + CI verte).
  _Derniere session terminee_ : 189.
+ _Depot_ : `https://github.com/cccp-education/video-kernel-gradle.git`.
  _Prochaine session_ : 190 — au choix : A) consommation hyperframes (Watts) ; B) promotion package neutre `video.kernel.*`.
 
 == Portée
