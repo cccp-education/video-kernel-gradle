@@ -1,0 +1,10 @@
+= SESSIONS_HISTORY — video-kernel
+
+== Sessions
+
+[cols="1,1,1,3,1"]
+|===
+|# |Date |Type |Sujet |Score
+
+| 189 | 2026-10-12 | feat+release | **Création du borough + extraction du noyau + publication 0.0.1.** Noyau engine-agnostique extrait de `capsule-gradle` (EPIC `CAP-ENGINE-DECOUPLING` US-5) : `capsule.kernel.*` (modèle + ports `VideoEngine`/`SegmentSource`) + garde de frontière `capsule.ci.KernelBoundaryAudit`/`KernelBoundaryTest`. Publié **`education.cccp:video-kernel:0.0.1`** (Maven Central, Apache 2.0). Consommateur `capsule-gradle` branché (noyau in-repo supprimé). | 9/10
+|===

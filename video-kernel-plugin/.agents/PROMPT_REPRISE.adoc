@@ -1,0 +1,36 @@
+= PROMPT_REPRISE — video-kernel
+:session: 190
+:borough: video-kernel
+:session_precedente: 189 — création du borough + extraction du noyau + publication 0.0.1 ✅
+_note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
+
+== Contexte Hérité
+
+=== S-189 — extraction N1 ✅
+
+- Borough `video-kernel-gradle` créé (build autonome, wrapper Gradle 9.8.1, nmcp).
+- Noyau `capsule.kernel` extrait de `capsule-gradle` : `VideoKind`, `VideoSegment`,
+  `VideoScript`, `VisualSource`/`FileVisualSource`, `VideoProductionEntry`,
+  `VideoProductionPlan`, `VideoEngine`, `SegmentSource`.
+- Garde de frontière `capsule.ci.KernelBoundaryAudit`/`KernelBoundaryTest`.
+- Publié **`education.cccp:video-kernel:0.0.1`** (Maven Central, Apache 2.0).
+- Consommateur `capsule-gradle` branché (dépendance `implementation(libs.video.kernel)`),
+  noyau in-repo supprimé.
+
+== Mission Session 190 — au choix (pilote)
+
+* A) **Consommateur hyperframes** (Watts) : 2e moteur derrière `VideoEngine`/`SegmentSource`.
+* B) **Promotion package neutre** `video.kernel.*` (breaking change coordonné).
+* C) **Entrée MEMPHIS BOM** (`video-kernel`) pour l'alignement cross-borough.
+
+== Points d'attention
+
+* **Remote GitHub à créer** : `github.com/cccp-education/video-kernel-gradle`
+  (le token de session ne peut pas créer de dépôt sous l'org — action admin requise).
+* **Local = Build, Tests = CI**. **Règle 2 — PUBLISH** : accord pilote.
+* Frontière du noyau : `capsule.kernel` n'importe que `java/kotlin/contracts`.
+
+== Rappels
+
+* `education.cccp:video-kernel:0.0.1` (Central). Dépend de `i18n-contracts:0.0.4`.
+* Garde : `capsule.ci.KernelBoundaryTest`.

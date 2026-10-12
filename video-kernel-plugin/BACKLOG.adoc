@@ -1,0 +1,20 @@
+= BACKLOG — video-kernel
+:last_update: 2026-10-12 (S-189 — création du borough + publication `0.0.1`)
+
+== ✅ Extraction du noyau (S-189)
+
+Noyau engine-agnostique extrait de `capsule-gradle` (EPIC `CAP-ENGINE-DECOUPLING`,
+US-5) : `capsule.kernel.*` (modèle + ports `VideoEngine`/`SegmentSource`),
+publié `education.cccp:video-kernel:0.0.1` sur Maven Central (Apache 2.0).
+Garde de frontière `capsule.ci.KernelBoundaryTest`.
+
+== 🟡 À FAIRE
+
+[cols="1,3,1,1"]
+|===
+| US | Livrable | Priorité | Points
+
+| VK-1 | Consommateur **hyperframes** (Watts) : implémenter `VideoEngine`/`SegmentSource` avec HyperFrames | P1 | 3
+| VK-2 | Promotion **package neutre** `video.kernel.*` (retirer le préfixe `capsule.`) — breaking change coordonné avec capsule | P2 | 2
+| VK-3 | Entrée **MEMPHIS BOM** (`video-kernel:0.0.1`) pour l'alignement cross-borough | P2 | 1
+|===

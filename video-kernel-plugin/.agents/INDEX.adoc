@@ -1,0 +1,41 @@
+= INDEX — video-kernel
+:toc:
+
+_Règles absolues_ : voir `AGENT.adoc`
+_DAG_ : N1 — lib utilitaire partagée (noyau vidéo engine-agnostique)
+_Coordonnées_ : `education.cccp:video-kernel:0.0.1` (Maven Central)
+
+ _Derniere mise a jour_ : 2026-10-12 (création du borough — extraction du noyau de capsule, US-5).
+ _Derniere session terminee_ : 189.
+ _Prochaine session_ : 190 — au choix : A) consommation hyperframes (Watts) ; B) promotion package neutre `video.kernel.*`.
+
+== Portée
+
+Noyau engine-agnostique extrait de `capsule-gradle` :
+`VideoKind`, `VideoSegment`, `VideoScript`, `VisualSource`/`FileVisualSource`,
+`VideoProductionEntry`, `VideoProductionPlan`, `VideoEngine` (port), `SegmentSource` (port).
+
+Frontière gardée : `capsule.ci.KernelBoundaryTest` (imports `java/kotlin/contracts/capsule.kernel`
+uniquement ; vocabulaire neutre).
+
+== Portefeuille
+
+[cols="1,3,1"]
+|===
+| Element | Description | Statut
+
+| video-kernel 0.0.1 | Modèle neutre + ports ; publication Maven Central | ✅ Publié (S-189)
+| Consommateur capsule | `capsule-gradle` dépend de `education.cccp:video-kernel:0.0.1` | ✅ S-189
+| Consommateur hyperframes | Watts (2e moteur) | 🟡 à cadrer
+|===
+
+== Fichiers Associes
+
+|===
+| Fichier | Role
+| `AGENT.adoc` | Directives
+| `.agents/INDEX.adoc` | Dashboard
+| `.agents/PROMPT_REPRISE.adoc` | Mission session en cours
+| `src/main/kotlin/capsule/kernel/` | Noyau (modèle + ports)
+| `src/test/kotlin/capsule/ci/` | Garde de frontière
+|===

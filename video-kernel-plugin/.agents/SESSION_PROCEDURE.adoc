@@ -1,0 +1,25 @@
+= SESSION_PROCEDURE — video-kernel
+
+== Procedure de Fin de Session — 6 Etapes
+
+. Rapport de session — `.agents/sessions/NNN-sujet.adoc`
+. Mise a jour `.agents/PROMPT_REPRISE.adoc` (max 70 lignes)
+. Mise a jour `.agents/INDEX.adoc`
+. Mise a jour `.agents/SESSIONS_HISTORY.adoc`
+. Archivage `.agents/archives/COMPLETED_TASKS_ARCHIVE_{mois}.adoc`
+. Verification — `git status`, zéro secret, build compile
+. Synchronisation backlog — `BACKLOG.adoc`
+
+== Verification
+
+----
+git status
+grep -r "TOKEN\|SECRET\|PASSWORD\|API_KEY\|gho_\|ghp_" --include="*.kts" --include="*.properties" --include="*.yml"
+./gradlew compileKotlin compileTestKotlin
+----
+
+== Rappels
+
+* PUBLISH = accord pilote. ZÉRO secret.
+* Local = Build, Tests = CI.
+* Frontière du noyau : `capsule.kernel` n'importe que `java/kotlin/contracts`.

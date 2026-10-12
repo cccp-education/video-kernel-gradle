@@ -1,0 +1,25 @@
+= SESSION_CHECKLIST — video-kernel
+
+== Hook d'Ouverture
+
+. [ ] Lire `AGENT.adoc` — règles absolues
+. [ ] Lire `.agents/INDEX.adoc` — portefeuille
+. [ ] Lire `.agents/PROMPT_REPRISE.adoc` — mission
+. [ ] `git status`
+. [ ] `./gradlew compileKotlin compileTestKotlin` (Local = Build)
+
+== Pendant la session
+
+. [ ] Règle 2 — PUBLISH = accord pilote uniquement
+. [ ] ZÉRO secret
+. [ ] Frontière du noyau (`capsule.ci.KernelBoundaryTest`) respectée
+. [ ] Local = Build, Tests = CI
+
+== Commandes
+
+----
+git status
+./gradlew compileKotlin compileTestKotlin
+# ./gradlew test        (CI uniquement)
+./gradlew publishToMavenLocal
+----

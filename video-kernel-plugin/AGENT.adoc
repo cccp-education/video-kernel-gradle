@@ -1,0 +1,36 @@
+= AGENT.adoc — video-kernel
+
+_Produit_ : Noyau vidéo engine-agnostique (modèle + ports) — bibliothèque
+_Licence_ : Apache 2.0 (OSS)
+_DAG_ : N1 — lib utilitaire partagée
+_Coordonnées_ : `education.cccp:video-kernel:0.0.1` (Maven Central)
+_Dépendance_ : `education.cccp:i18n-contracts` (N0 pur)
+
+== Principe
+
+`video-kernel` extrait le **noyau neutre** de `capsule-gradle` (EPIC
+`CAP-ENGINE-DECOUPLING`, US-5). Il porte le modèle de production vidéo
+(`VideoKind`/`VideoSegment`/`VideoScript`/`VisualSource`/`VideoProductionEntry`/
+`VideoProductionPlan`) et les **ports** (`VideoEngine`, `SegmentSource`), **sans
+aucun couplage** à un moteur de rendu (reveal.js, Playwright, AsciiDoc) ni à
+Gradle. Un second moteur (HyperFrames) peut l'implémenter.
+
+== Règles Absolues
+
+. COMMITS/GIT — autorisés (décision pilote 2026-09-17), zéro secret commité.
+. PUBLISH — accord pilote requis (Règle 2 du workspace).
+. DAG N1 — importable par N2/N3, ne dépend d'aucun N2/N3.
+. ZÉRO secret/token/api key en dur.
+. **Frontière du noyau** — `capsule.kernel` n'importe que
+  `java.`/`kotlin.`/`contracts.` ; jamais `slide`/`deck`/`reveal`/`playwright`
+  (garde `capsule.ci.KernelBoundaryTest`).
+. Local = Build, Tests = CI — `./gradlew compileKotlin compileTestKotlin`
+  en local ; les tests s'exécutent en CI.
+
+== Tâches
+
+----
+./gradlew compileKotlin compileTestKotlin   → build local
+./gradlew test                             → CI uniquement
+./gradlew publishToMavenLocal              → si nécessaire à un consommateur
+----

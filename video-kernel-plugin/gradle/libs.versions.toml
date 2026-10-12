@@ -1,0 +1,14 @@
+[versions]
+i18n-contracts = "0.0.4"
+kotlin = "2.4.10"
+junit = "5.10.1"
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
+[libraries]
+i18n-contracts = { module = "education.cccp:i18n-contracts", version.ref = "i18n-contracts" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "1.10.2" }
+assertj = { module = "org.assertj:assertj-core", version = "3.25.3" }
