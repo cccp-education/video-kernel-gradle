@@ -1,0 +1,21 @@
+= TEST_COVERAGE_ANALYSIS — video-kernel
+:date: 2026-10-12
+:session: 191 VideoOutcome → 0.0.3
+
+== Couverture — 12 octobre 2026 (après session 191)
+
+.Noyau engine-agnostique
+|===
+| Élément | Nature | Tests
+
+| `capsule/kernel/VideoEngine.kt` | port + `VideoRenderRequest`/`VideoRenderResult` | (couvert par les adapters consommateurs)
+| `capsule/kernel/VideoOutcome.kt` | descripteur d'issue neutre | +2 `VideoOutcomeTest`
+| `capsule/kernel/VisualSource.kt` | `VisualSource`/`FileVisualSource` | (couvert via `VideoProductionEntryTest`)
+| `capsule/kernel/VideoProductionEntry.kt` / `VideoProductionPlan.kt` | plan de productions | +5 `VideoProductionEntryTest` + 2 `VideoProductionPlanTest`
+| `capsule/kernel/segment/VideoKind.kt` / `VideoSegment.kt` / `VideoScript.kt` | capacité segment-orientée | +5 `VideoSegmentTest` + 4 `VideoScriptTest`
+| `capsule/kernel/segment/SegmentSource.kt` | port source → segments | (couvert par l'adapter reveal côté capsule)
+| `capsule/ci/KernelBoundaryAudit.kt` / `KernelBoundaryTest.kt` | garde de frontière du noyau | 2 tests
+|===
+
+Total : 20 unit (noyau + garde). Local = Build (`compileKotlin compileTestKotlin`) ;
+les tests s'exécutent en CI (`./gradlew build`).
