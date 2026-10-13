@@ -6,15 +6,21 @@ N1 shared library — the **engine-neutral kernel** extracted from `capsule-grad
 (EPIC `CAP-ENGINE-DECOUPLING`, US-5).
 
 It carries the neutral video production model and ports, free of any renderer
-(reveal.js, Playwright, AsciiDoc) or build-system (Gradle) dependency:
+(reveal.js, Playwright, AsciiDoc) or build-system (Gradle) dependency.
 
-- `capsule.kernel.VideoKind` / `VideoSegment` / `VideoScript`
-- `capsule.kernel.VisualSource` / `FileVisualSource`
-- `capsule.kernel.VideoProductionEntry` / `VideoProductionPlan`
-- `capsule.kernel.VideoEngine` (port that renders a visual source into a video)
-- `capsule.kernel.SegmentSource` (port that turns a source into segments)
+**Shared core** (`capsule.kernel`) — the common denominator for every engine:
 
-Coordinates: `education.cccp:video-kernel:0.0.1` (Apache 2.0).
+- `VisualSource` / `FileVisualSource` (a file to render into a video)
+- `VideoEngine` (port: `render(VisualSource) → produced video`) + `VideoRenderRequest` / `VideoRenderResult`
+- `VideoProductionEntry` / `VideoProductionPlan` (a plan over visual sources)
+
+**Segment-oriented capability** (`capsule.kernel.segment`) — used by segment-based
+engines (reveal.js capture), not imposed on whole-document renderers (HyperFrames):
+
+- `VideoKind` / `VideoSegment` / `VideoScript`
+- `SegmentSource` (turns a source into ordered segments)
+
+Coordinates: `education.cccp:video-kernel:0.0.2` (Apache 2.0).
 
 The kernel boundary is guarded by `capsule.ci.KernelBoundaryTest`: the kernel
 imports only `java.`/`kotlin.`/`contracts.`/`capsule.kernel.` and its code carries

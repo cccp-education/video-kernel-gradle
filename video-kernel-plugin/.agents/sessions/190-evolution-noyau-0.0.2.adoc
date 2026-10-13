@@ -1,0 +1,52 @@
+= Session 190 — Évolution du noyau → 0.0.2 (amincissement du port `VideoEngine`)
+:session: 190
+:date: 2026-10-12
+:type: refactor+release (contrat partagé)
+:borough: video-kernel
+:toc:
+
+== Objectif
+
+Faire évoluer le noyau pour qu'il tienne face à un **2ᵉ moteur** (HyperFrames),
+après le **fitness mapping** qui a montré que le port 0.0.1 était **moulé sur
+reveal.js**. Objectif : un **dénominateur commun honnête** entre capture par
+segments (capsule) et rendu document-entier (hyperframes).
+
+== Constat (fitness mapping, lecture seule)
+
+| Élément 0.0.1 | capsule (reveal.js) | HyperFrames | Verdict |
+|---|---|---|---|
+| `VisualSource` / `produced` | deck | `index.html` | ✅ partagé |
+| `request.segments`/`segmentDurations`/`viewport`/`parallel` | pilotent la capture | sans objet | ❌ **forcés à tort** |
+| `result.failedSegments` | échecs par slide | tout-ou-rien | ⚠️ révèle-spécifique |
+| `SegmentSource`/`VideoSegment`/`VideoScript`/`VideoKind` | narration par slide | pas d'analogue | ❌ **révèle-spécifique** |
+
+Conclusion : seuls ~2 types sur 8 étaient réellement partagés.
+
+== Changements (0.0.2)
+
+=== Noyau partagé (`capsule.kernel`, mince)
+
+* `VideoEngine` : port inchangé en surface (`render(request) → result`).
+* `VideoRenderRequest` **aminci** à `{ name, visual, outputDir, timeoutMillis }` —
+  plus de `segments`/`segmentDurations`/`viewportWidth`/`viewportHeight`/`parallel`.
+* `VideoRenderResult` : `produced` + `failedUnits` (générique, vide pour un moteur
+  document-entier).
+* Restent en cœur : `VisualSource`/`FileVisualSource`, `VideoProductionEntry`,
+  `VideoProductionPlan`.
+
+=== Capacités segment-orientées (`capsule.kernel.segment`, optionnelles)
+
+* Déplacés : `VideoKind`, `VideoSegment`, `VideoScript`, `SegmentSource`.
+* Clarté : le cœur ne force plus le vocabulaire « segment » sur un moteur
+  document-entier ; un moteur à segments (reveal.js) les utilise, HyperFrames non.
+
+== Publication
+
+`education.cccp:video-kernel:0.0.2` (Maven Central, nmcp AUTOMATIC, bundle
+**`6cac928b-8741-42fe-9497-58d8adb6cc70`**, signé GPG).
+
+== Statut
+
+Noyau partagé **honnête** pour 2 moteurs. Reste au backlog : VK-1 (adapter
+hyperframes), VK-2 (promotion package neutre `video.kernel.*`), VK-3 (BOM MEMPHIS).

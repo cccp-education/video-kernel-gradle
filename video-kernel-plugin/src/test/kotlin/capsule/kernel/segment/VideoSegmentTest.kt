@@ -1,4 +1,4 @@
-package capsule.kernel
+package capsule.kernel.segment
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

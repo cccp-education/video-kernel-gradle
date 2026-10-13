@@ -1,6 +1,12 @@
 = COMPLETED_TASKS_ARCHIVE — Octobre 2026
 :date: 2026-10-12
 
+== Session 190 — Évolution du noyau → 0.0.2 ✅
+
+* Fitness mapping vs HyperFrames → port aminci (cœur partagé honnête).
+* `capsule.kernel.segment` pour la capacité segment-orientée.
+* Publié `education.cccp:video-kernel:0.0.2` (Central, bundle `6cac928b`).
+
 == Session 189 — Extraction du noyau + publication 0.0.1 ✅
 
 * Borough `video-kernel-gradle` créé ; noyau `capsule.kernel` extrait de capsule.

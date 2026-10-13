@@ -1,4 +1,4 @@
-package capsule.kernel
+package capsule.kernel.segment
 
 /**
  * Aggregate root — the full engine-neutral video production script

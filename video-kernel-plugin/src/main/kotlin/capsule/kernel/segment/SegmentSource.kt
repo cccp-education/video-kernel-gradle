@@ -1,4 +1,4 @@
-package capsule.kernel
+package capsule.kernel.segment
 
 import java.io.File
 

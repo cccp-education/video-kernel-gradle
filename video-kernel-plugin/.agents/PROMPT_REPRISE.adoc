@@ -1,35 +1,42 @@
 = PROMPT_REPRISE — video-kernel
-:session: 190
+:session: 191
 :borough: video-kernel
-:session_precedente: 189 — création du borough + extraction du noyau + publication 0.0.1 ✅
+:session_precedente: 190 — évolution du noyau → 0.0.2 (amincissement du port VideoEngine) ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
 == Contexte Hérité
 
-=== S-189 — extraction N1 ✅
+=== S-190 — noyau 0.0.2 ✅ (contrat partagé honnête)
 
-- Borough `video-kernel-gradle` créé (build autonome, wrapper Gradle 9.8.1, nmcp).
-- Noyau `capsule.kernel` extrait de `capsule-gradle` : `VideoKind`, `VideoSegment`,
-  `VideoScript`, `VisualSource`/`FileVisualSource`, `VideoProductionEntry`,
-  `VideoProductionPlan`, `VideoEngine`, `SegmentSource`.
-- Garde de frontière `capsule.ci.KernelBoundaryAudit`/`KernelBoundaryTest`.
-- Publié **`education.cccp:video-kernel:0.0.1`** (Maven Central, Apache 2.0).
-- Consommateur `capsule-gradle` branché (dépendance `implementation(libs.video.kernel)`),
-  noyau in-repo supprimé.
+- **Fitness mapping** (lecture seule) : le port 0.0.1 était moulé reveal.js ;
+  seuls ~2 types/8 réellement partagés avec HyperFrames.
+- `VideoRenderRequest` **aminci** : `{ name, visual, outputDir, timeoutMillis }`
+  (plus de segments/durations/viewport/parallel).
+- `VideoRenderResult` : `produced` + `failedUnits`.
+- `VideoKind`/`VideoSegment`/`VideoScript`/`SegmentSource` déplacés en
+  `capsule.kernel.segment` (capacité segment-orientée optionnelle).
+- Publié **`education.cccp:video-kernel:0.0.2`** (Central, bundle `6cac928b`).
+- Capsule adapté (plan au constructeur de l'adapter, requête mince) — CI verte.
 
-== Mission Session 190 — au choix (pilote)
+=== S-189 — bootstrap + 0.0.1 ✅
 
-* A) **Consommateur hyperframes** (Watts) : 2e moteur derrière `VideoEngine`/`SegmentSource`.
-* B) **Promotion package neutre** `video.kernel.*` (breaking change coordonné).
-* C) **Entrée MEMPHIS BOM** (`video-kernel`) pour l'alignement cross-borough.
+- Borough créé, noyau extrait, garde `KernelBoundaryTest`, publication 0.0.1.
+
+== Mission Session 191 — au choix (pilote)
+
+* A) **Adapter hyperframes** (Watts) : implémenter `VideoEngine` (rendu document-entier)
+  côté hyperframes, contre `video-kernel:0.0.2` — le payoff de la mutualisation.
+* B) **VK-3** : entrée `video-kernel` dans le BOM MEMPHIS.
+* C) **VK-2** : promotion package neutre `video.kernel.*` (breaking coordonné).
 
 == Points d'attention
 
-* Dépôt : `https://github.com/cccp-education/video-kernel-gradle.git` (poussé, CI verte).
+* Dépôt : `https://github.com/cccp-education/video-kernel-gradle.git`.
 * **Local = Build, Tests = CI**. **Règle 2 — PUBLISH** : accord pilote.
-* Frontière du noyau : `capsule.kernel` n'importe que `java/kotlin/contracts`.
+* Frontière : `capsule.kernel` n'importe que `java/kotlin/contracts` (garde
+  `KernelBoundaryTest`).
 
 == Rappels
 
-* `education.cccp:video-kernel:0.0.1` (Central). Dépend de `i18n-contracts:0.0.4`.
-* Garde : `capsule.ci.KernelBoundaryTest`.
+* `education.cccp:video-kernel:0.0.2` (Central). Dépend de `i18n-contracts:0.0.4`.
+* Cœur partagé : `VisualSource` + `VideoEngine`. Segment : `capsule.kernel.segment`.

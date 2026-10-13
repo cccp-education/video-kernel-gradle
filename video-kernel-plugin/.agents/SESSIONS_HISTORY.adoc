@@ -6,5 +6,7 @@
 |===
 |# |Date |Type |Sujet |Score
 
+| 190 | 2026-10-12 | refactor+release | **Évolution du noyau → 0.0.2 (contrat partagé honnête).** Après **fitness mapping** (lecture seule) montrant que le port 0.0.1 était moulé reveal.js (seuls ~2 types/8 partagés avec HyperFrames), amincissement : `VideoRenderRequest` réduit à `{name, visual, outputDir, timeoutMillis}` ; `VideoRenderResult.failedUnits` (générique) ; capacité segment-orientée (`VideoKind`/`VideoSegment`/`VideoScript`/`SegmentSource`) déplacée en `capsule.kernel.segment` (optionnelle). Publié **`education.cccp:video-kernel:0.0.2`** (Central, bundle `6cac928b`). Capsule adapté (CI verte). | 9/10
+
 | 189 | 2026-10-12 | feat+release | **Création du borough + extraction du noyau + publication 0.0.1.** Noyau engine-agnostique extrait de `capsule-gradle` (EPIC `CAP-ENGINE-DECOUPLING` US-5) : `capsule.kernel.*` (modèle + ports `VideoEngine`/`SegmentSource`) + garde de frontière `capsule.ci.KernelBoundaryAudit`/`KernelBoundaryTest`. Publié **`education.cccp:video-kernel:0.0.1`** (Maven Central, Apache 2.0). Consommateur `capsule-gradle` branché (noyau in-repo supprimé). | 9/10
 |===

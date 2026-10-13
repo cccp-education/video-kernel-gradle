@@ -4,18 +4,18 @@ import java.io.File
 
 /**
  * Engine-neutral port that renders a [VisualSource] into a video
- * (CAP-ENGINE-DECOUPLING US-2).
+ * (video-kernel US-1, 0.0.2).
  *
- * The kernel defines *what* an engine does — turn visuals + narration segments
- * into a produced video — never *how*. A concrete engine (Reveal.js capture via
- * Playwright today, HyperFrames later) is an adapter that lives outside the
- * kernel and never leaks its renderer vocabulary (slide/deck/reveal/Playwright)
- * into this contract.
+ * **Shared core.** This port is the common denominator between every video
+ * engine: a Reveal.js capture engine (capsule-gradle), a HyperFrames document
+ * renderer (hyperframes-gradle/Watts), and any future one. It knows only that a
+ * visual source produces a video file. It deliberately knows **nothing** about
+ * segments, narration, durations, viewports or capture parallelism — those are
+ * capabilities of specific engines (segment-oriented capture), configured on the
+ * engine/adapter itself, never imposed on the shared contract.
  *
  * An engine is a stateful resource (a browser, a process pool): callers must
- * invoke [close] once the production is done. A failure to render is reported
- * through [VideoRenderResult.failedSegments] rather than thrown, so a degraded
- * single segment never aborts the whole production.
+ * invoke [close] once the render is done.
  */
 interface VideoEngine {
 
@@ -28,8 +28,8 @@ interface VideoEngine {
     /**
      * Renders the production described by [request].
      *
-     * @return the produced video file (or `null` when nothing was produced) and
-     *         the indices of the segments whose capture failed (never fatal).
+     * Engines report degraded renders through [VideoRenderResult.failedUnits]
+     * rather than throwing, so a partial failure never aborts the whole build.
      */
     fun render(request: VideoRenderRequest): VideoRenderResult
 
@@ -41,48 +41,36 @@ interface VideoEngine {
  * A single render instruction — the neutral unit of work handed to a
  * [VideoEngine].
  *
- * @property name            production name (without extension), used to name
- *                           the produced video (`<name>.<ext>`).
- * @property visual          the engine-neutral visual source to render.
- * @property segments        ordered narration segments (drives the output order).
- * @property segmentDurations per-segment duration in seconds, aligned with
- *                           [segments] by index.
- * @property outputDir       directory the engine writes produced files into.
- * @property viewportWidth   capture viewport width in pixels.
- * @property viewportHeight  capture viewport height in pixels.
- * @property parallel        `true` to render each segment independently (a
- *                           standalone visual per segment) and concatenate;
- *                           `false` to render the whole source in one pass.
- * @property timeoutMillis   per-segment capture timeout in milliseconds.
+ * Deliberately minimal: engine-specific inputs (segment plan, per-segment
+ * durations, viewport, parallelism, …) are supplied when the engine/adapter is
+ * built, not here. A segment-oriented capture engine and a whole-document
+ * renderer both accept this same request unchanged.
+ *
+ * @property name          production name (without extension), used to name the
+ *                         produced video (`<name>.<ext>`).
+ * @property visual        the engine-neutral visual source to render.
+ * @property outputDir     directory the engine writes produced files into.
+ * @property timeoutMillis optional render budget in milliseconds (`0` = the
+ *                         engine's own default).
  */
 data class VideoRenderRequest(
     val name: String,
     val visual: VisualSource,
-    val segments: List<VideoSegment>,
-    val segmentDurations: List<Double>,
     val outputDir: File,
-    val viewportWidth: Int,
-    val viewportHeight: Int,
-    val parallel: Boolean,
-    val timeoutMillis: Long,
-) {
-    init {
-        require(segmentDurations.size == segments.size) {
-            "VideoRenderRequest.segmentDurations must align with segments " +
-                "(got ${segmentDurations.size} durations for ${segments.size} segments)"
-        }
-    }
-}
+    val timeoutMillis: Long = 0L,
+)
 
 /**
  * Outcome of a [VideoEngine] render.
  *
- * @property produced        the produced video file, or `null` when the engine
- *                           wrote nothing.
- * @property failedSegments  indices of segments whose individual capture failed
- *                           (parallel mode); empty on a clean render.
+ * @property produced    the produced video file, or `null` when the engine wrote
+ *                       nothing.
+ * @property failedUnits engine-reported failed sub-units (indices of the
+ *                       segment-oriented capture); empty for a whole-document
+ *                       engine. Never fatal — a degraded render still yields
+ *                       whatever was produced.
  */
 data class VideoRenderResult(
     val produced: File?,
-    val failedSegments: List<Int> = emptyList(),
+    val failedUnits: List<Int> = emptyList(),
 )
