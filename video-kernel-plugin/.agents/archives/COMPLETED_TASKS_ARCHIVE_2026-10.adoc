@@ -1,6 +1,11 @@
 = COMPLETED_TASKS_ARCHIVE — Octobre 2026
 :date: 2026-10-12
 
+== Session 191 — `VideoOutcome` → 0.0.3 ✅
+
+* Descripteur d'issue neutre (durée/dims/taille/codec), alimenté par les 2 moteurs.
+* Publié `education.cccp:video-kernel:0.0.3` (Central, bundle `208f27e1`).
+
 == Session 190 — Évolution du noyau → 0.0.2 ✅
 
 * Fitness mapping vs HyperFrames → port aminci (cœur partagé honnête).

@@ -8,6 +8,13 @@ US-5) : `capsule.kernel.*` (modèle + ports `VideoEngine`/`SegmentSource`),
 publié `education.cccp:video-kernel:0.0.1` sur Maven Central (Apache 2.0).
 Garde de frontière `capsule.ci.KernelBoundaryTest`.
 
+== ✅ `VideoOutcome` → 0.0.3 (S-191)
+
+Gap confirmé par le spike hyperframes (S-016) comblé : `VideoRenderResult.outcome:
+VideoOutcome?` (`durationSeconds`/`width`/`height`/`sizeBytes`/`codec?`), alimenté
+par capsule (ffprobe + viewport) **et** hyperframes (config + taille). Publié
+Central (bundle `208f27e1`). **Contrat éprouvé par 2 moteurs → candidat au gel `0.1.0`.**
+
 == ✅ Évolution du contrat partagé (S-190)
 
 Fitness mapping vs HyperFrames → `0.0.2` : `VideoRenderRequest` aminci

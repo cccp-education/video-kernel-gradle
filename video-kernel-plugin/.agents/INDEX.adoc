@@ -5,8 +5,8 @@ _Règles absolues_ : voir `AGENT.adoc`
 _DAG_ : N1 — lib utilitaire partagée (noyau vidéo engine-agnostique)
 _Coordonnées_ : `education.cccp:video-kernel:0.0.1` (Maven Central)
 
- _Derniere mise a jour_ : 2026-10-12 (S-190 — évolution du noyau → **0.0.2** : `VideoRenderRequest` aminci, `VideoRenderResult.failedUnits`, capacité segment-orientée déplacée en `capsule.kernel.segment`. Fitness mapping vs HyperFrames.)
- _Derniere session terminee_ : 190.
+ _Derniere mise a jour_ : 2026-10-12 (S-191 — **`VideoOutcome` → 0.0.3** : descripteur d'issue neutre (durée/dims/taille/codec), alimenté par les 2 moteurs. Contrat complet éprouvé.)
+ _Derniere session terminee_ : 191.
  _Depot_ : `https://github.com/cccp-education/video-kernel-gradle.git`.
  _Prochaine session_ : 190 — au choix : A) consommation hyperframes (Watts) ; B) promotion package neutre `video.kernel.*`.
 
@@ -27,7 +27,8 @@ uniquement ; vocabulaire neutre).
 
 | video-kernel 0.0.1 | Modèle neutre + ports ; publication Maven Central | ✅ Publié (S-189)
 | video-kernel 0.0.2 | Port aminci (cœur partagé honnête) ; capacité segment en `capsule.kernel.segment` | ✅ Publié (S-190)
-| Consommateur capsule | `capsule-gradle` dépend de `education.cccp:video-kernel:0.0.2` | ✅ S-190
+| video-kernel 0.0.3 | `VideoOutcome` (durée/dims/taille/codec) — contrat complet éprouvé par 2 moteurs | ✅ Publié (S-191)
+| Consommateurs capsule + hyperframes | dépendent de `education.cccp:video-kernel:0.0.3` | ✅ S-191
 | Consommateur hyperframes | Watts (2e moteur, document-entier) | 🟡 à cadrer (VK-1)
 |===
 

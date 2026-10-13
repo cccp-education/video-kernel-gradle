@@ -1,10 +1,18 @@
 = PROMPT_REPRISE — video-kernel
-:session: 191
+:session: 192
 :borough: video-kernel
-:session_precedente: 190 — évolution du noyau → 0.0.2 (amincissement du port VideoEngine) ✅
+:session_precedente: 191 — `VideoOutcome` → 0.0.3 (contrat partagé complet) ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
 == Contexte Hérité
+
+=== S-191 — `VideoOutcome` → 0.0.3 ✅ (contrat partagé complet)
+
+- `VideoOutcome` (`durationSeconds`/`width`/`height`/`sizeBytes`/`codec?`) ;
+  `VideoRenderResult = { produced, outcome?, failedUnits }`.
+- Alimenté par **les deux moteurs** (capsule via ffprobe + viewport ; hyperframes
+  via config + taille). Publié `education.cccp:video-kernel:0.0.3` (Central, bundle `208f27e1`).
+- Contrat **éprouvé par 2 moteurs** → candidat au gel `0.1.0`.
 
 === S-190 — noyau 0.0.2 ✅ (contrat partagé honnête)
 
@@ -22,10 +30,9 @@ _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
 - Borough créé, noyau extrait, garde `KernelBoundaryTest`, publication 0.0.1.
 
-== Mission Session 191 — au choix (pilote)
+== Mission Session 192 — au choix (pilote)
 
-* A) **Adapter hyperframes** (Watts) : implémenter `VideoEngine` (rendu document-entier)
-  côté hyperframes, contre `video-kernel:0.0.2` — le payoff de la mutualisation.
+* A) **Geler `0.1.0`** (contrat éprouvé par 2 moteurs).
 * B) **VK-3** : entrée `video-kernel` dans le BOM MEMPHIS.
 * C) **VK-2** : promotion package neutre `video.kernel.*` (breaking coordonné).
 
@@ -38,5 +45,5 @@ _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
 == Rappels
 
-* `education.cccp:video-kernel:0.0.2` (Central). Dépend de `i18n-contracts:0.0.4`.
+* `education.cccp:video-kernel:0.0.3` (Central). Dépend de `i18n-contracts:0.0.4`.
 * Cœur partagé : `VisualSource` + `VideoEngine`. Segment : `capsule.kernel.segment`.

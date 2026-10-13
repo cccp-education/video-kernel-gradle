@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "education.cccp"
-version = "0.0.2"
+version = "0.0.3"
 kotlin.jvmToolchain(JavaVersion.VERSION_25.ordinal)
 
 repositories {

@@ -65,6 +65,9 @@ data class VideoRenderRequest(
  *
  * @property produced    the produced video file, or `null` when the engine wrote
  *                       nothing.
+ * @property outcome     the neutral [VideoOutcome] descriptor of the produced
+ *                       video (duration/dimensions/size/codec); `null` when no
+ *                       video was produced or the engine cannot describe it.
  * @property failedUnits engine-reported failed sub-units (indices of the
  *                       segment-oriented capture); empty for a whole-document
  *                       engine. Never fatal — a degraded render still yields
@@ -72,5 +75,6 @@ data class VideoRenderRequest(
  */
 data class VideoRenderResult(
     val produced: File?,
+    val outcome: VideoOutcome? = null,
     val failedUnits: List<Int> = emptyList(),
 )

@@ -1,0 +1,39 @@
+= Session 191 — `VideoOutcome` → 0.0.3 (clôture du contrat partagé)
+:session: 191
+:date: 2026-10-12
+:type: feat+release (contrat partagé)
+:borough: video-kernel
+:toc:
+
+== Objectif
+
+Combler le **gap confirmé par le spike hyperframes** (S-016) : `VideoRenderResult`
+ne portait que `produced: File?`, donc un orchestrateur ne pouvait pas lire les
+vidéos des deux moteurs uniformément. Ajouter un **descripteur d'issue neutre**.
+
+== Changements (0.0.3)
+
+* **`VideoOutcome`** (nouveau, `capsule.kernel`) :
+  `durationSeconds`, `width`, `height`, `sizeBytes`, `codec?` — champs totaux à
+  défauts neutres (`0`/`null` = inconnu).
+* **`VideoRenderResult`** : `{ produced, outcome: VideoOutcome?, failedUnits }`.
+* Alimenté par **les deux moteurs** :
+  * capsule (reveal.js) : durée via `MediaProbeUtil` (ffprobe), dims du viewport de
+    capture, `sizeBytes` du fichier, codec par conteneur (`mp4→h264`, `webm→vp8`).
+  * hyperframes : `sizeBytes` du fichier, dims/codec de la config ; durée `0.0`
+    (inconnue côté CLI, à lire du parse context N3 si besoin).
+
+== Publication
+
+`education.cccp:video-kernel:0.0.3` (Central, nmcp AUTOMATIC, bundle
+**`208f27e1-7683-42bc-8ce5-e173fc8766d7`**, signé GPG).
+
+== Verdict
+
+Le contrat partagé est **complet pour une orchestration uniforme** (rendu +
+descripteur neutre), éprouvé par **2 moteurs réels**. Candidat au gel `0.1.0`.
+
+== Statut
+
+`video-kernel:0.0.3`. Reste : intégration hyperframes (les 3 tâches délèguent à
+`HyperFramesEngine` + défauts D-A→D-F) ; VK-2 (package neutre) ; VK-3 (BOM MEMPHIS).

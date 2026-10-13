@@ -12,6 +12,7 @@ It carries the neutral video production model and ports, free of any renderer
 
 - `VisualSource` / `FileVisualSource` (a file to render into a video)
 - `VideoEngine` (port: `render(VisualSource) → produced video`) + `VideoRenderRequest` / `VideoRenderResult`
+- `VideoOutcome` (neutral descriptor of the produced video: duration/dimensions/size/codec)
 - `VideoProductionEntry` / `VideoProductionPlan` (a plan over visual sources)
 
 **Segment-oriented capability** (`capsule.kernel.segment`) — used by segment-based
@@ -20,7 +21,7 @@ engines (reveal.js capture), not imposed on whole-document renderers (HyperFrame
 - `VideoKind` / `VideoSegment` / `VideoScript`
 - `SegmentSource` (turns a source into ordered segments)
 
-Coordinates: `education.cccp:video-kernel:0.0.2` (Apache 2.0).
+Coordinates: `education.cccp:video-kernel:0.0.3` (Apache 2.0).
 
 The kernel boundary is guarded by `capsule.ci.KernelBoundaryTest`: the kernel
 imports only `java.`/`kotlin.`/`contracts.`/`capsule.kernel.` and its code carries
