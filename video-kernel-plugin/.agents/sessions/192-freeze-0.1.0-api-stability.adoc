@@ -1,0 +1,67 @@
+= Session 192 — Gel du contrat `video-kernel 0.1.0` (+ garde de stabilité d'API)
+:session: 192
+:date: 2026-10-13
+:type: release (local) + test
+:borough: video-kernel
+:statut: ✅ TERMINÉ — contrat gelé 0.1.0 (publication Central sur accord pilote)
+:toc:
+
+== Mission
+
+**Geler `0.1.0`** : le contrat neutre `video-kernel` est **éprouvé par 2 moteurs**
+(capsule/reveal.js et hyperframes/Watts, ce dernier en **production** depuis S-018).
+Le gel matérialise la garantie de compatibilité : le surface publique devient
+**figée**, tout changement cassant doit être intentionnel.
+
+== Constat
+
+- Version source `0.0.3` (publiée Central, bundle `208f27e1`).
+- Aucune garde ne protégeait la surface publique : une propriété/type/port pouvait
+  disparaître silencieusement et casser capsule **ou** hyperframes.
+- Le borough n'a pas d'infra Cucumber (tests JUnit + AssertJ uniquement).
+
+== Livrable
+
+=== Gel — bump `version = "0.0.3"` → **`0.1.0`**
+
+Publication Maven Central **en attente d'accord pilote** (Règle 2). Source en avance
+sur la version publiée (pattern EPIC PUB) — aucun consommateur cassé (capsule et
+hyperframes consomment `0.0.3`).
+
+=== Garde de stabilité d'API — `capsule.ci.KernelApiSurface` + `KernelApiStabilityTest`
+
+- `KernelApiSurface` (objet de test, réflexion pure — zéro dépendance `kotlin-reflect`) :
+  * `typeNames()` — les **12 types** exportés (`capsule.kernel.*` + `.segment.*`) ;
+  * `functionNames(type)` — les méthodes publiques non-getter (ports) ;
+  * `getterNames(type)` — les getters de propriétés (`getX`), synthétiques filtrés
+    (`componentN`, `copy`, `copy$default`, `equals`/`hashCode`/`toString`).
+- `KernelApiStabilityTest` (4 tests) verrouille : l'ensemble des **types**, les
+  contrats des ports **`VideoEngine`** (`name`/`isAvailable`/`render`/`close`) et
+  **`SegmentSource`** (`name`/`segments`), et les **propriétés** des 8 data classes
+  du modèle. Toute rupture exige une édition délibérée du manifeste.
+
+== Tests
+
+- **Unit** — `KernelApiStabilityTest` (4 tests). Le borough n'a pas de Cucumber
+  (convention : JUnit + AssertJ).
+- Le reste de la suite (20 unit) est inchangé et reste la non-régression du modèle.
+
+== Gates
+
+- **Local = Build** : `./gradlew compileKotlin compileTestKotlin` ✅ BUILD SUCCESSFUL.
+- **Tests = CI** : `.github/workflows/test.yml` (`./gradlew build`, JDK 25).
+- **Zéro secret** ; **English only** dans le code ajouté.
+
+== Effet transverse
+
+- `capsule` (N2) et `hyperframes` (N2) : consomment le même contrat gelé → toute
+  évolution du noyau devient un acte explicite (nouvelle version), plus un effet de bord.
+- Publication `0.1.0` : accord pilote requis ; alors capsule/hyperframes pourront
+  s'aligner (bump catalogue + toml) via un EPIC PUB.
+
+== Suite
+
+- **EPIC PUB video-kernel 0.1.0** (accord pilote) : publication Central + alignement
+  consommateurs.
+- **VK-3** : entrée `video-kernel` dans le BOM MEMPHIS (cross-borough).
+- **VK-2** : promotion package neutre `video.kernel.*` (breaking coordonné).

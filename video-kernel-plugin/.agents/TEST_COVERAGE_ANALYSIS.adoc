@@ -1,6 +1,19 @@
 = TEST_COVERAGE_ANALYSIS — video-kernel
-:date: 2026-10-12
-:session: 191 VideoOutcome → 0.0.3
+:date: 2026-10-13
+:session: 192 gel du contrat 0.1.0 + garde de stabilité d'API
+
+== Couverture — 13 octobre 2026 (après session 192)
+
+.Gel du contrat `0.1.0`
+|===
+| Élément | Nature | Tests
+
+| `capsule/ci/KernelApiSurface.kt` (test) | surface publique gelée (réflexion pure) | (helper)
+| `capsule/ci/KernelApiStabilityTest.kt` (test) | types + ports + propriétés du modèle | +4 tests
+|===
+
+Total : 24 unit (noyau + gardes). Local = Build (`compileKotlin compileTestKotlin`) ;
+les tests s'exécutent en CI (`./gradlew build`).
 
 == Couverture — 12 octobre 2026 (après session 191)
 

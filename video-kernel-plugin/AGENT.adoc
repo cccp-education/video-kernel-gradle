@@ -3,7 +3,7 @@
 _Produit_ : Noyau vidéo engine-agnostique (modèle + ports) — bibliothèque
 _Licence_ : Apache 2.0 (OSS)
 _DAG_ : N1 — lib utilitaire partagée
-_Coordonnées_ : `education.cccp:video-kernel:0.0.1` (Maven Central)
+_Coordonnées_ : `education.cccp:video-kernel:0.1.0` (contrat gelé ; Central : `0.0.3` publié)
 _Dépendance_ : `education.cccp:i18n-contracts` (N0 pur)
 
 == Principe

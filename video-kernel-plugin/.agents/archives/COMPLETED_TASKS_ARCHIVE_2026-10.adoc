@@ -1,5 +1,11 @@
 = COMPLETED_TASKS_ARCHIVE — Octobre 2026
-:date: 2026-10-12
+:date: 2026-10-13
+
+== Session 192 — Gel du contrat `0.1.0` + garde de stabilité d'API ✅
+
+* `version = "0.1.0"` (source ; publication Central en attente d'accord pilote).
+* Garde `capsule.ci.KernelApiStabilityTest` / `KernelApiSurface` — surface publique
+  gelée (12 types, ports `VideoEngine`/`SegmentSource`, propriétés du modèle).
 
 == Session 191 — `VideoOutcome` → 0.0.3 ✅
 
