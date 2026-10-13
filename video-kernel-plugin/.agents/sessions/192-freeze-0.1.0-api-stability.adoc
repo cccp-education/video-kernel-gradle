@@ -50,6 +50,9 @@ hyperframes consomment `0.0.3`).
 
 - **Local = Build** : `./gradlew compileKotlin compileTestKotlin` ✅ BUILD SUCCESSFUL.
 - **Tests = CI** : `.github/workflows/test.yml` (`./gradlew build`, JDK 25).
+- **Preuve CI — run `38456307671` ✅ success** : `KernelApiStabilityTest` (4/4 PASSED —
+  type set, port `VideoEngine`, port `SegmentSource`, propriétés du modèle) ;
+  `BUILD SUCCESSFUL`.
 - **Zéro secret** ; **English only** dans le code ajouté.
 
 == Effet transverse

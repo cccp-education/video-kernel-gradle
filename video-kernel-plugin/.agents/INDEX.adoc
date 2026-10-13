@@ -5,7 +5,7 @@ _Règles absolues_ : voir `AGENT.adoc`
 _DAG_ : N1 — lib utilitaire partagée (noyau vidéo engine-agnostique)
 _Coordonnées_ : `education.cccp:video-kernel:0.1.0` (contrat gelé ; Central : `0.0.3` publié, `0.1.0` en attente d'accord pilote)
 
- _Derniere mise a jour_ : 2026-10-13 (S-192 — **gel du contrat `0.1.0`** : bump + garde de stabilité d'API publique `KernelApiStabilityTest`/`KernelApiSurface`. Le contrat éprouvé par 2 moteurs est désormais figé.)
+ _Derniere mise a jour_ : 2026-10-13 (S-192 — **gel du contrat `0.1.0`** : bump + garde de stabilité d'API publique `KernelApiStabilityTest`/`KernelApiSurface`. **CI verte** run `38456307671`.)
  _Derniere session terminee_ : 192.
  _Depot_ : `https://github.com/cccp-education/video-kernel-gradle.git`.
  _Prochaine session_ : 193 — au choix : A) EPIC PUB `0.1.0` (Central, accord pilote) + alignement consommateurs ; B) VK-3 (entrée BOM MEMPHIS) ; C) VK-2 (package neutre `video.kernel.*`, breaking coordonné).
