@@ -6,6 +6,16 @@ _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
 == Contexte Hérité
 
+=== Cross-borough — hyperframes S-017 (2026-10-13) ✅ (adoption du noyau, défauts)
+
+Le 2ᵉ moteur consommateur (`hyperframes-gradle`, Watts) a livré **HF-KERNEL-ADAPTER
+US-1** : correction des 6 défauts D-A→D-F (dont la durée **mesurée** via
+`VideoOutcome`/ffprobe côté hyperframes, alignée sur `video-kernel:0.0.3`), + **CI
+hyperframes débloquée** (elle était rouge sur 100 % des runs). Aucune modification
+de `video-kernel` n'a été nécessaire (contrat 0.0.3 suffisant). Avance **VK-1**
+(consommateur hyperframes) — la délégation des 3 tâches à `VideoEngine` reste à faire
+(hyperframes US-3).
+
 === S-191 — `VideoOutcome` → 0.0.3 ✅ (contrat partagé complet)
 
 - `VideoOutcome` (`durationSeconds`/`width`/`height`/`sizeBytes`/`codec?`) ;
