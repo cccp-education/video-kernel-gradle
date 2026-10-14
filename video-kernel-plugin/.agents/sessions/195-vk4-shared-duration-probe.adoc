@@ -46,6 +46,14 @@ d'abstraction spéculative.
 
 - **Local = Build** : `compileKotlin` + `compileTestKotlin` VERTS.
 - **Tests = CI** : suite `test` exécutée en CI après push.
+- **Correctif CI (run `38512503267`)** — la CI a révélé un défaut du manifeste
+  d'API : `KernelApiSurface.publicMethods` ne filtrait pas les méthodes
+  **privées** non synthétiques ; le lambda de `FfprobeDurationParser.parse`
+  génère `parse$lambda$0` (`ACC_PRIVATE, ACC_STATIC, ACC_FINAL`, **non**
+  `ACC_SYNTHETIC`) qui fuyait dans la surface gelée. Fix : filtre
+  `Modifier.isPublic` (le manifeste gèle la surface **publique** uniquement).
+  Le défaut est **révélé par la CI** (règle Local = Build, Tests = CI) — il ne
+  pouvait pas l'être localement sans lancer les tests.
 
 == Suite
 

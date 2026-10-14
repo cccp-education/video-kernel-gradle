@@ -15,6 +15,7 @@ import video.kernel.segment.VideoKind
 import video.kernel.segment.VideoScript
 import video.kernel.segment.VideoSegment
 import java.lang.reflect.Method
+import java.lang.reflect.Modifier
 
 /**
  * Frozen public API surface of the engine-neutral kernel (0.3.0).
@@ -72,8 +73,15 @@ object KernelApiSurface {
 
     private val SYNTHETIC = Regex("^(component\\d+.*|copy.*|equals|hashCode|toString)$")
 
+    /**
+     * Public methods only — the frozen surface is the **public** API. Private
+     * helpers leaked by codegen (e.g. a Kotlin lambda's `parse$lambda$0`, which
+     * is `ACC_PRIVATE, ACC_STATIC, ACC_FINAL` yet **not** synthetic) must never
+     * be mistaken for exported members.
+     */
     private fun publicMethods(type: Class<*>): List<Method> =
         type.declaredMethods
+            .filter { Modifier.isPublic(it.modifiers) }
             .filter { !it.isSynthetic }
             .filterNot { SYNTHETIC.matches(it.name) }
 }
