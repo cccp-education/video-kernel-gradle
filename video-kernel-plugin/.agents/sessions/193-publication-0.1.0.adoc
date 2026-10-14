@@ -36,6 +36,10 @@ pilote explicite) et **aligner les consommateurs** (`capsule`, `hyperframes`).
 
 - **Tests = CI** : video-kernel `./gradlew build` ; capsule + hyperframes leurs
   workflows respectifs (déclenchés par le push des pins).
+- **Preuves CI** :
+  * video-kernel gel : run `38456307671` ✅ (`KernelApiStabilityTest` 4/4) ;
+  * hyperframes pin `0.1.0` : run `38489719814` ✅ ;
+  * capsule pin `0.1.0` : **Test** run `38489719616` ✅ + **Full Tests** run `38489719645` ✅.
 - **Zéro secret**.
 
 == Effet transverse
