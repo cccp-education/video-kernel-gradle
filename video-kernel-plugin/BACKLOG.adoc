@@ -1,5 +1,13 @@
 = BACKLOG — video-kernel
-:last_update: 2026-10-13 (S-192 — gel du contrat `0.1.0` + garde de stabilité d'API)
+:last_update: 2026-10-13 (S-193 — publication `0.1.0` Central + consommateurs alignés)
+
+== ✅ Publication `0.1.0` Maven Central (S-193)
+
+`publishAggregationToCentralPortal` bundle **`ccbb1f82-dfbc-4ebe-bb0c-dfef1066c71b`**
+(AUTOMATIC), propagation repo1 confirmée (pom/jar/module/sources HTTP 200).
+Consommateurs alignés : `capsule` + `hyperframes` `video-kernel 0.0.3 → 0.1.0`
+(résolution `0.1.0` vérifiée). Le contrat gelé est désormais **publié** — fin de
+l'écart source/publié.
 
 == ✅ Gel du contrat `0.1.0` (S-192)
 
@@ -43,8 +51,8 @@ déplacée en `capsule.kernel.segment`. Publié Central (bundle `6cac928b`).
 | VK-3 | Entrée **MEMPHIS BOM** (`video-kernel:0.1.0`) pour l'alignement cross-borough | P2 | 1
 |===
 
-== 🟡 À FAIRE — EPIC PUB `0.1.0`
+== ✅ EPIC PUB `0.1.0`
 
-Publication Maven Central de `video-kernel:0.1.0` (accord pilote) + alignement des
-consommateurs (`capsule`/`hyperframes` : bump catalogue/toml). Source prête (`build`
-vert CI).
+Publication Maven Central faite (S-193) + consommateurs alignés. Reste possible :
+**VK-3** (entrée `video-kernel:0.1.0` dans le BOM/catalogue MEMPHIS — optionnel, le
+BOM ne contraint pas encore `video-kernel`) et **VK-2** (package `video.kernel.*`).

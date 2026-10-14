@@ -3,12 +3,12 @@
 
 _Règles absolues_ : voir `AGENT.adoc`
 _DAG_ : N1 — lib utilitaire partagée (noyau vidéo engine-agnostique)
-_Coordonnées_ : `education.cccp:video-kernel:0.1.0` (contrat gelé ; Central : `0.0.3` publié, `0.1.0` en attente d'accord pilote)
+_Coordonnées_ : `education.cccp:video-kernel:0.1.0` (contrat gelé, **publié Maven Central**)
 
- _Derniere mise a jour_ : 2026-10-13 (S-192 — **gel du contrat `0.1.0`** : bump + garde de stabilité d'API publique `KernelApiStabilityTest`/`KernelApiSurface`. **CI verte** run `38456307671`.)
- _Derniere session terminee_ : 192.
+ _Derniere mise a jour_ : 2026-10-13 (S-193 — **publication `video-kernel 0.1.0` Maven Central** (bundle `ccbb1f82`) + alignement consommateurs capsule/hyperframes sur `0.1.0`.)
+ _Derniere session terminee_ : 193.
  _Depot_ : `https://github.com/cccp-education/video-kernel-gradle.git`.
- _Prochaine session_ : 193 — au choix : A) EPIC PUB `0.1.0` (Central, accord pilote) + alignement consommateurs ; B) VK-3 (entrée BOM MEMPHIS) ; C) VK-2 (package neutre `video.kernel.*`, breaking coordonné).
+ _Prochaine session_ : 194 — au choix : A) VK-3 (entrée `video-kernel:0.1.0` dans le BOM MEMPHIS) ; B) VK-2 (package neutre `video.kernel.*`, breaking coordonné) ; C) autre.
 
 == Portée
 
@@ -29,8 +29,8 @@ uniquement ; vocabulaire neutre). **Stabilité gardée** : `capsule.ci.KernelApi
 | video-kernel 0.0.1 | Modèle neutre + ports ; publication Maven Central | ✅ Publié (S-189)
 | video-kernel 0.0.2 | Port aminci (cœur partagé honnête) ; capacité segment en `capsule.kernel.segment` | ✅ Publié (S-190)
 | video-kernel 0.0.3 | `VideoOutcome` (durée/dims/taille/codec) — contrat complet éprouvé par 2 moteurs | ✅ Publié (S-191)
-| video-kernel 0.1.0 | **Contrat GELÉ** + garde de stabilité d'API | 🟡 S-192 — source `0.1.0` ; publication en attente d'accord pilote
-| Consommateurs capsule + hyperframes | dépendent de `education.cccp:video-kernel:0.0.3` (alignement `0.1.0` après publication) | ✅ S-191/S-018
+| video-kernel 0.1.0 | **Contrat GELÉ** + garde de stabilité d'API | ✅ Publié (S-193)
+| Consommateurs capsule + hyperframes | dépendent de `education.cccp:video-kernel:0.1.0` | ✅ S-193
 | Consommateur hyperframes | Watts (2e moteur) — consomme le port `VideoEngine` en **production** | ✅ S-018
 |===
 

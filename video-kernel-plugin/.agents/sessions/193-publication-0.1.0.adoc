@@ -1,0 +1,52 @@
+= Session 193 — Publication `video-kernel 0.1.0` (Maven Central) + alignement consommateurs
+:session: 193
+:date: 2026-10-13
+:type: release
+:borough: video-kernel
+:statut: ✅ TERMINÉ — `0.1.0` publié Central + consommateurs alignés
+:toc:
+
+== Mission
+
+Publier le contrat **gelé** `video-kernel 0.1.0` (S-192) sur Maven Central (accord
+pilote explicite) et **aligner les consommateurs** (`capsule`, `hyperframes`).
+
+== Livrable
+
+=== Publication Maven Central
+
+- `./gradlew publishToMavenLocal` ✅ (artefacts signés GPG).
+- `./gradlew publishAggregationToCentralPortal --no-daemon` ✅ — bundle
+  **`ccbb1f82-dfbc-4ebe-bb0c-dfef1066c71b`** (AUTOMATIC).
+- **Propagation repo1 confirmée** : `video-kernel-0.1.0.pom` / `.jar` / `.module` /
+  `-sources.jar` → **HTTP 200** (`https://repo1.maven.org/maven2/education/cccp/video-kernel/0.1.0/`).
+
+=== Alignement consommateurs
+
+- `capsule-plugin/gradle/libs.versions.toml` : `video-kernel 0.0.3 → 0.1.0`.
+- `hyperframes-plugin/gradle/libs.versions.toml` : `video-kernel 0.0.3 → 0.1.0`.
+- Résolution vérifiée (`dependencyInsight`) : les deux résolvent **`0.1.0`**.
+- Compiles locaux VERTS (Local = Build) :
+  * capsule : `compileKotlin compileTestKotlin compileFunctionalTestKotlin` ✅ ;
+  * hyperframes : `compileKotlin compileTestKotlin` ✅.
+- ABI inchangé (0.1.0 vs 0.0.3 = gel, garde `KernelApiStabilityTest`) → compiles
+  UP-TO-DATE, aucune adaptation de code nécessaire.
+
+== Gates
+
+- **Tests = CI** : video-kernel `./gradlew build` ; capsule + hyperframes leurs
+  workflows respectifs (déclenchés par le push des pins).
+- **Zéro secret**.
+
+== Effet transverse
+
+- Le contrat neutre gelé est désormais **publié** : capsule et hyperframes partagent
+  la même version stable (`0.1.0`) — fin de l'écart source/publié.
+- `VK-1` (hyperframes 2ᵉ moteur) reste ✅ ; `VK-3` (entrée BOM MEMPHIS) devient
+  possible (le BOM pourra pinner `video-kernel:0.1.0`).
+
+== Suite
+
+- **VK-3** : entrée `video-kernel:0.1.0` dans le BOM/catalogue MEMPHIS.
+- **VK-2** : promotion package neutre `video.kernel.*` (breaking coordonné).
+- Retour hyperframes **US-4/US-5**.

@@ -1,6 +1,12 @@
 = COMPLETED_TASKS_ARCHIVE — Octobre 2026
 :date: 2026-10-13
 
+== Session 193 — Publication `0.1.0` Maven Central + consommateurs ✅
+
+* `publishAggregationToCentralPortal` bundle `ccbb1f82-dfbc-4ebe-bb0c-dfef1066c71b`.
+* Propagation repo1 confirmée (pom/jar/module/sources HTTP 200).
+* `capsule` + `hyperframes` alignés `video-kernel 0.0.3 → 0.1.0`.
+
 == Session 192 — Gel du contrat `0.1.0` + garde de stabilité d'API ✅
 
 * `version = "0.1.0"` (source ; publication Central en attente d'accord pilote).
