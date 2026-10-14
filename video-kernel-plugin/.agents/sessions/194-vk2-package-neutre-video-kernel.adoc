@@ -36,7 +36,8 @@ BOM/catalogue MEMPHIS.
 * `compileKotlin` + `compileTestKotlin` VERTS.
 * `publishToMavenLocal` VERT — jar signé expose `video/kernel/**` (vérifié).
 * Publication Central bundle **`da095e64-a0a4-4bcf-b983-e86209215572`**
-  (AUTOMATIC).
+  (AUTOMATIC) ; propagation repo1 confirmée (pom/jar/module HTTP 200).
+* CI `Test` VERTE (run `38493132779`).
 
 === Consommateurs (breaking coordonné)
 

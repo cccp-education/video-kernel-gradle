@@ -11,9 +11,10 @@ les gardes passent de `capsule.ci` à **`video.ci`**. Renommage `git mv`
 `video.kernel.`) + manifeste d'API `KernelApiSurface`/`KernelApiStabilityTest`
 (12 types gelés 0.2.0). `version = 0.1.0 → 0.2.0` (breaking). `compileKotlin`
 `compileTestKotlin` VERTS. **Publié Maven Central** bundle
-`<à compléter>`. Consommateurs `capsule` + `hyperframes` alignés sur `0.2.0`
-(imports `video.kernel.*`). **VK-3** : entrée BOM/catalogue MEMPHIS
-`video-kernel 0.1.0` puis repin `0.2.0` (BOM/catalog `0.0.88`/`0.0.89`).
+`da095e64-a0a4-4bcf-b983-e86209215572` (AUTOMATIC) ; propagation repo1
+`video-kernel/0.2.0` (pom/jar/module HTTP 200). Consommateurs `capsule` + `hyperframes`
+alignés sur `0.2.0` (imports `video.kernel.*`). **VK-3** : entrée BOM/catalogue MEMPHIS
+`video-kernel 0.1.0` (BOM/catalog `0.0.88`) puis repin `0.2.0` (`0.0.89`).
 
 == ✅ Publication `0.1.0` Maven Central (S-193)
 
