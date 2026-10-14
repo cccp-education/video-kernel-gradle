@@ -1,6 +1,8 @@
 package video.ci
 
+import video.kernel.FfprobeDurationParser
 import video.kernel.FileVisualSource
+import video.kernel.VideoDurationProbe
 import video.kernel.VideoEngine
 import video.kernel.VideoOutcome
 import video.kernel.VideoProductionEntry
@@ -15,13 +17,15 @@ import video.kernel.segment.VideoSegment
 import java.lang.reflect.Method
 
 /**
- * Frozen public API surface of the engine-neutral kernel (0.2.0).
+ * Frozen public API surface of the engine-neutral kernel (0.3.0).
  *
  * The 0.0.3 contract is proven by two engines (capsule/reveal.js and
  * hyperframes/Watts), frozen as **0.1.0** and promoted to the neutral
- * `video.kernel` package as **0.2.0** (VK-2, breaking): any change to the
- * exported types, the two ports, or the model properties is a breaking change
- * that must be intentional (update this manifest in the same commit as the break).
+ * `video.kernel` package as **0.2.0** (VK-2, breaking). **0.3.0** (VK-4 US-4a)
+ * additively promotes the shared duration-probe capability
+ * ([VideoDurationProbe] + [FfprobeDurationParser]). Any change to the exported
+ * types, the ports, or the model properties is a breaking change that must be
+ * intentional (update this manifest in the same commit as the break).
  *
  * Reflection only — no `kotlin-reflect` dependency.
  */
@@ -41,6 +45,8 @@ object KernelApiSurface {
         VideoKind::class.java,
         VideoScript::class.java,
         SegmentSource::class.java,
+        VideoDurationProbe::class.java,
+        FfprobeDurationParser::class.java,
     )
 
     /** Fully-qualified names of the exported types. */

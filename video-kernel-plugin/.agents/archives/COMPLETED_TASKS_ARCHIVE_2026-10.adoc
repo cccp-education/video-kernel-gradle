@@ -1,6 +1,15 @@
 = COMPLETED_TASKS_ARCHIVE — Octobre 2026
 :date: 2026-10-14
 
+== Session 195 — VK-4 US-4a : port partagé `VideoDurationProbe` + publication `0.3.0` ✅
+
+* Décision : le noyau héberge les **ports** engine-neutres, pas les
+  implémentations (garde `KernelBoundaryAudit` interdit `processbuilder`).
+* `video.kernel.VideoDurationProbe` (fun interface) + `FfprobeDurationParser` (pur).
+* Manifeste d'API 14 types + garde ; `version 0.2.0 → 0.3.0` (additif).
+* Publication Central bundle `892b2756-ee7f-4110-afa1-1a252b4b1ab5` (AUTOMATIC).
+* Adopté par capsule + hyperframes (port partagé).
+
 == Session 194 — VK-2 package neutre `video.kernel.*` + publication `0.2.0` ✅
 
 * Renommage `git mv` `capsule.kernel`/`capsule.ci` → `video.kernel`/`video.ci`.

@@ -1,5 +1,30 @@
 = BACKLOG — video-kernel
-:last_update: 2026-10-14 (S-194 — VK-2 package neutre `video.kernel.*` + publication `0.2.0` Central + VK-3 BOM MEMPHIS 0.0.88)
+:last_update: 2026-10-14 (S-195 — VK-4 US-4a port partagé `VideoDurationProbe` + publication `0.3.0` Central)
+
+== ✅ VK-4 — Ports de capacités partagées au noyau (S-195)
+
+_Décision_ (cadrage `.agents/CADRAGE_EPIC_VK_SHARED_PORTS.adoc`) : le noyau
+héberge les **ports** engine-neutres (fun interfaces pures), jamais les
+**implémentations** (binaires externes → N2 ; la garde `KernelBoundaryAudit`
+interdit `processbuilder`). Critère « second consommateur » : pas d'abstraction
+spéculative.
+
+[cols="1,3,1,1", options="header"]
+|===
+| US | Livrable | Consommateurs | Statut
+
+| US-4a | `video.kernel.VideoDurationProbe` + `FfprobeDurationParser` (pur) | capsule + hyperframes | ✅ S-195
+| US-4b | Port neutre audio-post (loudness/BGM/ducking) | capsule seul → différé (2ᵉ consommateur absent) | 🟡 conditionnel
+| US-4c | Port neutre sous-titres (burn-in) | capsule seul → différé | 🟡 conditionnel
+| US-4d | Port neutre TTS (texte → audio) | capsule seul → différé | 🟡 conditionnel
+|===
+
+**US-4a** : `version 0.2.0 → 0.3.0` (additif), manifeste d'API 14 types,
+publication Central bundle `892b2756`. Adopté : capsule
+(`capsule.validation.FfprobeDurationProbe` + `MediaProbeUtil` délègue) et
+hyperframes (port/parseur locaux supprimés → noyau, `FfprobeDurationProbe` N2
+implémente le port). **Reste** : MEMPHIS BOM/catalog bump `video-kernel 0.3.0`
+(non bloquant — prochain amont).
 
 == ✅ VK-2 — Promotion package neutre `video.kernel.*` + publication `0.2.0` (S-194)
 

@@ -3,12 +3,12 @@
 
 _Règles absolues_ : voir `AGENT.adoc`
 _DAG_ : N1 — lib utilitaire partagée (noyau vidéo engine-agnostique)
-_Coordonnées_ : `education.cccp:video-kernel:0.2.0` (package neutre `video.kernel.*`, **publié Maven Central**)
+_Coordonnées_ : `education.cccp:video-kernel:0.3.0` (package neutre `video.kernel.*`, **publié Maven Central**)
 
- _Derniere mise a jour_ : 2026-10-14 (S-194 — **VK-2 : promotion package neutre `video.kernel.*`** (breaking coordonné) + publication `video-kernel 0.2.0` Maven Central + consommateurs capsule/hyperframes alignés + VK-3 BOM/catalog MEMPHIS `0.0.88`.)
- _Derniere session terminee_ : 194.
+ _Derniere mise a jour_ : 2026-10-14 (S-195 — **VK-4 US-4a : port partagé `VideoDurationProbe`** (fun interface) + parseur pur `FfprobeDurationParser`, promus au noyau ; manifeste d'API 14 types ; publication `video-kernel 0.3.0` Central (bundle `892b2756`) ; adopté par capsule + hyperframes.)
+ _Derniere session terminee_ : 195.
  _Depot_ : `https://github.com/cccp-education/video-kernel-gradle.git`.
- _Prochaine session_ : 195 — au choix : A) retour hyperframes US-4/US-5 ; B) maintenance / documentation ; C) autre.
+ _Prochaine session_ : 196 — au choix : A) MEMPHIS BOM/catalog `video-kernel 0.3.0` ; B) US-4b→d (conditionnels, second consommateur) ; C) autre.
 
 == Portée
 
@@ -31,7 +31,8 @@ uniquement ; vocabulaire neutre). **Stabilité gardée** : `video.ci.KernelApiSt
 | video-kernel 0.0.3 | `VideoOutcome` (durée/dims/taille/codec) — contrat complet éprouvé par 2 moteurs | ✅ Publié (S-191)
 | video-kernel 0.1.0 | **Contrat GELÉ** + garde de stabilité d'API | ✅ Publié (S-193)
 | video-kernel 0.2.0 | **Package neutre `video.kernel.*`** (VK-2, breaking) + publication Central + consommateurs alignés + BOM MEMPHIS `0.0.88` (VK-3) | ✅ Publié (S-194)
-| Consommateurs capsule + hyperframes | dépendent de `education.cccp:video-kernel:0.2.0` | ✅ S-194
+| video-kernel 0.3.0 | **Port partagé `VideoDurationProbe`** (VK-4 US-4a) + parseur pur `FfprobeDurationParser` — capacités engine-neutres au noyau, impls N2 | ✅ Publié (S-195)
+| Consommateurs capsule + hyperframes | dépendent de `education.cccp:video-kernel:0.3.0` (probe partagé) | ✅ S-195 (adopté)
 | Consommateur hyperframes | Watts (2e moteur) — consomme le port `VideoEngine` en **production** | ✅ S-018
 |===
 

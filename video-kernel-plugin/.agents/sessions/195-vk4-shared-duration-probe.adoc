@@ -1,0 +1,54 @@
+= Session 195 — VK-4 US-4a : port partagé `VideoDurationProbe` (noyau 0.3.0)
+:session: 195
+:date: 2026-10-14
+:type: feat + release
+:borough: video-kernel (N1) — transverse hyperframes + capsule
+:statut: ✅ TERMINÉ — `video-kernel 0.3.0` publié Central
+:toc:
+
+== Mission
+
+Session transverse S-195 sur les trois boroughs vidéo. Clore
+`HF-KERNEL-ADAPTER US-4` (« consommer le noyau partagé ») en promouvant au noyau
+N1 les **ports de capacités engine-neutres** réellement partagés. Premier
+livrable : `VideoDurationProbe`.
+
+== Décision d'architecture (cadrage `CADRAGE_EPIC_VK_SHARED_PORTS.adoc`)
+
+Le cadrage S-021 avait exclu TTS/audio/sous-titres du noyau en confondant
+**ports** et **implémentations**. Décision : le noyau héberge les **ports**
+(fun interfaces pures) ; les **implémentations** (binaires externes) restent N2.
+La garde `video.ci.KernelBoundaryAudit` interdit `processbuilder`/`org.gradle`
+dans le noyau → une implémentation ffprobe ne peut pas y vivre ; seul le port +
+un parseur pur y vivent. Critère « second consommateur » (≥ 2 moteurs) : pas
+d'abstraction spéculative.
+
+== Livré (US-4a)
+
+=== Noyau
+
+- `video.kernel.VideoDurationProbe` — fun interface
+  `probeSeconds(File): Double` (jamais ne lève ; `0.0` = inconnu).
+- `video.kernel.FfprobeDurationParser` — objet **pur** `parse(String): Double?`
+  (décimal fini ≥ 0, sinon `null`).
+- Manifeste d'API étendu (`video.ci.KernelApiSurface` : 14 types) + garde
+  `KernelApiStabilityTest` (nouvelles assertions « port gelé » / « parseur seul »).
+- `version = "0.2.0" → "0.3.0"` (additif).
+- Tests unit `VideoDurationProbeTest` (7 — SAM + parseur).
+
+=== Publication Central
+
+`publishToMavenLocal` VERT (signé GPG). Bundle
+**`892b2756-ee7f-4110-afa1-1a252b4b1ab5`** (AUTOMATIC). Propagation repo1
+`video-kernel/0.3.0` confirmée (pom HTTP 200, ~3 min 30).
+
+== Gates
+
+- **Local = Build** : `compileKotlin` + `compileTestKotlin` VERTS.
+- **Tests = CI** : suite `test` exécutée en CI après push.
+
+== Suite
+
+- Adoption capsule + hyperframes (S-195, autres repos).
+- MEMPHIS BOM/catalog bump `video-kernel 0.3.0` (non bloquant — prochain amont).
+- US-4b→d conditionnels (second consommateur absent — cf. cadrage D2).

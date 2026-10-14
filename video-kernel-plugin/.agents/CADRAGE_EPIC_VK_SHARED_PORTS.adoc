@@ -1,0 +1,116 @@
+= CADRAGE — EPIC VK-4 (ports de capacités partagées) + clôture HF-KERNEL-ADAPTER US-4
+:session: 195
+:date: 2026-10-14
+:statut: 🟡 EN COURS — cadrage (US-0) ; US-4a livrée S-195
+:borough: video-kernel (N1) — transverse hyperframes + capsule
+:toc:
+
+== Origine
+
+Session transverse S-195 sur les trois boroughs vidéo (**video-kernel** N1,
+**capsule** N2 reveal.js, **hyperframes** N2 HyperFrames). Objet : clore
+`HF-KERNEL-ADAPTER US-4` — « consommer le noyau partagé (TTS / sous-titres /
+audio / durée / config) » — laissé **partiel** par le cadrage S-021.
+
+== Constat (audit au code S-195)
+
+. *Le noyau est un contrat pur N1*. `video-kernel` porte le modèle
+  (`VideoSegment`, `VisualSource`, `VideoOutcome`, `VideoProductionEntry/Plan`)
+  et les ports (`VideoEngine`, `SegmentSource`). Sa garde
+  `video.ci.KernelBoundaryAudit` n'autorise que les imports
+  `java.`/`kotlin.`/`contracts.`/`video.kernel.` **et interdit les tokens**
+  `playwright`, `reveal`, `slide`, `deck`, `asciidoc`, `processbuilder`,
+  `org.gradle`.
+. *S-021 avait exclu TTS/audio/sous-titres du noyau en confondant ports et
+  implémentations.* L'argument (« ce sont des moteurs concrets N2 ») vise les
+  **implémentations** (Piper, espeak, ffmpeg) — pas les **ports** (interfaces
+  neutres). Un port est un contrat pur, exactement comme `VideoEngine` dont
+  l'implémentation vit en N2.
+. *Duplication réelle constatée sur la durée* :
+  `hyperframes.contract.FfprobeDurationProbe` + `FfprobeDurationParser`
+  (d'une part) et `capsule.MediaProbeUtil.probeDuration` (d'autre part)
+  résolvent le **même** besoin engine-neutre : mesurer la durée d'un fichier
+  vidéo produit. Deux parseurs ffprobe, deux contrats implicites.
+. *Contrainte dure* : la garde interdit `processbuilder` dans le noyau → une
+  implémentation ffprobe (`ProcessBuilder`) **ne peut pas** vivre en N1. Seul le
+  **port** (et un parseur pur) peuvent y vivre.
+
+== Décision
+
+. *D1 — Le noyau héberge les ports de capacités engine-neutres, jamais les
+  implémentations.* Un port (fun interface) monte en N1 ; l'implémentation
+  (binaire externe : ffprobe/ffmpeg/piper) reste N2. La duplication verbatim
+  N2 est tolérée (doctrine S-162).
+. *D2 — Critère « second consommateur »*. Seule une capacité réellement
+  partagée par ≥ 2 moteurs monte au noyau. Aucune abstraction spéculative : un
+  port sans second consommateur reste N2.
+. *D3 — Révision limitée de S-021* : le périmètre « hors noyau » de S-021
+  portait sur les **implémentations** ; les **ports** correspondants sont
+  légitimes en N1 dès qu'un second consommateur existe.
+. *D4 — Additivité + gel.* Toute addition au noyau est **additive**
+  (bump mineur) et doit éditer délibérément le manifeste d'API
+  (`video.ci.KernelApiSurface` / `KernelApiStabilityTest`).
+. *D5 — DAG + publication (Règle 2).* L'ajout d'un port ⇒ publication Central
+  du noyau ⇒ les consommateurs alignent leur **toml local** `video-kernel`
+  (hyperframes + capsule pinent le noyau en toml local, **pas** via le catalogue
+  MEMPHIS → aucune publication MEMPHIS n'est requise pour l'adoption). Le
+  catalogue/BOM MEMPHIS suit au prochain bump amont (constraint non bloquante :
+  la version explicite l'emporte par résolution de conflit).
+
+== Roadmap US-4
+
+[cols="1,3,1,1", options="header"]
+|===
+| US | Livrable | Consommateurs | Statut
+
+| US-4a | Port `video.kernel.VideoDurationProbe` + parseur pur `FfprobeDurationParser` | capsule + hyperframes | ✅ S-195
+| US-4b | Port neutre audio-post (loudness/BGM/ducking) | capsule seul → **différé** (pas de 2ᵉ consommateur) | 🟡 conditionnel
+| US-4c | Port neutre sous-titres (burn-in) | capsule seul → **différé** | 🟡 conditionnel
+| US-4d | Port neutre TTS (texte → audio) | capsule seul ; hyperframes délègue le rendu audio à la CLI → **différé** | 🟡 conditionnel
+|===
+
+*Note US-4b→d* : ces trois facettes n'ont aujourd'hui qu'**un** consommateur
+(capsule). Les monter au noyau serait une abstraction spéculative (violation
+D2). Elles restent N2 (capsule) et seront promues **si et seulement si** un
+second consommateur apparaît — un moteur tiers, ou un orchestrateur N3
+générique qui doit piloter l'audio/sous-titres indépendamment du moteur.
+
+== Portée S-195 (US-0 + US-4a)
+
+* **US-0** : ce cadrage.
+* **US-4a** (livrée) :
+  - noyau : `video.kernel.VideoDurationProbe` (fun interface
+    `probeSeconds(File): Double`) + `video.kernel.FfprobeDurationParser`
+    (objet pur `parse(String): Double?`) ; manifeste API étendu ; version
+    `0.2.0 → 0.3.0` ; publication Central.
+  - capsule : `capsule.validation.FfprobeDurationProbe` implémente le port
+    (via `capsule.ProcessRunner` + parseur noyau) ; `MediaProbeUtil.probeDuration`
+    délègue ; toml `video-kernel 0.2.0 → 0.3.0`.
+  - hyperframes : le port local `hyperframes.contract.VideoDurationProbe` et le
+    parseur local sont supprimés au profit du noyau ; `FfprobeDurationProbe`
+    (N2, `ProcessBuilder`) implémente le port noyau ;
+    `HyperFramesEngineConfig.durationProbe: VideoDurationProbe` ;
+    toml `video-kernel 0.2.0 → 0.3.0`.
+
+== Hors scope
+
+* MEMPHIS BOM/catalog bump `video-kernel 0.3.0` (prochain bump amont ;
+  non bloquant).
+* US-4b→d (conditionnels, cf. D2).
+
+== Risques
+
+* *R-1* — La publication du noyau doit précéder le push des consommateurs
+  (la CI capsule/hyperframes résout `video-kernel` **depuis Central**, mavenLocal
+  vide en CI). Piège DAG documenté (pattern S-193/S-194).
+* *R-2* — Résolution de conflit BOM : la `workspace-bom` (0.0.90 / 0.0.83)
+  contraint `video-kernel` à 0.2.0 ; la version explicite du toml (0.3.0)
+  l'emporte (résolution du plus haut). Vérifié par `dependencyInsight` si doute.
+
+== Traçabilité
+
+* Cadrage amont : `hyperframes-gradle/hyperframes-plugin/.agents/CADRAGE_EPIC_HF_KERNEL_ADAPTER.adoc`
+  (US-4 « partiel » S-021).
+* Garde de frontière : `src/test/kotlin/video/ci/KernelBoundaryAudit.kt`.
+* Manifeste d'API : `src/test/kotlin/video/ci/KernelApiSurface.kt`.
+* Découpling amont : `capsule-gradle/capsule-plugin/.agents/CADRAGE_EPIC_CAP_ENGINE_DECOUPLING.adoc`.

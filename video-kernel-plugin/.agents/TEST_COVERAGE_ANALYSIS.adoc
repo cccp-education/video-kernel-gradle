@@ -1,6 +1,19 @@
 = TEST_COVERAGE_ANALYSIS — video-kernel
 :date: 2026-10-14
-:session: 194 VK-2 package neutre video.kernel.* + publication 0.2.0
+:session: 195 VK-4 US-4a port partagé VideoDurationProbe + publication 0.3.0
+
+== Couverture — 14 octobre 2026 (après session 195)
+
+.Port partagé `VideoDurationProbe` (VK-4 US-4a)
+|===
+| Élément | Nature | Tests
+
+| `video/kernel/VideoDurationProbe.kt` | port (fun interface) + `FfprobeDurationParser` (pur) | +7 `VideoDurationProbeTest`
+| `video/ci/KernelApiSurface.kt` / `KernelApiStabilityTest.kt` | surface gelée 0.3.0 (14 types + port + parseur) | +2 tests
+|===
+
+Total : ~33 unit (noyau + gardes). Local = Build (`compileKotlin compileTestKotlin`) ;
+les tests s'exécutent en CI (`./gradlew build`).
 
 == Couverture — 14 octobre 2026 (après session 194)
 

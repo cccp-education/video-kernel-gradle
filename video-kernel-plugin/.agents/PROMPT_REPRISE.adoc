@@ -1,49 +1,53 @@
-= PROMPT_REPRISE — video-kernel (Session 194 TERMINÉE → 195)
-:session: 194
+= PROMPT_REPRISE — video-kernel (Session 195 TERMINÉE → 196)
+:session: 195
 :borough: video-kernel
-:session_precedente: 194 — VK-2 package neutre `video.kernel.*` + publication `0.2.0` ✅
+:session_precedente: 195 — VK-4 US-4a : port partagé `VideoDurationProbe` + publication `0.3.0` ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
 == Contexte Hérité
 
-=== S-194 — VK-2 : package neutre `video.kernel.*` + publication `0.2.0` ✅
+=== S-195 — VK-4 US-4a : port partagé `VideoDurationProbe` + publication `0.3.0` ✅
 
-- Renommage `git mv` `capsule.kernel`/`capsule.ci` → `video.kernel`/`video.ci`
-  (`src/main/kotlin/video/kernel/**`, `src/test/kotlin/video/**`) ; `package`/
-  `import` basculés.
-- Gardes réalignées : `KernelBoundaryAudit` (dir + préfixe `video.kernel.`),
-  manifeste `KernelApiSurface`/`KernelApiStabilityTest` (12 types gelés 0.2.0).
-- `version = "0.2.0"` (breaking). Compiles VERTS.
-- Publication Central bundle **`da095e64-a0a4-4bcf-b983-e86209215572`**
-  (AUTOMATIC) ; jar expose `video/kernel/**`.
-- Consommateurs : capsule + hyperframes alignés `0.2.0` (imports
-  `video.kernel.*`). VK-3 : BOM/catalog MEMPHIS `0.0.88` (0.1.0) → `0.0.89`
-  (0.2.0).
-- Rapport `.agents/sessions/194-vk2-package-neutre-video-kernel.adoc`.
+- **Décision** (cadrage `.agents/CADRAGE_EPIC_VK_SHARED_PORTS.adoc`) : le noyau
+  héberge les **ports** engine-neutres, jamais les **implémentations** (binaires
+  externes → N2). La garde `video.ci.KernelBoundaryAudit` interdit
+  `processbuilder`/`org.gradle` → seul le port + un parseur pur vivent en N1.
+- Ajout `video.kernel.VideoDurationProbe` (fun interface `probeSeconds(File): Double`)
+  + `video.kernel.FfprobeDurationParser` (objet pur `parse(String): Double?`).
+- Manifeste d'API étendu (`KernelApiSurface` 14 types) + garde
+  `KernelApiStabilityTest` (port gelé / parseur seul). `version 0.2.0 → 0.3.0`.
+- 7 unit (`VideoDurationProbeTest`). Compiles VERTS.
+- **Publication Central** bundle `892b2756-ee7f-4110-afa1-1a252b4b1ab5`
+  (AUTOMATIC), propagation repo1 confirmée.
+- **Adopté** : capsule (`capsule.validation.FfprobeDurationProbe` +
+  `MediaProbeUtil` délègue) ; hyperframes (port/parseur locaux supprimés → noyau,
+  `FfprobeDurationProbe` N2 implémente le port, `HyperFramesEngineConfig.durationProbe`
+  typé `VideoDurationProbe`).
+- Rapport `.agents/sessions/195-vk4-shared-duration-probe.adoc`.
 
-=== S-193 — publication `0.1.0` ✅
+=== S-194 — VK-2 package neutre `video.kernel.*` + publication `0.2.0` ✅
 
-- `publishAggregationToCentralPortal` bundle `ccbb1f82` ; consommateurs alignés
-  0.1.0.
+=== S-193/S-192/S-191/S-190/S-189 — extraction + évolution du noyau ✅
 
-=== Cross-borough — hyperframes S-016→S-019 ✅ (2ᵉ moteur en production)
+== Mission Session 196 — au choix (pilote)
 
-== Mission Session 195 — au choix (pilote)
-
-* A) Retour hyperframes US-4/US-5.
-* B) Maintenance / documentation.
+* A) **MEMPHIS BOM/catalog bump `video-kernel 0.3.0`** (alignement cross-borough ;
+  non bloquant — la version explicite des tomls l'emporte aujourd'hui).
+* B) **US-4b→d** (ports audio-post / sous-titres / TTS) — **conditionnels** :
+  aucun second consommateur (cf. cadrage D2) → à ne pas démarrer sans moteur tiers.
 * C) Autre.
 
 == Points d'attention
 
 * Dépôt : `https://github.com/cccp-education/video-kernel-gradle.git`.
 * **Local = Build, Tests = CI**. **Règle 2 — PUBLISH** : accord pilote.
-* Frontière : `video.kernel` n'importe que `java/kotlin/contracts` (garde
-  `video.ci.KernelBoundaryTest`). **Stabilité** : toute rupture = édition du
-  manifeste `KernelApiSurface`.
+* Frontière : `video.kernel` n'importe que `java/kotlin/contracts/video.kernel`
+  (garde `video.ci.KernelBoundaryTest`) ; **interdit `processbuilder`** → toute
+  implémentation d'un port reste N2.
+* **Stabilité** : toute rupture = édition délibérée du manifeste `KernelApiSurface`.
 
 == Rappels
 
-* `education.cccp:video-kernel:0.2.0` **publié Central** (bundle `da095e64`).
-* Cœur partagé : `VisualSource` + `VideoEngine` + `VideoOutcome`. Segment : `video.kernel.segment`.
-* VK-2 ✅ + VK-3 ✅ → EPICs VK clos.
+* `education.cccp:video-kernel:0.3.0` **publié Central** (bundle `892b2756`).
+* Port partagé : `VideoDurationProbe` (+ `FfprobeDurationParser`).
+* VK-4 US-4a ✅ ; US-4b→d conditionnels.
