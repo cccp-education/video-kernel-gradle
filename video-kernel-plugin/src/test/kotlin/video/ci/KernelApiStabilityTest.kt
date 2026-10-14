@@ -1,24 +1,25 @@
-package capsule.ci
+package video.ci
 
-import capsule.kernel.FileVisualSource
-import capsule.kernel.VideoEngine
-import capsule.kernel.VideoOutcome
-import capsule.kernel.VideoProductionEntry
-import capsule.kernel.VideoProductionPlan
-import capsule.kernel.VideoRenderRequest
-import capsule.kernel.VideoRenderResult
-import capsule.kernel.segment.SegmentSource
-import capsule.kernel.segment.VideoScript
-import capsule.kernel.segment.VideoSegment
+import video.kernel.FileVisualSource
+import video.kernel.VideoEngine
+import video.kernel.VideoOutcome
+import video.kernel.VideoProductionEntry
+import video.kernel.VideoProductionPlan
+import video.kernel.VideoRenderRequest
+import video.kernel.VideoRenderResult
+import video.kernel.segment.SegmentSource
+import video.kernel.segment.VideoScript
+import video.kernel.segment.VideoSegment
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 /**
- * Contract-freeze guard (video-kernel 0.1.0).
+ * Contract-freeze guard (video-kernel 0.2.0).
  *
  * The engine-neutral kernel is a **shared contract** consumed by capsule and
- * hyperframes. It is frozen as 0.1.0 after being proven by both engines (S-018
- * made hyperframes consume the port in production). This guard pins the exported
+ * hyperframes. It was frozen as 0.1.0 after being proven by both engines (S-018
+ * made hyperframes consume the port in production), then promoted to the neutral
+ * `video.kernel` package in 0.2.0 (VK-2, breaking). This guard pins the exported
  * types, the two ports and the model properties, so a breaking change to the
  * public surface cannot slip in silently — it must be a deliberate manifest edit.
  *
@@ -27,21 +28,21 @@ import org.junit.jupiter.api.Test
 class KernelApiStabilityTest {
 
     @Test
-    fun `the exported kernel type set is frozen at 0_1_0`() {
+    fun `the exported kernel type set is frozen at 0_2_0`() {
         assertThat(KernelApiSurface.typeNames())
             .containsExactlyInAnyOrder(
-                "capsule.kernel.VideoEngine",
-                "capsule.kernel.VideoRenderRequest",
-                "capsule.kernel.VideoRenderResult",
-                "capsule.kernel.VideoOutcome",
-                "capsule.kernel.VisualSource",
-                "capsule.kernel.FileVisualSource",
-                "capsule.kernel.VideoProductionEntry",
-                "capsule.kernel.VideoProductionPlan",
-                "capsule.kernel.segment.VideoSegment",
-                "capsule.kernel.segment.VideoKind",
-                "capsule.kernel.segment.VideoScript",
-                "capsule.kernel.segment.SegmentSource",
+                "video.kernel.VideoEngine",
+                "video.kernel.VideoRenderRequest",
+                "video.kernel.VideoRenderResult",
+                "video.kernel.VideoOutcome",
+                "video.kernel.VisualSource",
+                "video.kernel.FileVisualSource",
+                "video.kernel.VideoProductionEntry",
+                "video.kernel.VideoProductionPlan",
+                "video.kernel.segment.VideoSegment",
+                "video.kernel.segment.VideoKind",
+                "video.kernel.segment.VideoScript",
+                "video.kernel.segment.SegmentSource",
             )
     }
 

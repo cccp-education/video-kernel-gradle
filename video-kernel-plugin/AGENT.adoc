@@ -3,7 +3,7 @@
 _Produit_ : Noyau vidéo engine-agnostique (modèle + ports) — bibliothèque
 _Licence_ : Apache 2.0 (OSS)
 _DAG_ : N1 — lib utilitaire partagée
-_Coordonnées_ : `education.cccp:video-kernel:0.1.0` (contrat gelé ; Central : `0.0.3` publié)
+_Coordonnées_ : `education.cccp:video-kernel:0.2.0` (package neutre `video.kernel.*` ; Central : `0.1.0` publié)
 _Dépendance_ : `education.cccp:i18n-contracts` (N0 pur)
 
 == Principe
@@ -21,9 +21,9 @@ Gradle. Un second moteur (HyperFrames) peut l'implémenter.
 . PUBLISH — accord pilote requis (Règle 2 du workspace).
 . DAG N1 — importable par N2/N3, ne dépend d'aucun N2/N3.
 . ZÉRO secret/token/api key en dur.
-. **Frontière du noyau** — `capsule.kernel` n'importe que
+. **Frontière du noyau** — `video.kernel` n'importe que
   `java.`/`kotlin.`/`contracts.` ; jamais `slide`/`deck`/`reveal`/`playwright`
-  (garde `capsule.ci.KernelBoundaryTest`).
+  (garde `video.ci.KernelBoundaryTest`).
 . Local = Build, Tests = CI — `./gradlew compileKotlin compileTestKotlin`
   en local ; les tests s'exécutent en CI.
 

@@ -1,4 +1,4 @@
-package capsule.kernel
+package video.kernel
 
 import contracts.i18n.LanguageCatalog
 import org.assertj.core.api.Assertions.assertThat

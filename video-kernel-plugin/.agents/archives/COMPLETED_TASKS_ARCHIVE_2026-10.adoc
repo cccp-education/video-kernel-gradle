@@ -1,5 +1,14 @@
 = COMPLETED_TASKS_ARCHIVE — Octobre 2026
-:date: 2026-10-13
+:date: 2026-10-14
+
+== Session 194 — VK-2 package neutre `video.kernel.*` + publication `0.2.0` ✅
+
+* Renommage `git mv` `capsule.kernel`/`capsule.ci` → `video.kernel`/`video.ci`.
+* Gardes réalignées (`KernelBoundaryAudit` dir `src/main/kotlin/video/kernel` +
+  préfixe `video.kernel.` ; manifeste d'API gelé 0.2.0).
+* `version 0.1.0 → 0.2.0` (breaking), compiles VERTS.
+* Publication Central bundle `da095e64-a0a4-4bcf-b983-e86209215572` (AUTOMATIC).
+* Consommateurs capsule + hyperframes alignés `0.2.0` (imports `video.kernel.*`).
 
 == Session 193 — Publication `0.1.0` Maven Central + consommateurs ✅
 

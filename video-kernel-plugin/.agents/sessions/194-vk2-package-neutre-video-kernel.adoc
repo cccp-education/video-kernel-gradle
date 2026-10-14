@@ -1,0 +1,73 @@
+= Session 194 — VK-2 : promotion package neutre `video.kernel.*` + publication `0.2.0`
+:session: 194
+:date: 2026-10-14
+:type: refactor + release (breaking coordonné)
+:statut: TERMINÉ
+
+== Mission (VK-2)
+
+Promouvoir le noyau du préfixe historique `capsule.kernel.*` (héritage de
+l'extraction) vers le **package neutre `video.kernel.*`**. Breaking change
+coordonné avec les 2 moteurs consommateurs (capsule + hyperframes) et le
+BOM/catalogue MEMPHIS.
+
+== Livré
+
+=== Renommage source (git mv, histoire préservée)
+
+* `src/main/kotlin/capsule/kernel/` → `src/main/kotlin/video/kernel/`
+  (+ `segment/`) ;
+* `src/test/kotlin/capsule/kernel/` → `src/test/kotlin/video/kernel/` ;
+* `src/test/kotlin/capsule/ci/` → `src/test/kotlin/video/ci/`.
+* Bascule `package`/`import` : `capsule.kernel` → `video.kernel`,
+  `capsule.kernel.segment` → `video.kernel.segment`, `capsule.ci` → `video.ci`.
+
+=== Gardes réalignées
+
+* `KernelBoundaryAudit` : `kernelDir = src/main/kotlin/video/kernel` ; préfixe
+  autorisé `video.kernel.` (frontière inchangée : `java`/`kotlin`/`contracts`).
+* `KernelApiSurface` / `KernelApiStabilityTest` : manifeste d'API gelé 0.2.0
+  (12 types `video.kernel.*` + `video.kernel.segment.*`) ; test renommé
+  `frozen at 0_2_0`.
+
+=== Version & publication
+
+* `version = "0.1.0" → "0.2.0"` (breaking).
+* `compileKotlin` + `compileTestKotlin` VERTS.
+* `publishToMavenLocal` VERT — jar signé expose `video/kernel/**` (vérifié).
+* Publication Central bundle **`da095e64-a0a4-4bcf-b983-e86209215572`**
+  (AUTOMATIC).
+
+=== Consommateurs (breaking coordonné)
+
+* `capsule` (N2) : imports `capsule.kernel.*` → `video.kernel.*` +
+  `video-kernel 0.1.0 → 0.2.0`.
+* `hyperframes` (N2) : imports `capsule.kernel.*` → `video.kernel.*` +
+  `video-kernel 0.1.0 → 0.2.0`.
+  (Détail dans les rapports respectifs S-<capsule>/S-<hyperframes>.)
+
+=== VK-3 (BOM MEMPHIS)
+
+* Entrée catalogue `video-kernel` (MEMPHIS S-291 : `0.1.0`, BOM/catalog
+  `0.0.88`) puis repin `0.2.0` (MEMPHIS S-292 : BOM/catalog `0.0.89`).
+
+== DAG / ordre de publication
+
+1. video-kernel `0.2.0` (ce document) — publié **avant** les consommateurs
+   (propagation repo1 requise : sinon leur CI résout une version absente).
+2. capsule `video-kernel 0.2.0` + hyperframes `video-kernel 0.2.0`.
+3. MEMPHIS BOM/catalog `0.0.89` (repin `video-kernel 0.2.0`).
+
+== Fichiers modifiés
+
+* `build.gradle.kts` (version).
+* `src/main/kotlin/video/kernel/**`, `src/test/kotlin/video/**` (renommage).
+* `AGENT.adoc`, `README.md`, `.agents/INDEX.adoc`,
+  `.agents/SESSION_CHECKLIST.adoc`, `.agents/SESSION_PROCEDURE.adoc`,
+  `.agents/TEST_COVERAGE_ANALYSIS.adoc`, `BACKLOG.adoc`, `PROMPT_REPRISE.adoc`.
+
+== Notes
+
+* Prose historique (`.agents/sessions/189-193`, `SESSIONS_HISTORY`,
+  `archives/`) conservée telle quelle (trace du package d'origine).
+* Zéro secret, zéro Python.

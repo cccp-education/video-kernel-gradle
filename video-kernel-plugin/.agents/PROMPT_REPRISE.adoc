@@ -1,44 +1,49 @@
-= PROMPT_REPRISE — video-kernel (Session 193 TERMINÉE → 194)
-:session: 193
+= PROMPT_REPRISE — video-kernel (Session 194 TERMINÉE → 195)
+:session: 194
 :borough: video-kernel
-:session_precedente: 193 — publication `video-kernel 0.1.0` (Maven Central) + alignement consommateurs ✅
+:session_precedente: 194 — VK-2 package neutre `video.kernel.*` + publication `0.2.0` ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
 == Contexte Hérité
 
-=== S-193 — publication `0.1.0` + consommateurs ✅
+=== S-194 — VK-2 : package neutre `video.kernel.*` + publication `0.2.0` ✅
 
-- `publishAggregationToCentralPortal` bundle **`ccbb1f82-dfbc-4ebe-bb0c-dfef1066c71b`**
-  (AUTOMATIC) ; propagation repo1 confirmée (pom/jar/module/sources HTTP 200).
-- Consommateurs `capsule` + `hyperframes` : `video-kernel 0.0.3 → 0.1.0` (résolution
-  `0.1.0` vérifiée) ; compiles locaux VERTS.
-- Rapport `.agents/sessions/193-publication-0.1.0.adoc`.
+- Renommage `git mv` `capsule.kernel`/`capsule.ci` → `video.kernel`/`video.ci`
+  (`src/main/kotlin/video/kernel/**`, `src/test/kotlin/video/**`) ; `package`/
+  `import` basculés.
+- Gardes réalignées : `KernelBoundaryAudit` (dir + préfixe `video.kernel.`),
+  manifeste `KernelApiSurface`/`KernelApiStabilityTest` (12 types gelés 0.2.0).
+- `version = "0.2.0"` (breaking). Compiles VERTS.
+- Publication Central bundle **`da095e64-a0a4-4bcf-b983-e86209215572`**
+  (AUTOMATIC) ; jar expose `video/kernel/**`.
+- Consommateurs : capsule + hyperframes alignés `0.2.0` (imports
+  `video.kernel.*`). VK-3 : BOM/catalog MEMPHIS `0.0.88` (0.1.0) → `0.0.89`
+  (0.2.0).
+- Rapport `.agents/sessions/194-vk2-package-neutre-video-kernel.adoc`.
 
-=== S-192 — gel du contrat `0.1.0` ✅
+=== S-193 — publication `0.1.0` ✅
 
-- `version = "0.1.0"` + garde de stabilité d'API `KernelApiStabilityTest`/`KernelApiSurface`.
+- `publishAggregationToCentralPortal` bundle `ccbb1f82` ; consommateurs alignés
+  0.1.0.
 
-=== Cross-borough — hyperframes S-016→S-019 ✅ (2ᵉ moteur en production, contrat N3 neutre)
+=== Cross-borough — hyperframes S-016→S-019 ✅ (2ᵉ moteur en production)
 
-=== S-191 — `VideoOutcome` → 0.0.3 ✅
+== Mission Session 195 — au choix (pilote)
 
-== Mission Session 194 — au choix (pilote)
-
-* A) **VK-3** : entrée `video-kernel:0.1.0` dans le BOM/catalogue MEMPHIS
-  (cross-borough ; publication BOM).
-* B) **VK-2** : promotion package neutre `video.kernel.*` (breaking change coordonné
-  avec capsule + hyperframes).
-* C) Autre (retour hyperframes US-4/US-5, etc.).
+* A) Retour hyperframes US-4/US-5.
+* B) Maintenance / documentation.
+* C) Autre.
 
 == Points d'attention
 
 * Dépôt : `https://github.com/cccp-education/video-kernel-gradle.git`.
-* **Local = Build, Tests = CI**. **Règle 2 — PUBLISH** : accord pilote (accordé S-193).
-* Frontière : `capsule.kernel` n'importe que `java/kotlin/contracts` (garde
-  `KernelBoundaryTest`). **Stabilité** : toute rupture = édition du manifeste
-  `KernelApiSurface`.
+* **Local = Build, Tests = CI**. **Règle 2 — PUBLISH** : accord pilote.
+* Frontière : `video.kernel` n'importe que `java/kotlin/contracts` (garde
+  `video.ci.KernelBoundaryTest`). **Stabilité** : toute rupture = édition du
+  manifeste `KernelApiSurface`.
 
 == Rappels
 
-* `education.cccp:video-kernel:0.1.0` **publié Central** (bundle `ccbb1f82`).
-* Cœur partagé : `VisualSource` + `VideoEngine` + `VideoOutcome`. Segment : `capsule.kernel.segment`.
+* `education.cccp:video-kernel:0.2.0` **publié Central** (bundle `da095e64`).
+* Cœur partagé : `VisualSource` + `VideoEngine` + `VideoOutcome`. Segment : `video.kernel.segment`.
+* VK-2 ✅ + VK-3 ✅ → EPICs VK clos.

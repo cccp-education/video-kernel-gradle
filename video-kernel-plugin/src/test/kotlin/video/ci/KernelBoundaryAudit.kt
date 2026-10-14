@@ -1,4 +1,4 @@
-package capsule.ci
+package video.ci
 
 import java.io.File
 
@@ -6,12 +6,12 @@ import java.io.File
  * Static audit of the engine-neutral kernel boundary (CAP-ENGINE-DECOUPLING US-4).
  *
  * Shared by the unit guard `KernelBoundaryTest` and the BDD
- * `capsule_kernel_boundary.feature` steps: it reads the `capsule.kernel` source
+ * `capsule_kernel_boundary.feature` steps: it reads the `video.kernel` source
  * set and reports any violation of the neutral contract.
  *
  * Two rules:
  * 1. **Imports** — the kernel may only depend on `java.`, `kotlin.`, the pure
- *    N0 contracts (`contracts.`) or itself (`capsule.kernel.`). No Gradle, no
+ *    N0 contracts (`contracts.`) or itself (`video.kernel.`). No Gradle, no
  *    Playwright, no adapter, no legacy `capsule.feed`.
  * 2. **Code vocabulary** — after stripping comments, the kernel code must not
  *    mention a renderer or build-system token (`slide`, `deck`, `reveal`,
@@ -20,9 +20,9 @@ import java.io.File
  */
 object KernelBoundaryAudit {
 
-    private val kernelDir = File("src/main/kotlin/capsule/kernel")
+    private val kernelDir = File("src/main/kotlin/video/kernel")
 
-    internal val allowedImportPrefixes = listOf("java.", "kotlin.", "contracts.", "capsule.kernel.")
+    internal val allowedImportPrefixes = listOf("java.", "kotlin.", "contracts.", "video.kernel.")
 
     internal val forbiddenTokens = listOf(
         "playwright",

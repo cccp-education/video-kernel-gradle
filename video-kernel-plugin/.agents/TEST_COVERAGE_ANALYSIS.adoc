@@ -1,6 +1,21 @@
 = TEST_COVERAGE_ANALYSIS — video-kernel
-:date: 2026-10-13
-:session: 192 gel du contrat 0.1.0 + garde de stabilité d'API
+:date: 2026-10-14
+:session: 194 VK-2 package neutre video.kernel.* + publication 0.2.0
+
+== Couverture — 14 octobre 2026 (après session 194)
+
+.Renommage package `video.kernel.*` (VK-2, breaking)
+|===
+| Élément | Nature | Tests
+
+| `video/ci/KernelApiSurface.kt` (test) | surface publique gelée 0.2.0 (réflexion pure) | (helper)
+| `video/ci/KernelApiStabilityTest.kt` (test) | types + ports + propriétés du modèle (noms `video.kernel.*`) | 4 tests
+| `video/ci/KernelBoundaryAudit.kt` / `KernelBoundaryTest.kt` | garde de frontière (dir `src/main/kotlin/video/kernel`) | 2 tests
+|===
+
+Total : 24 unit (noyau + gardes), zéro test ajouté/supprimé — renommage
+mécanique. Local = Build (`compileKotlin compileTestKotlin`) ; les tests
+s'exécutent en CI (`./gradlew build`).
 
 == Couverture — 13 octobre 2026 (après session 192)
 
@@ -8,8 +23,8 @@
 |===
 | Élément | Nature | Tests
 
-| `capsule/ci/KernelApiSurface.kt` (test) | surface publique gelée (réflexion pure) | (helper)
-| `capsule/ci/KernelApiStabilityTest.kt` (test) | types + ports + propriétés du modèle | +4 tests
+| `video/ci/KernelApiSurface.kt` (test) | surface publique gelée (réflexion pure) | (helper)
+| `video/ci/KernelApiStabilityTest.kt` (test) | types + ports + propriétés du modèle | +4 tests
 |===
 
 Total : 24 unit (noyau + gardes). Local = Build (`compileKotlin compileTestKotlin`) ;
@@ -21,13 +36,13 @@ les tests s'exécutent en CI (`./gradlew build`).
 |===
 | Élément | Nature | Tests
 
-| `capsule/kernel/VideoEngine.kt` | port + `VideoRenderRequest`/`VideoRenderResult` | (couvert par les adapters consommateurs)
-| `capsule/kernel/VideoOutcome.kt` | descripteur d'issue neutre | +2 `VideoOutcomeTest`
-| `capsule/kernel/VisualSource.kt` | `VisualSource`/`FileVisualSource` | (couvert via `VideoProductionEntryTest`)
-| `capsule/kernel/VideoProductionEntry.kt` / `VideoProductionPlan.kt` | plan de productions | +5 `VideoProductionEntryTest` + 2 `VideoProductionPlanTest`
-| `capsule/kernel/segment/VideoKind.kt` / `VideoSegment.kt` / `VideoScript.kt` | capacité segment-orientée | +5 `VideoSegmentTest` + 4 `VideoScriptTest`
-| `capsule/kernel/segment/SegmentSource.kt` | port source → segments | (couvert par l'adapter reveal côté capsule)
-| `capsule/ci/KernelBoundaryAudit.kt` / `KernelBoundaryTest.kt` | garde de frontière du noyau | 2 tests
+| `video/kernel/VideoEngine.kt` | port + `VideoRenderRequest`/`VideoRenderResult` | (couvert par les adapters consommateurs)
+| `video/kernel/VideoOutcome.kt` | descripteur d'issue neutre | +2 `VideoOutcomeTest`
+| `video/kernel/VisualSource.kt` | `VisualSource`/`FileVisualSource` | (couvert via `VideoProductionEntryTest`)
+| `video/kernel/VideoProductionEntry.kt` / `VideoProductionPlan.kt` | plan de productions | +5 `VideoProductionEntryTest` + 2 `VideoProductionPlanTest`
+| `video/kernel/segment/VideoKind.kt` / `VideoSegment.kt` / `VideoScript.kt` | capacité segment-orientée | +5 `VideoSegmentTest` + 4 `VideoScriptTest`
+| `video/kernel/segment/SegmentSource.kt` | port source → segments | (couvert par l'adapter reveal côté capsule)
+| `video/ci/KernelBoundaryAudit.kt` / `KernelBoundaryTest.kt` | garde de frontière du noyau | 2 tests
 |===
 
 Total : 20 unit (noyau + garde). Local = Build (`compileKotlin compileTestKotlin`) ;

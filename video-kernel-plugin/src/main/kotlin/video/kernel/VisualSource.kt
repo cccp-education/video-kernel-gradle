@@ -1,4 +1,4 @@
-package capsule.kernel
+package video.kernel
 
 import java.io.File
 

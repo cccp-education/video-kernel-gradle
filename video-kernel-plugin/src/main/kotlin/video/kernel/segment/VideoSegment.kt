@@ -1,4 +1,4 @@
-package capsule.kernel.segment
+package video.kernel.segment
 
 /**
  * One engine-neutral video segment (CAP-ENGINE-DECOUPLING US-1).

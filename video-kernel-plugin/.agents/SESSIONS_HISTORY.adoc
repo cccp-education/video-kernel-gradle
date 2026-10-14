@@ -6,6 +6,8 @@
 |===
 |# |Date |Type |Sujet |Score
 
+| 194 | 2026-10-14 | refactor + release | **VK-2 — promotion package neutre `video.kernel.*` + publication `0.2.0`.** Breaking coordonné : renommage `git mv` `capsule.kernel`/`capsule.ci` → `video.kernel`/`video.ci` (source + tests), bascule `package`/`import`, gardes réalignées (`KernelBoundaryAudit` dir + préfixe `video.kernel.` ; manifeste `KernelApiSurface`/`KernelApiStabilityTest` 12 types gelés 0.2.0). `version 0.1.0 → 0.2.0`, compiles VERTS. Publication Central bundle `da095e64-a0a4-4bcf-b983-e86209215572` (AUTOMATIC) ; jar expose `video/kernel/**`. Consommateurs capsule + hyperframes alignés `0.2.0` (imports `video.kernel.*`) ; VK-3 BOM/catalog MEMPHIS `0.0.88` → `0.0.89`. | 9/10
+
 | 193 | 2026-10-13 | release | **Publication `video-kernel 0.1.0` (Maven Central) + alignement consommateurs.** `publishAggregationToCentralPortal` bundle `ccbb1f82-dfbc-4ebe-bb0c-dfef1066c71b` (AUTOMATIC) ; propagation repo1 confirmée (pom/jar/module/sources HTTP 200). `capsule` + `hyperframes` : `video-kernel 0.0.3 → 0.1.0` (résolution `0.1.0` vérifiée, compiles VERTS). Contrat gelé désormais **publié**. | 9/10
 
 | 192 | 2026-10-13 | release+test | **Gel du contrat `0.1.0` + garde de stabilité d'API.** Le contrat éprouvé par 2 moteurs (capsule + hyperframes en production S-018) est figé : `version = "0.1.0"` (source ; publication Central en attente d'accord pilote) + garde `capsule.ci.KernelApiStabilityTest` (4 tests) / `capsule.ci.KernelApiSurface` (réflexion pure, zéro `kotlin-reflect`) verrouillant les 12 types, les ports `VideoEngine`/`SegmentSource` et les propriétés du modèle. Toute rupture = édition délibérée du manifeste. `compileKotlin compileTestKotlin` ✅ ; **CI verte run `38456307671`** (4/4). | 9/10

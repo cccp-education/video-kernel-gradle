@@ -22,4 +22,4 @@ grep -r "TOKEN\|SECRET\|PASSWORD\|API_KEY\|gho_\|ghp_" --include="*.kts" --inclu
 
 * PUBLISH = accord pilote. ZÉRO secret.
 * Local = Build, Tests = CI.
-* Frontière du noyau : `capsule.kernel` n'importe que `java/kotlin/contracts`.
+* Frontière du noyau : `video.kernel` n'importe que `java/kotlin/contracts`.

@@ -3,12 +3,12 @@
 
 _Règles absolues_ : voir `AGENT.adoc`
 _DAG_ : N1 — lib utilitaire partagée (noyau vidéo engine-agnostique)
-_Coordonnées_ : `education.cccp:video-kernel:0.1.0` (contrat gelé, **publié Maven Central**)
+_Coordonnées_ : `education.cccp:video-kernel:0.2.0` (package neutre `video.kernel.*`, **publié Maven Central**)
 
- _Derniere mise a jour_ : 2026-10-13 (S-193 — **publication `video-kernel 0.1.0` Maven Central** (bundle `ccbb1f82`) + alignement consommateurs capsule/hyperframes sur `0.1.0`.)
- _Derniere session terminee_ : 193.
+ _Derniere mise a jour_ : 2026-10-14 (S-194 — **VK-2 : promotion package neutre `video.kernel.*`** (breaking coordonné) + publication `video-kernel 0.2.0` Maven Central + consommateurs capsule/hyperframes alignés + VK-3 BOM/catalog MEMPHIS `0.0.88`.)
+ _Derniere session terminee_ : 194.
  _Depot_ : `https://github.com/cccp-education/video-kernel-gradle.git`.
- _Prochaine session_ : 194 — au choix : A) VK-3 (entrée `video-kernel:0.1.0` dans le BOM MEMPHIS) ; B) VK-2 (package neutre `video.kernel.*`, breaking coordonné) ; C) autre.
+ _Prochaine session_ : 195 — au choix : A) retour hyperframes US-4/US-5 ; B) maintenance / documentation ; C) autre.
 
 == Portée
 
@@ -16,9 +16,9 @@ Noyau engine-agnostique extrait de `capsule-gradle` :
 `VideoKind`, `VideoSegment`, `VideoScript`, `VisualSource`/`FileVisualSource`,
 `VideoProductionEntry`, `VideoProductionPlan`, `VideoEngine` (port), `SegmentSource` (port).
 
-Frontière gardée : `capsule.ci.KernelBoundaryTest` (imports `java/kotlin/contracts/capsule.kernel`
-uniquement ; vocabulaire neutre). **Stabilité gardée** : `capsule.ci.KernelApiStabilityTest`
-(surface publique gelée 0.1.0).
+Frontière gardée : `video.ci.KernelBoundaryTest` (imports `java/kotlin/contracts/video.kernel`
+uniquement ; vocabulaire neutre). **Stabilité gardée** : `video.ci.KernelApiStabilityTest`
+(surface publique gelée 0.2.0).
 
 == Portefeuille
 
@@ -30,7 +30,8 @@ uniquement ; vocabulaire neutre). **Stabilité gardée** : `capsule.ci.KernelApi
 | video-kernel 0.0.2 | Port aminci (cœur partagé honnête) ; capacité segment en `capsule.kernel.segment` | ✅ Publié (S-190)
 | video-kernel 0.0.3 | `VideoOutcome` (durée/dims/taille/codec) — contrat complet éprouvé par 2 moteurs | ✅ Publié (S-191)
 | video-kernel 0.1.0 | **Contrat GELÉ** + garde de stabilité d'API | ✅ Publié (S-193)
-| Consommateurs capsule + hyperframes | dépendent de `education.cccp:video-kernel:0.1.0` | ✅ S-193
+| video-kernel 0.2.0 | **Package neutre `video.kernel.*`** (VK-2, breaking) + publication Central + consommateurs alignés + BOM MEMPHIS `0.0.88` (VK-3) | ✅ Publié (S-194)
+| Consommateurs capsule + hyperframes | dépendent de `education.cccp:video-kernel:0.2.0` | ✅ S-194
 | Consommateur hyperframes | Watts (2e moteur) — consomme le port `VideoEngine` en **production** | ✅ S-018
 |===
 
@@ -41,6 +42,6 @@ uniquement ; vocabulaire neutre). **Stabilité gardée** : `capsule.ci.KernelApi
 | `AGENT.adoc` | Directives
 | `.agents/INDEX.adoc` | Dashboard
 | `.agents/PROMPT_REPRISE.adoc` | Mission session en cours
-| `src/main/kotlin/capsule/kernel/` | Noyau (modèle + ports)
-| `src/test/kotlin/capsule/ci/` | Gardes de frontière + de stabilité d'API
+| `src/main/kotlin/video/kernel/` | Noyau (modèle + ports)
+| `src/test/kotlin/video/ci/` | Gardes de frontière + de stabilité d'API
 |===

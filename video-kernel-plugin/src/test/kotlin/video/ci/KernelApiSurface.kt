@@ -1,26 +1,27 @@
-package capsule.ci
+package video.ci
 
-import capsule.kernel.FileVisualSource
-import capsule.kernel.VideoEngine
-import capsule.kernel.VideoOutcome
-import capsule.kernel.VideoProductionEntry
-import capsule.kernel.VideoProductionPlan
-import capsule.kernel.VideoRenderRequest
-import capsule.kernel.VideoRenderResult
-import capsule.kernel.VisualSource
-import capsule.kernel.segment.SegmentSource
-import capsule.kernel.segment.VideoKind
-import capsule.kernel.segment.VideoScript
-import capsule.kernel.segment.VideoSegment
+import video.kernel.FileVisualSource
+import video.kernel.VideoEngine
+import video.kernel.VideoOutcome
+import video.kernel.VideoProductionEntry
+import video.kernel.VideoProductionPlan
+import video.kernel.VideoRenderRequest
+import video.kernel.VideoRenderResult
+import video.kernel.VisualSource
+import video.kernel.segment.SegmentSource
+import video.kernel.segment.VideoKind
+import video.kernel.segment.VideoScript
+import video.kernel.segment.VideoSegment
 import java.lang.reflect.Method
 
 /**
- * Frozen public API surface of the engine-neutral kernel (0.1.0).
+ * Frozen public API surface of the engine-neutral kernel (0.2.0).
  *
  * The 0.0.3 contract is proven by two engines (capsule/reveal.js and
- * hyperframes/Watts) and frozen as **0.1.0**: any change to the exported types,
- * the two ports, or the model properties is a breaking change that must be
- * intentional (update this manifest in the same commit as the break).
+ * hyperframes/Watts), frozen as **0.1.0** and promoted to the neutral
+ * `video.kernel` package as **0.2.0** (VK-2, breaking): any change to the
+ * exported types, the two ports, or the model properties is a breaking change
+ * that must be intentional (update this manifest in the same commit as the break).
  *
  * Reflection only — no `kotlin-reflect` dependency.
  */

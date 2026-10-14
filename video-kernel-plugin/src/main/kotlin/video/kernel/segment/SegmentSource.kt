@@ -1,4 +1,4 @@
-package capsule.kernel.segment
+package video.kernel.segment
 
 import java.io.File
 

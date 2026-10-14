@@ -1,4 +1,4 @@
-package capsule.kernel
+package video.kernel
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

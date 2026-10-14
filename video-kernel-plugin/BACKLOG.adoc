@@ -1,5 +1,19 @@
 = BACKLOG — video-kernel
-:last_update: 2026-10-13 (S-193 — publication `0.1.0` Central + consommateurs alignés)
+:last_update: 2026-10-14 (S-194 — VK-2 package neutre `video.kernel.*` + publication `0.2.0` Central + VK-3 BOM MEMPHIS 0.0.88)
+
+== ✅ VK-2 — Promotion package neutre `video.kernel.*` + publication `0.2.0` (S-194)
+
+Breaking change coordonné (VK-2) : le noyau est promu du préfixe historique
+`capsule.` au package neutre **`video.kernel.*`** (`video.kernel.segment.*`) ;
+les gardes passent de `capsule.ci` à **`video.ci`**. Renommage `git mv`
+(histoire préservée) + bascule des `package`/`import` + réalignement
+`KernelBoundaryAudit` (dir `src/main/kotlin/video/kernel`, préfixe autorisé
+`video.kernel.`) + manifeste d'API `KernelApiSurface`/`KernelApiStabilityTest`
+(12 types gelés 0.2.0). `version = 0.1.0 → 0.2.0` (breaking). `compileKotlin`
+`compileTestKotlin` VERTS. **Publié Maven Central** bundle
+`<à compléter>`. Consommateurs `capsule` + `hyperframes` alignés sur `0.2.0`
+(imports `video.kernel.*`). **VK-3** : entrée BOM/catalogue MEMPHIS
+`video-kernel 0.1.0` puis repin `0.2.0` (BOM/catalog `0.0.88`/`0.0.89`).
 
 == ✅ Publication `0.1.0` Maven Central (S-193)
 
@@ -40,19 +54,18 @@ Fitness mapping vs HyperFrames → `0.0.2` : `VideoRenderRequest` aminci
 capacité segment-orientée (`VideoKind`/`VideoSegment`/`VideoScript`/`SegmentSource`)
 déplacée en `capsule.kernel.segment`. Publié Central (bundle `6cac928b`).
 
-== 🟡 À FAIRE
+== ✅ EPICs VK
 
 [cols="1,3,1,1"]
 |===
-| US | Livrable | Priorité | Points
+| US | Livrable | Priorité | Statut
 
-| VK-1 | Consommateur **hyperframes** (Watts) : implémenter `VideoEngine` (rendu document-entier) — **✅ moteur en production** (hyperframes S-018, adapter `HyperFramesEngine`) | P1 | ✅
-| VK-2 | Promotion **package neutre** `video.kernel.*` (retirer le préfixe `capsule.`) — breaking change coordonné avec capsule | P2 | 2
-| VK-3 | Entrée **MEMPHIS BOM** (`video-kernel:0.1.0`) pour l'alignement cross-borough | P2 | 1
+| VK-1 | Consommateur **hyperframes** (Watts) : implémenter `VideoEngine` (rendu document-entier) — **moteur en production** (hyperframes S-018, adapter `HyperFramesEngine`) | P1 | ✅ TERMINÉ
+| VK-2 | Promotion **package neutre** `video.kernel.*` (retirer le préfixe `capsule.`) — breaking change coordonné avec capsule | P2 | ✅ TERMINÉ (S-194)
+| VK-3 | Entrée **MEMPHIS BOM** (`video-kernel`) pour l'alignement cross-borough | P2 | ✅ TERMINÉ (S-194, BOM/catalog 0.0.88 → repin 0.2.0 en 0.0.89)
 |===
 
-== ✅ EPIC PUB `0.1.0`
+== ✅ EPIC PUB `0.1.0` / `0.2.0`
 
-Publication Maven Central faite (S-193) + consommateurs alignés. Reste possible :
-**VK-3** (entrée `video-kernel:0.1.0` dans le BOM/catalogue MEMPHIS — optionnel, le
-BOM ne contraint pas encore `video-kernel`) et **VK-2** (package `video.kernel.*`).
+Publication Maven Central faite (S-193 `0.1.0`, S-194 `0.2.0`) + consommateurs
+alignés. VK-2 (package `video.kernel.*`) et VK-3 (entrée BOM MEMPHIS) terminés S-194.

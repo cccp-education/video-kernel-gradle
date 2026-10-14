@@ -1,4 +1,4 @@
-package capsule.kernel
+package video.kernel
 
 /**
  * Engine-neutral descriptor of a produced video (video-kernel 0.0.3).
