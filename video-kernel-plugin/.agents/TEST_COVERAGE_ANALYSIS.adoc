@@ -1,6 +1,18 @@
 = TEST_COVERAGE_ANALYSIS — video-kernel
-:date: 2026-10-14
-:session: 195 VK-4 US-4a port partagé VideoDurationProbe + publication 0.3.0
+:date: 2026-10-15
+:session: 196 VK-4 US-4b→d ports partagés post-production + narration
+
+== Couverture — 15 octobre 2026 (après session 196)
+
+.Ports partagés `TextToSpeech` + `AudioPostProduction` + `SubtitleBurnIn` (VK-4 US-4b→d)
+|===
+| Élément | Nature | Tests
+
+| `video/kernel/TextToSpeech.kt` | port (fun interface `synthesize`) | +1 `KernelSharedPortsTest` (SAM)
+| `video/kernel/AudioPostProduction.kt` | port (fun interface `process`) + `AudioPostSettings` (data class) | +3 `AudioPostSettingsTest` + 1 SAM
+| `video/kernel/SubtitleBurnIn.kt` | port (fun interface `burnIn`) | +1 SAM
+| `video/ci/KernelApiSurface.kt` / `KernelApiStabilityTest.kt` | surface gelée **0.4.0** (18 types, ports gelés, `AudioPostSettings` getters) | ré-aligné
+|===
 
 == Couverture — 14 octobre 2026 (après session 195)
 

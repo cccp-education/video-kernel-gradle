@@ -1,7 +1,7 @@
 = CADRAGE — EPIC VK-4 (ports de capacités partagées) + clôture HF-KERNEL-ADAPTER US-4
-:session: 195
-:date: 2026-10-14
-:statut: 🟡 EN COURS — cadrage (US-0) ; US-4a livrée S-195
+:session: 195 → 196
+:date: 2026-10-14 / 2026-10-15
+:statut: ✅ TERMINÉ — US-4a S-195 ; **US-4b→d S-196** (2ᵉ consommateur hyperframes déclaré par le pilote)
 :borough: video-kernel (N1) — transverse hyperframes + capsule
 :toc:
 
@@ -64,16 +64,19 @@ audio / durée / config) » — laissé **partiel** par le cadrage S-021.
 | US | Livrable | Consommateurs | Statut
 
 | US-4a | Port `video.kernel.VideoDurationProbe` + parseur pur `FfprobeDurationParser` | capsule + hyperframes | ✅ S-195
-| US-4b | Port neutre audio-post (loudness/BGM/ducking) | capsule seul → **différé** (pas de 2ᵉ consommateur) | 🟡 conditionnel
-| US-4c | Port neutre sous-titres (burn-in) | capsule seul → **différé** | 🟡 conditionnel
-| US-4d | Port neutre TTS (texte → audio) | capsule seul ; hyperframes délègue le rendu audio à la CLI → **différé** | 🟡 conditionnel
+| US-4b | Port neutre audio-post (loudness/BGM/ducking) — `AudioPostProduction` + `AudioPostSettings` | capsule + hyperframes | ✅ S-196
+| US-4c | Port neutre sous-titres (burn-in) — `SubtitleBurnIn` | capsule + hyperframes | ✅ S-196
+| US-4d | Port neutre TTS (texte → audio) — `TextToSpeech` | capsule + hyperframes | ✅ S-196
 |===
 
-*Note US-4b→d* : ces trois facettes n'ont aujourd'hui qu'**un** consommateur
-(capsule). Les monter au noyau serait une abstraction spéculative (violation
-D2). Elles restent N2 (capsule) et seront promues **si et seulement si** un
-second consommateur apparaît — un moteur tiers, ou un orchestrateur N3
-générique qui doit piloter l'audio/sous-titres indépendamment du moteur.
+*Mise à jour S-196 — US-4b→d livrées (pilote : « enchaine sur A »).* Le pilote
+**déclare hyperframes 2ᵉ consommateur** de ces capacités : hyperframes consomme
+désormais `AudioPostProduction` + `SubtitleBurnIn` (nouvelle tâche
+`postProcessHyperframes`, post-production de son MP4) et `TextToSpeech`
+(nouvelle tâche `generateHyperframesNarration`). La duplication verbatim N2 est
+assumée (doctrine S-162) : le noyau porte les **ports**, chaque moteur son
+**implémentation** (capsule WebM/Vorbis, hyperframes MP4/AAC ; espeak pour la
+voix). `version 0.3.0 → 0.4.0` (additif), manifeste d'API **18 types**.
 
 == Portée S-195 (US-0 + US-4a)
 
@@ -94,9 +97,8 @@ générique qui doit piloter l'audio/sous-titres indépendamment du moteur.
 
 == Hors scope
 
-* MEMPHIS BOM/catalog bump `video-kernel 0.3.0` (prochain bump amont ;
-  non bloquant).
-* US-4b→d (conditionnels, cf. D2).
+* MEMPHIS BOM/catalog bump `video-kernel 0.4.0` (prochain bump amont ;
+  non bloquant — la version explicite du toml l'emporte).
 
 == Risques
 

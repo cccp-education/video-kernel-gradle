@@ -3,18 +3,20 @@
 
 _Règles absolues_ : voir `AGENT.adoc`
 _DAG_ : N1 — lib utilitaire partagée (noyau vidéo engine-agnostique)
-_Coordonnées_ : `education.cccp:video-kernel:0.3.0` (package neutre `video.kernel.*`, **publié Maven Central**)
+_Coordonnées_ : `education.cccp:video-kernel:0.4.0` (package neutre `video.kernel.*`, source ; **publication Central à confirmer**)
 
- _Derniere mise a jour_ : 2026-10-14 (S-195 — **VK-4 US-4a : port partagé `VideoDurationProbe`** (fun interface) + parseur pur `FfprobeDurationParser`, promus au noyau ; manifeste d'API 14 types ; publication `video-kernel 0.3.0` Central (bundle `892b2756`) ; adopté par capsule + hyperframes.)
- _Derniere session terminee_ : 195.
+ _Derniere mise a jour_ : 2026-10-15 (S-196 — **VK-4 US-4b→d** : ports partagés `TextToSpeech` + `AudioPostProduction`(+`AudioPostSettings`) + `SubtitleBurnIn` promus au noyau ; **hyperframes 2ᵉ consommateur** déclaré ; `0.3.0 → 0.4.0` additif, manifeste d'API 18 types. **EPIC VK-4 ✅ clos.**)
+ _Derniere session terminee_ : 196.
  _Depot_ : `https://github.com/cccp-education/video-kernel-gradle.git`.
- _Prochaine session_ : 196 — au choix : A) MEMPHIS BOM/catalog `video-kernel 0.3.0` ; B) US-4b→d (conditionnels, second consommateur) ; C) autre.
+ _Prochaine session_ : 197 — au choix : A) publication Central `video-kernel 0.4.0` ; B) MEMPHIS BOM/catalog `0.4.0` ; C) autre.
 
 == Portée
 
 Noyau engine-agnostique extrait de `capsule-gradle` :
 `VideoKind`, `VideoSegment`, `VideoScript`, `VisualSource`/`FileVisualSource`,
-`VideoProductionEntry`, `VideoProductionPlan`, `VideoEngine` (port), `SegmentSource` (port).
+`VideoProductionEntry`, `VideoProductionPlan`, `VideoEngine` (port), `SegmentSource` (port),
+`VideoDurationProbe` (port), `TextToSpeech` (port), `AudioPostProduction` (port),
+`SubtitleBurnIn` (port).
 
 Frontière gardée : `video.ci.KernelBoundaryTest` (imports `java/kotlin/contracts/video.kernel`
 uniquement ; vocabulaire neutre). **Stabilité gardée** : `video.ci.KernelApiStabilityTest`
@@ -32,7 +34,8 @@ uniquement ; vocabulaire neutre). **Stabilité gardée** : `video.ci.KernelApiSt
 | video-kernel 0.1.0 | **Contrat GELÉ** + garde de stabilité d'API | ✅ Publié (S-193)
 | video-kernel 0.2.0 | **Package neutre `video.kernel.*`** (VK-2, breaking) + publication Central + consommateurs alignés + BOM MEMPHIS `0.0.88` (VK-3) | ✅ Publié (S-194)
 | video-kernel 0.3.0 | **Port partagé `VideoDurationProbe`** (VK-4 US-4a) + parseur pur `FfprobeDurationParser` — capacités engine-neutres au noyau, impls N2 | ✅ Publié (S-195)
-| Consommateurs capsule + hyperframes | dépendent de `education.cccp:video-kernel:0.3.0` (probe partagé) | ✅ S-195 (adopté)
+| video-kernel 0.4.0 | **Ports partagés** `TextToSpeech` + `AudioPostProduction`(+`AudioPostSettings`) + `SubtitleBurnIn` (VK-4 US-4b→d) — manifeste d'API 18 types | 🟡 source (publication Central à confirmer, S-196)
+| Consommateurs capsule + hyperframes | dépendent de `education.cccp:video-kernel:0.4.0` (post-production + narration) | ✅ S-196 (adopté)
 | Consommateur hyperframes | Watts (2e moteur) — consomme le port `VideoEngine` en **production** | ✅ S-018
 |===
 

@@ -1,0 +1,75 @@
+= Session 196 — VK-4 US-4b→d : ports partagés post-production + narration (EPIC VK-4 clos)
+:toc:
+
+== Contexte
+
+Session **transverse** sur les trois boroughs vidéo (video-kernel N1, capsule N2,
+hyperframes N2). Mission pilote : « enchaine sur A puis B » — A = promouvoir
+`VK-4 US-4b→d` au noyau en **déclarant hyperframes 2ᵉ consommateur** (le cadrage
+S-195 les laissait conditionnels, faute de second consommateur).
+
+== Décision cadre
+
+Le noyau N1 héberge les **ports** engine-neutres (fun-interfaces pures) ; les
+**implémentations** (FFmpeg / espeak) restent N2 (la garde `KernelBoundaryAudit`
+interdit `processbuilder`). Le pilote déclare hyperframes 2ᵉ consommateur : au-delà
+de la durée (US-4a), hyperframes **post-produit** son MP4 (burn-in + audio post) et
+**synthétise** sa narration. Duplication verbatim N2 assumée (doctrine S-162).
+
+== Livrables (noyau `video-kernel 0.4.0`, additif)
+
+* `video.kernel.TextToSpeech` (US-4d) — fun interface `synthesize(text, output): Boolean`.
+* `video.kernel.AudioPostProduction` (US-4b) — fun interface `process(video, output, settings)` + `AudioPostSettings` (bgm/loudness/ducking).
+* `video.kernel.SubtitleBurnIn` (US-4c) — fun interface `burnIn(video, subtitles, output): Boolean`.
+* Manifeste d'API étendu **18 types** (`KernelApiSurface`) + garde `KernelApiStabilityTest` (ports gelés).
+* Tests unit : `AudioPostSettingsTest` (defaults + equality), `KernelSharedPortsTest` (SAM).
+
+[cols="1,3", options="header"]
+|===
+| Port | Contrat
+| `TextToSpeech` | texte → audio ; `false` en dégradation, jamais d'exception
+| `AudioPostProduction` | loudness EBU R128 + BGM + ducking ; `false` en dégradation
+| `SubtitleBurnIn` | SRT/VTT → vidéo ; `false` en dégradation
+|===
+
+== Consommateurs
+
+=== capsule (N2, adaptateurs d'adoption)
+
+`capsule.adapter.kernel.CapsuleKernelPorts` : `CapsuleTextToSpeech`,
+`CapsuleAudioPostProduction`, `CapsuleSubtitleBurnIn` — adaptateurs **non
+intrusifs** (les interfaces historiques `TtsEngine` / `AudioPostProcessor` /
+`SubtitleBurnInService` sont conservées), traduction fidèle (mapping
+`AudioPostSettings` → `AudioPostConfig`) + dégradation `false`. Toml
+`video-kernel 0.3.0 → 0.4.0`. Test `CapsuleKernelPortsTest` (6 unit).
+
+=== hyperframes (N2, 2ᵉ consommateur — consommation réelle)
+
+Domaine `hyperframes.post` : seam `CommandRunner` (test-injectable), builders purs
+(`HyperframesSubtitleCommand`, `HyperframesAudioPostCommand`, `HyperframesTtsCommand`),
+adaptateurs (`FfmpegSubtitleBurnIn`, `FfmpegAudioPostProduction`, `EspeakTextToSpeech`),
+extracteur pur `NarrationTrackExtractor`.
+
+Tâches :
+* `postProcessHyperframes` — burn-in + audio post sur le MP4 rendu (dégradation
+  pass-through, toujours écrit `<name>.mp4`).
+* `generateHyperframesNarration` — narration des `[hyperframes-track]` → `narration-<n>.wav`
+  (skip économie d'encre, dégradation non fatale).
+
+Tests : `PostProductionCommandsTest` (7), `PostProductionAdaptersTest` (9, fake
+runner), `NarrationTrackExtractorTest` (4) + BDD `post_production.feature`
+(7 scénarios `@post-production`, glue `hyperframes.scenarios`) + functional
+TestKit `HyperframesPostProcessTest` (4).
+
+== Gates (Local = Build)
+
+Compiles ×3 VERTS pour les trois boroughs (`compileKotlin` / `compileTestKotlin`
+/ `compileFunctionalTestKotlin`). `publishToMavenLocal` du noyau VERT. **Tests =
+CI** (règle EAGER) : les suites s'exécutent dans les workflows respectifs après
+push.
+
+== Dette / suite
+
+* *Publication Central `video-kernel 0.4.0`* — prérequis dur pour la CI des
+  consommateurs (résolution depuis Central) — **accord pilote requis** (Règle 2).
+* MEMPHIS BOM/catalog `video-kernel 0.4.0` — prochain bump amont (non bloquant).

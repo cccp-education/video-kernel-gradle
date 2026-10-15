@@ -1,7 +1,11 @@
 package video.ci
 
+import video.kernel.AudioPostProduction
+import video.kernel.AudioPostSettings
 import video.kernel.FfprobeDurationParser
 import video.kernel.FileVisualSource
+import video.kernel.SubtitleBurnIn
+import video.kernel.TextToSpeech
 import video.kernel.VideoDurationProbe
 import video.kernel.VideoEngine
 import video.kernel.VideoOutcome
@@ -16,23 +20,24 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 /**
- * Contract-freeze guard (video-kernel 0.3.0).
+ * Contract-freeze guard (video-kernel 0.4.0).
  *
  * The engine-neutral kernel is a **shared contract** consumed by capsule and
  * hyperframes. It was frozen as 0.1.0 after being proven by both engines (S-018
  * made hyperframes consume the port in production), then promoted to the neutral
  * `video.kernel` package in 0.2.0 (VK-2, breaking). **0.3.0** (VK-4 US-4a)
- * additively promotes the shared duration-probe capability
- * ([VideoDurationProbe] + [FfprobeDurationParser]). This guard pins the exported
- * types, the ports and the model properties, so a breaking change to the public
- * surface cannot slip in silently — it must be a deliberate manifest edit.
+ * additively promoted the shared duration-probe capability. **0.4.0** (VK-4
+ * US-4b→d) additively promotes the shared post-production and narration ports.
+ * This guard pins the exported types, the ports and the model properties, so a
+ * breaking change to the public surface cannot slip in silently — it must be a
+ * deliberate manifest edit.
  *
  * See [KernelApiSurface] for the frozen surface.
  */
 class KernelApiStabilityTest {
 
     @Test
-    fun `the exported kernel type set is frozen at 0_3_0`() {
+    fun `the exported kernel type set is frozen at 0_4_0`() {
         assertThat(KernelApiSurface.typeNames())
             .containsExactlyInAnyOrder(
                 "video.kernel.VideoEngine",
@@ -49,6 +54,10 @@ class KernelApiStabilityTest {
                 "video.kernel.segment.SegmentSource",
                 "video.kernel.VideoDurationProbe",
                 "video.kernel.FfprobeDurationParser",
+                "video.kernel.TextToSpeech",
+                "video.kernel.AudioPostProduction",
+                "video.kernel.AudioPostSettings",
+                "video.kernel.SubtitleBurnIn",
             )
     }
 
@@ -62,6 +71,33 @@ class KernelApiStabilityTest {
     fun `the FfprobeDurationParser exposes only parse`() {
         assertThat(KernelApiSurface.functionNames(FfprobeDurationParser::class.java))
             .containsExactlyInAnyOrder("parse")
+    }
+
+    @Test
+    fun `the TextToSpeech port is frozen`() {
+        assertThat(KernelApiSurface.functionNames(TextToSpeech::class.java))
+            .containsExactlyInAnyOrder("synthesize")
+    }
+
+    @Test
+    fun `the AudioPostProduction port is frozen`() {
+        assertThat(KernelApiSurface.functionNames(AudioPostProduction::class.java))
+            .containsExactlyInAnyOrder("process")
+    }
+
+    @Test
+    fun `the SubtitleBurnIn port is frozen`() {
+        assertThat(KernelApiSurface.functionNames(SubtitleBurnIn::class.java))
+            .containsExactlyInAnyOrder("burnIn")
+    }
+
+    @Test
+    fun `the AudioPostSettings data class exposes the frozen property set`() {
+        assertThat(KernelApiSurface.getterNames(AudioPostSettings::class.java))
+            .containsExactlyInAnyOrder(
+                "getBgmEnabled", "getBgmFile", "getBgmLevelDb", "getLoudnessTargetLufs",
+                "getDuckingEnabled", "getTwoPassLoudness",
+            )
     }
 
     @Test

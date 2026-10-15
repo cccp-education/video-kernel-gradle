@@ -1,7 +1,11 @@
 package video.ci
 
+import video.kernel.AudioPostProduction
+import video.kernel.AudioPostSettings
 import video.kernel.FfprobeDurationParser
 import video.kernel.FileVisualSource
+import video.kernel.SubtitleBurnIn
+import video.kernel.TextToSpeech
 import video.kernel.VideoDurationProbe
 import video.kernel.VideoEngine
 import video.kernel.VideoOutcome
@@ -18,13 +22,16 @@ import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 
 /**
- * Frozen public API surface of the engine-neutral kernel (0.3.0).
+ * Frozen public API surface of the engine-neutral kernel (0.4.0).
  *
  * The 0.0.3 contract is proven by two engines (capsule/reveal.js and
  * hyperframes/Watts), frozen as **0.1.0** and promoted to the neutral
  * `video.kernel` package as **0.2.0** (VK-2, breaking). **0.3.0** (VK-4 US-4a)
  * additively promotes the shared duration-probe capability
- * ([VideoDurationProbe] + [FfprobeDurationParser]). Any change to the exported
+ * ([VideoDurationProbe] + [FfprobeDurationParser]). **0.4.0** (VK-4 US-4b→d)
+ * additively promotes the shared post-production and narration capabilities
+ * ([TextToSpeech], [AudioPostProduction] + [AudioPostSettings], [SubtitleBurnIn])
+ * now that a second engine genuinely consumes them. Any change to the exported
  * types, the ports, or the model properties is a breaking change that must be
  * intentional (update this manifest in the same commit as the break).
  *
@@ -48,6 +55,10 @@ object KernelApiSurface {
         SegmentSource::class.java,
         VideoDurationProbe::class.java,
         FfprobeDurationParser::class.java,
+        TextToSpeech::class.java,
+        AudioPostProduction::class.java,
+        AudioPostSettings::class.java,
+        SubtitleBurnIn::class.java,
     )
 
     /** Fully-qualified names of the exported types. */

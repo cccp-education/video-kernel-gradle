@@ -1,5 +1,17 @@
 = COMPLETED_TASKS_ARCHIVE — Octobre 2026
-:date: 2026-10-14
+:date: 2026-10-15
+
+== Session 196 — VK-4 US-4b→d : ports partagés post-production + narration ✅
+
+* Session transverse (video-kernel + capsule + hyperframes) ; le pilote déclare
+  **hyperframes 2ᵉ consommateur** → promotion additive des ports conditionnels.
+* `video.kernel.TextToSpeech` (US-4d), `AudioPostProduction` + `AudioPostSettings`
+  (US-4b), `SubtitleBurnIn` (US-4c) ; manifeste d'API **18 types**.
+* `version 0.3.0 → 0.4.0` (additif) ; publication Central bundle
+  `695c4ccd-1d2f-481d-b81c-417e7d5cf8a2` (AUTOMATIC, accord pilote).
+* Adopté : capsule (`capsule.adapter.kernel.CapsuleKernelPorts`, adaptateurs non
+  intrusifs) ; hyperframes (consommation réelle : `postProcessHyperframes` +
+  `generateHyperframesNarration`). **EPIC VK-4 ✅ clos.**
 
 == Session 195 — VK-4 US-4a : port partagé `VideoDurationProbe` + publication `0.3.0` ✅
 
