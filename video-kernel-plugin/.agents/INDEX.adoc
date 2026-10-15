@@ -3,7 +3,7 @@
 
 _Règles absolues_ : voir `AGENT.adoc`
 _DAG_ : N1 — lib utilitaire partagée (noyau vidéo engine-agnostique)
-_Coordonnées_ : `education.cccp:video-kernel:0.4.0` (package neutre `video.kernel.*`, source ; **publication Central à confirmer**)
+_Coordonnées_ : `education.cccp:video-kernel:0.4.0` (package neutre `video.kernel.*`, **publié Maven Central**, bundle `695c4ccd`)
 
  _Derniere mise a jour_ : 2026-10-15 (S-196 — **VK-4 US-4b→d** : ports partagés `TextToSpeech` + `AudioPostProduction`(+`AudioPostSettings`) + `SubtitleBurnIn` promus au noyau ; **hyperframes 2ᵉ consommateur** déclaré ; `0.3.0 → 0.4.0` additif, manifeste d'API 18 types. **EPIC VK-4 ✅ clos.**)
  _Derniere session terminee_ : 196.
@@ -34,7 +34,7 @@ uniquement ; vocabulaire neutre). **Stabilité gardée** : `video.ci.KernelApiSt
 | video-kernel 0.1.0 | **Contrat GELÉ** + garde de stabilité d'API | ✅ Publié (S-193)
 | video-kernel 0.2.0 | **Package neutre `video.kernel.*`** (VK-2, breaking) + publication Central + consommateurs alignés + BOM MEMPHIS `0.0.88` (VK-3) | ✅ Publié (S-194)
 | video-kernel 0.3.0 | **Port partagé `VideoDurationProbe`** (VK-4 US-4a) + parseur pur `FfprobeDurationParser` — capacités engine-neutres au noyau, impls N2 | ✅ Publié (S-195)
-| video-kernel 0.4.0 | **Ports partagés** `TextToSpeech` + `AudioPostProduction`(+`AudioPostSettings`) + `SubtitleBurnIn` (VK-4 US-4b→d) — manifeste d'API 18 types | 🟡 source (publication Central à confirmer, S-196)
+| video-kernel 0.4.0 | **Ports partagés** `TextToSpeech` + `AudioPostProduction`(+`AudioPostSettings`) + `SubtitleBurnIn` (VK-4 US-4b→d) — manifeste d'API 18 types | ✅ Publié (S-196)
 | Consommateurs capsule + hyperframes | dépendent de `education.cccp:video-kernel:0.4.0` (post-production + narration) | ✅ S-196 (adopté)
 | Consommateur hyperframes | Watts (2e moteur) — consomme le port `VideoEngine` en **production** | ✅ S-018
 |===

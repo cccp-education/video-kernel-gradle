@@ -46,6 +46,6 @@ Noyau : `video.kernel.VideoDurationProbe` + `FfprobeDurationParser` ; publié Ce
 
 == Rappels
 
-* `education.cccp:video-kernel:0.4.0` (source ; **publication Central à confirmer**).
+* `education.cccp:video-kernel:0.4.0` (Central, bundle `695c4ccd`).
 * Ports partagés : `VideoEngine`, `SegmentSource`, `VideoDurationProbe`,
   `TextToSpeech`, `AudioPostProduction`, `SubtitleBurnIn`. **VK-4 ✅ clos.**
