@@ -1,5 +1,26 @@
 = BACKLOG — video-kernel
-:last_update: 2026-10-15 (S-196 — VK-4 US-4b→d : ports partagés `TextToSpeech`/`AudioPostProduction`/`SubtitleBurnIn` ; hyperframes 2ᵉ consommateur ; `0.4.0`. EPIC VK-4 clos.)
+:last_update: 2026-10-16 (S-197 — `video.kernel.publish` : `VideoPublisher` + modèle de publication, EPIC `HF-YOUTUBE-PUBLISH` US-1 ; `0.4.0 → 0.5.0` additif, non publié.)
+
+== 🟡 Port de publication `VideoPublisher` — EPIC HF-YOUTUBE-PUBLISH US-1 (S-197)
+
+_Décision_ : la publication est une **capacité vidéo partagée** (2 moteurs :
+hyperframes + capsule) → contrat neutre au noyau, adaptateur réseau en N2
+(frontière `KernelBoundaryAudit` : pas de `processbuilder`, pas de HTTP).
+
+[cols="1,3,1", options="header"]
+|===
+| US | Livrable | Statut
+| US-1 | Sous-package `video.kernel.publish` : `VideoPublication`, `VideoChapter`,
+  `VideoLink`/`VideoLinks`, `VideoVisibility`, `VideoPublicationLimits`,
+  `VideoPublicationValidator` + `VideoPublicationValidation`,
+  `VideoDescriptionComposer`, `VideoPublisher` + `VideoPublicationResult`.
+  `0.4.0 → 0.5.0`, manifeste +14 types, 31 unit. | ✅ S-197
+| US-1b | Publication `video-kernel 0.5.0` Central + BOM/catalog MEMPHIS (accord pilote). | 🟡 À FAIRE
+|===
+
+_Consommateurs_ : hyperframes (US-2, adaptateur `YouTubeDataApiPublisher`),
+capsule (US-3, adoption `VideoDescriptionBuilder`/`YouTubeChaptersFormatter`).
+_Cadrage transverse_ : `hyperframes-gradle/.../.agents/CADRAGE_EPIC_HF_YOUTUBE_PUBLISH.adoc`.
 
 == ✅ VK-4 — Ports de capacités partagées au noyau (S-195 + S-196, clos)
 

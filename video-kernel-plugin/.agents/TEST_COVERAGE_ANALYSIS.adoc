@@ -1,6 +1,24 @@
 = TEST_COVERAGE_ANALYSIS — video-kernel
-:date: 2026-10-15
-:session: 196 VK-4 US-4b→d ports partagés post-production + narration
+:date: 2026-10-16
+:session: 197 VideoPublisher + modèle de publication (HF-YOUTUBE-PUBLISH US-1)
+
+== Couverture — 16 octobre 2026 (après session 197)
+
+.Port partagé `VideoPublisher` + `video.kernel.publish` (HF-YOUTUBE-PUBLISH US-1)
+|===
+| Élément | Nature | Tests
+
+| `video/kernel/publish/VideoPublisher.kt` | port (fun interface `publish`) + `VideoPublicationResult` (sealed) | +1 SAM +3 getters (`VideoPublicationModelTest` + `KernelApiStabilityTest`)
+| `video/kernel/publish/VideoPublication.kt` | modèle neutre (13 propriétés) | +1 défauts + getters gelés
+| `video/kernel/publish/VideoChapter.kt` / `VideoLink.kt` / `VideoLinks.kt` | value objects + invariants | +4 `VideoPublicationModelTest`
+| `video/kernel/publish/VideoVisibility.kt` | enum | +1 (`KernelApiStabilityTest`)
+| `video/kernel/publish/VideoPublicationLimits.kt` / `VideoPublicationValidator.kt` / `VideoPublicationValidation.kt` | validation pure | +15 `VideoPublicationValidatorTest`
+| `video/kernel/publish/VideoDescriptionComposer.kt` | composition pure | +9 `VideoDescriptionComposerTest`
+| `video/ci/KernelApiSurface.kt` / `KernelApiStabilityTest.kt` | surface gelée **0.5.0** (+14 types, 32 au total) | ré-aligné
+|===
+
+Total : ~64 unit (noyau + gardes). Local = Build (`compileKotlin compileTestKotlin`) ;
+les tests s'exécutent en CI (`./gradlew build`).
 
 == Couverture — 15 octobre 2026 (après session 196)
 

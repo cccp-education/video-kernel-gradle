@@ -1,0 +1,74 @@
+= Session 197 — Port partagé `VideoPublisher` + modèle de publication (US-1)
+:session: 197
+:date: 2026-10-16
+:borough: video-kernel (N1)
+:type: feat
+:score: 9/10
+
+== Mission
+
+Session **transverse** (video-kernel + hyperframes + capsule), pilotée depuis
+Watts (hyperframes) : EPIC `HF-YOUTUBE-PUBLISH` — déploiement YouTube
+industrialisé. Le noyau porte le **contrat neutre de publication** (modèle +
+port), les adaptateurs réseau restant N2.
+
+== Livré — sous-package `video.kernel.publish` (additif)
+
+[cols="1,3", options="header"]
+|===
+| Type | Rôle
+| `VideoPublication` | modèle neutre (videoFile, title, description, tags, hashtags, chapters, links, visibility, categoryId, languageCode, madeForKids, thumbnailFile, publishAt)
+| `VideoChapter` | marqueur `(startSeconds, title)` + invariants (start ≥ 0, titre non blanc)
+| `VideoLink` / `VideoLinks` | liens d'identité ordonnés + navigation suivante/précédente + `isEmpty`
+| `VideoVisibility` | enum `PRIVATE` / `UNLISTED` / `PUBLIC`
+| `VideoPublicationLimits` | bornes éditoriales neutres (titre 100, desc 5000, tags 500 cumulés, 3 chapitres min, 10 s min, `<`/`>` interdits)
+| `VideoPublicationValidation` + `VideoPublicationValidator` | validation pure avant réseau (objets purs, raisons cumulées)
+| `VideoDescriptionComposer` | composition pure (header + description + `Chapters` + `Links` + hashtags, **retire `<`/`>`**) + `chapterTimestamp`
+| `VideoPublisher` (port `fun interface`) + `VideoPublicationResult` (sealed `Published`/`Degraded`/`Failed`) | contrat « ne jette jamais »
+|===
+
+== Décisions
+
+* **Placement N1** (pas N0 `contracts`) : capacité **vidéo** partagée par les
+  moteurs, même logique que les ports VK-4.
+* **Factorisation doctrine « à 2 »** (amendement S-195) : `VideoDescriptionComposer`
+  factorise `capsule.publish.VideoDescriptionBuilder` +
+  `capsule.chapters.YouTubeChaptersFormatter` (adoption capsule = US-3).
+* **Frontière noyau préservée** : aucun HTTP, aucun `ProcessBuilder`, aucun
+  vocabulaire plateforme. L'adaptateur OAuth/upload reste N2 (D3 — pas de SDK Google).
+* **Contrat non-jetable** : `VideoPublicationResult` sealed, aligné sur les ports
+  VK-4 (dégradation propre).
+
+== Manifeste d'API
+
+`version 0.4.0 → 0.5.0` (additif). `KernelApiSurface` **+14 types** (port, modèle,
+enums, résultat sealed + 3 sous-types, validator, composer). `KernelApiStabilityTest`
+ré-alignée : type set gelé 0.5.0 + port `publish` + getters du modèle + constants
+de l'enum.
+
+== Tests (unitaires — le noyau n'a pas d'infra BDD)
+
+* `VideoPublicationValidatorTest` — 15 tests (fichier manquant, titre blanc/trop
+  long, description trop longue/interdite, tags, hashtags, chapitres : <3, premier
+  ≠ 0, non croissants, < 10 s, thumbnail manquant, cas valide).
+* `VideoDescriptionComposerTest` — 9 tests (timestamps M:SS et H:MM:SS, sections
+  omises si vides, chapitres, liens + navigation, hashtags, sanitize, assemblage).
+* `VideoPublicationModelTest` — 7 tests (invariants `VideoChapter`/`VideoLink`,
+  `VideoLinks.isEmpty`, défauts neutres, port SAM).
+
+**Local = Build** : `compileKotlin` + `compileTestKotlin` **VERTS**. Aucun test
+lancé localement (CI). Garde de frontière vérifiée manuellement (aucun token
+interdit hors commentaire).
+
+== Non livré
+
+* **US-1b** : publication `video-kernel 0.5.0` Central (accord pilote) — prérequis
+  dur des consommateurs.
+* Adoption par capsule (US-3) et hyperframes (US-2).
+
+== Fichiers
+
+* `src/main/kotlin/video/kernel/publish/*.kt` (9 fichiers)
+* `src/test/kotlin/video/kernel/publish/*.kt` (3 fichiers)
+* `src/test/kotlin/video/ci/KernelApiSurface.kt` + `KernelApiStabilityTest.kt`
+* `build.gradle.kts` (`version 0.5.0`)

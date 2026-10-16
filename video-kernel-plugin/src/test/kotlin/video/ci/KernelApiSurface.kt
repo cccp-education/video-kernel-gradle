@@ -14,6 +14,17 @@ import video.kernel.VideoProductionPlan
 import video.kernel.VideoRenderRequest
 import video.kernel.VideoRenderResult
 import video.kernel.VisualSource
+import video.kernel.publish.VideoChapter
+import video.kernel.publish.VideoDescriptionComposer
+import video.kernel.publish.VideoLink
+import video.kernel.publish.VideoLinks
+import video.kernel.publish.VideoPublication
+import video.kernel.publish.VideoPublicationLimits
+import video.kernel.publish.VideoPublicationResult
+import video.kernel.publish.VideoPublicationValidation
+import video.kernel.publish.VideoPublicationValidator
+import video.kernel.publish.VideoPublisher
+import video.kernel.publish.VideoVisibility
 import video.kernel.segment.SegmentSource
 import video.kernel.segment.VideoKind
 import video.kernel.segment.VideoScript
@@ -22,7 +33,7 @@ import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 
 /**
- * Frozen public API surface of the engine-neutral kernel (0.4.0).
+ * Frozen public API surface of the engine-neutral kernel (0.5.0).
  *
  * The 0.0.3 contract is proven by two engines (capsule/reveal.js and
  * hyperframes/Watts), frozen as **0.1.0** and promoted to the neutral
@@ -30,8 +41,10 @@ import java.lang.reflect.Modifier
  * additively promotes the shared duration-probe capability
  * ([VideoDurationProbe] + [FfprobeDurationParser]). **0.4.0** (VK-4 US-4b→d)
  * additively promotes the shared post-production and narration capabilities
- * ([TextToSpeech], [AudioPostProduction] + [AudioPostSettings], [SubtitleBurnIn])
- * now that a second engine genuinely consumes them. Any change to the exported
+ * ([TextToSpeech], [AudioPostProduction] + [AudioPostSettings], [SubtitleBurnIn]).
+ * **0.5.0** (HF-YOUTUBE-PUBLISH US-1) additively promotes the shared video
+ * *publication* capability ([VideoPublisher] + `video.kernel.publish` model),
+ * now that a second engine genuinely consumes it. Any change to the exported
  * types, the ports, or the model properties is a breaking change that must be
  * intentional (update this manifest in the same commit as the break).
  *
@@ -59,6 +72,20 @@ object KernelApiSurface {
         AudioPostProduction::class.java,
         AudioPostSettings::class.java,
         SubtitleBurnIn::class.java,
+        VideoPublisher::class.java,
+        VideoPublication::class.java,
+        VideoPublicationResult::class.java,
+        VideoPublicationResult.Published::class.java,
+        VideoPublicationResult.Degraded::class.java,
+        VideoPublicationResult.Failed::class.java,
+        VideoChapter::class.java,
+        VideoLink::class.java,
+        VideoLinks::class.java,
+        VideoVisibility::class.java,
+        VideoPublicationLimits::class.java,
+        VideoPublicationValidation::class.java,
+        VideoPublicationValidator::class.java,
+        VideoDescriptionComposer::class.java,
     )
 
     /** Fully-qualified names of the exported types. */

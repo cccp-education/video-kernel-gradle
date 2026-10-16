@@ -1,10 +1,21 @@
-= PROMPT_REPRISE — video-kernel (Session 196 TERMINÉE → 197)
-:session: 196
+= PROMPT_REPRISE — video-kernel (Session 197 TERMINÉE → 198)
+:session: 197
 :borough: video-kernel
-:session_precedente: 196 — VK-4 US-4b→d : ports partagés post-production + narration ✅ (EPIC VK-4 clos)
+:session_precedente: 197 — Port partagé `VideoPublisher` + modèle de publication (EPIC HF-YOUTUBE-PUBLISH US-1) ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
 == Contexte Hérité
+
+=== S-197 — Port partagé `VideoPublisher` + `video.kernel.publish` ✅
+
+Session transverse (video-kernel + hyperframes + capsule), pilotée Watts. Le noyau
+porte le contrat neutre de publication : `VideoPublisher` (fun interface) +
+`VideoPublication`/`VideoChapter`/`VideoLink(s)`/`VideoVisibility` +
+`VideoPublicationLimits`/`VideoPublicationValidator` + `VideoPublicationValidation` +
+`VideoDescriptionComposer` + `VideoPublicationResult` (sealed). Additif
+`0.4.0 → 0.5.0`, manifeste d'API **+14 types**, 31 unit. Compiles VERTS.
+Cadrage EPIC : `hyperframes-gradle/.../.agents/CADRAGE_EPIC_HF_YOUTUBE_PUBLISH.adoc`.
+Rapport `.agents/sessions/197-video-publisher-shared-port.adoc`.
 
 === S-196 — VK-4 US-4b→d : ports partagés post-production + narration ✅
 
@@ -27,13 +38,15 @@ promus au noyau (additif) :
 Noyau : `video.kernel.VideoDurationProbe` + `FfprobeDurationParser` ; publié Central
 (bundle `892b2756`) ; adopté par capsule + hyperframes.
 
-== Mission Session 197 — au choix (pilote)
+== Mission Session 198 — US-1b (accord pilote, Règle 2)
 
-* A) **Publication `video-kernel 0.4.0`** (Règle 2 — accord pilote) : prérequis de
-  la CI des consommateurs (capsule/hyperframes résolvent le noyau depuis Central).
-* B) **MEMPHIS BOM/catalog bump `video-kernel 0.4.0`** (alignement amont ;
-  non bloquant — la version explicite du toml l'emporte).
-* C) Autre (nouvelle demande pilote).
+* Publier **`video-kernel 0.5.0`** sur Maven Central : prérequis **dur** de l'US-2
+  hyperframes (l'adaptateur `hyperframes.publish` importe `video.kernel.publish`,
+  résolu depuis Central).
+* Bumper **MEMPHIS** BOM/catalog (`video-kernel 0.5.0`).
+* Puis session hyperframes : US-2 adaptateur `YouTubeDataApiPublisher` +
+  tâche `publishHyperframesToYouTube`.
+* Alternative : autre demande pilote.
 
 == Points d'attention
 
@@ -46,6 +59,7 @@ Noyau : `video.kernel.VideoDurationProbe` + `FfprobeDurationParser` ; publié Ce
 
 == Rappels
 
-* `education.cccp:video-kernel:0.4.0` (Central, bundle `695c4ccd`).
+* `education.cccp:video-kernel:0.4.0` (Central, bundle `695c4ccd`) —
+  **source locale `0.5.0` en avance** (port publication, non publié).
 * Ports partagés : `VideoEngine`, `SegmentSource`, `VideoDurationProbe`,
-  `TextToSpeech`, `AudioPostProduction`, `SubtitleBurnIn`. **VK-4 ✅ clos.**
+  `TextToSpeech`, `AudioPostProduction`, `SubtitleBurnIn`, **`VideoPublisher`**.

@@ -13,6 +13,13 @@ import video.kernel.VideoProductionEntry
 import video.kernel.VideoProductionPlan
 import video.kernel.VideoRenderRequest
 import video.kernel.VideoRenderResult
+import video.kernel.publish.VideoChapter
+import video.kernel.publish.VideoLink
+import video.kernel.publish.VideoLinks
+import video.kernel.publish.VideoPublication
+import video.kernel.publish.VideoPublicationResult
+import video.kernel.publish.VideoPublisher
+import video.kernel.publish.VideoVisibility
 import video.kernel.segment.SegmentSource
 import video.kernel.segment.VideoScript
 import video.kernel.segment.VideoSegment
@@ -20,7 +27,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 /**
- * Contract-freeze guard (video-kernel 0.4.0).
+ * Contract-freeze guard (video-kernel 0.5.0).
  *
  * The engine-neutral kernel is a **shared contract** consumed by capsule and
  * hyperframes. It was frozen as 0.1.0 after being proven by both engines (S-018
@@ -28,16 +35,17 @@ import org.junit.jupiter.api.Test
  * `video.kernel` package in 0.2.0 (VK-2, breaking). **0.3.0** (VK-4 US-4a)
  * additively promoted the shared duration-probe capability. **0.4.0** (VK-4
  * US-4b→d) additively promotes the shared post-production and narration ports.
- * This guard pins the exported types, the ports and the model properties, so a
- * breaking change to the public surface cannot slip in silently — it must be a
- * deliberate manifest edit.
+ * **0.5.0** (HF-YOUTUBE-PUBLISH US-1) additively promotes the shared video
+ * *publication* capability. This guard pins the exported types, the ports and
+ * the model properties, so a breaking change to the public surface cannot slip
+ * in silently — it must be a deliberate manifest edit.
  *
  * See [KernelApiSurface] for the frozen surface.
  */
 class KernelApiStabilityTest {
 
     @Test
-    fun `the exported kernel type set is frozen at 0_4_0`() {
+    fun `the exported kernel type set is frozen at 0_5_0`() {
         assertThat(KernelApiSurface.typeNames())
             .containsExactlyInAnyOrder(
                 "video.kernel.VideoEngine",
@@ -58,6 +66,20 @@ class KernelApiStabilityTest {
                 "video.kernel.AudioPostProduction",
                 "video.kernel.AudioPostSettings",
                 "video.kernel.SubtitleBurnIn",
+                "video.kernel.publish.VideoPublisher",
+                "video.kernel.publish.VideoPublication",
+                "video.kernel.publish.VideoPublicationResult",
+                "video.kernel.publish.VideoPublicationResult\$Published",
+                "video.kernel.publish.VideoPublicationResult\$Degraded",
+                "video.kernel.publish.VideoPublicationResult\$Failed",
+                "video.kernel.publish.VideoChapter",
+                "video.kernel.publish.VideoLink",
+                "video.kernel.publish.VideoLinks",
+                "video.kernel.publish.VideoVisibility",
+                "video.kernel.publish.VideoPublicationLimits",
+                "video.kernel.publish.VideoPublicationValidation",
+                "video.kernel.publish.VideoPublicationValidator",
+                "video.kernel.publish.VideoDescriptionComposer",
             )
     }
 
@@ -89,6 +111,47 @@ class KernelApiStabilityTest {
     fun `the SubtitleBurnIn port is frozen`() {
         assertThat(KernelApiSurface.functionNames(SubtitleBurnIn::class.java))
             .containsExactlyInAnyOrder("burnIn")
+    }
+
+    @Test
+    fun `the VideoPublisher port is frozen`() {
+        assertThat(KernelApiSurface.functionNames(VideoPublisher::class.java))
+            .containsExactlyInAnyOrder("publish")
+    }
+
+    @Test
+    fun `the VideoPublicationResult data classes expose the frozen property set`() {
+        assertThat(KernelApiSurface.getterNames(VideoPublicationResult.Published::class.java))
+            .containsExactlyInAnyOrder("getVideoId", "getUrl")
+        assertThat(KernelApiSurface.getterNames(VideoPublicationResult.Degraded::class.java))
+            .containsExactlyInAnyOrder("getReason")
+        assertThat(KernelApiSurface.getterNames(VideoPublicationResult.Failed::class.java))
+            .containsExactlyInAnyOrder("getReason")
+    }
+
+    @Test
+    fun `the publication model data classes expose the frozen property set`() {
+        assertThat(KernelApiSurface.getterNames(VideoPublication::class.java))
+            .containsExactlyInAnyOrder(
+                "getVideoFile", "getTitle", "getDescription", "getTags", "getHashtags",
+                "getChapters", "getLinks", "getVisibility", "getCategoryId",
+                "getLanguageCode", "getMadeForKids", "getThumbnailFile", "getPublishAt",
+            )
+
+        assertThat(KernelApiSurface.getterNames(VideoChapter::class.java))
+            .containsExactlyInAnyOrder("getStartSeconds", "getTitle")
+
+        assertThat(KernelApiSurface.getterNames(VideoLink::class.java))
+            .containsExactlyInAnyOrder("getLabel", "getUrl")
+
+        assertThat(KernelApiSurface.getterNames(VideoLinks::class.java))
+            .containsExactlyInAnyOrder("getEntries", "getNextVideo", "getPreviousVideo")
+    }
+
+    @Test
+    fun `the VideoVisibility enum exposes the frozen constants`() {
+        assertThat(VideoVisibility.entries.map { it.name })
+            .containsExactly("PRIVATE", "UNLISTED", "PUBLIC")
     }
 
     @Test
