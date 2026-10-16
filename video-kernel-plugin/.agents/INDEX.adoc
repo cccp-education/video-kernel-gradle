@@ -5,10 +5,10 @@ _Règles absolues_ : voir `AGENT.adoc`
 _DAG_ : N1 — lib utilitaire partagée (noyau vidéo engine-agnostique)
 _Coordonnées_ : `education.cccp:video-kernel:0.4.0` (package neutre `video.kernel.*`, **publié Maven Central**, bundle `695c4ccd`)
 
- _Derniere mise a jour_ : 2026-10-16 (S-197 — **Port partagé `VideoPublisher` + modèle de publication** (`video.kernel.publish`, EPIC `HF-YOUTUBE-PUBLISH` US-1, transverse hyperframes/capsule) : `VideoPublication`/`VideoChapter`/`VideoLink(s)`/`VideoVisibility`/`VideoPublicationValidator`/`VideoDescriptionComposer`/`VideoPublisher`+`VideoPublicationResult` ; `0.4.0 → 0.5.0` additif, manifeste d'API +14 types. **Non publié** — publication US-1b à venir.)
+ _Derniere mise a jour_ : 2026-10-16 (S-197 — **Port partagé `VideoPublisher` + modèle de publication** (`video.kernel.publish`, EPIC `HF-YOUTUBE-PUBLISH` US-1/1b, transverse hyperframes/capsule) : `VideoPublication`/`VideoChapter`/`VideoLink(s)`/`VideoVisibility`/`VideoPublicationValidator`/`VideoDescriptionComposer`/`VideoPublisher`+`VideoPublicationResult` ; `0.4.0 → 0.5.0` additif, manifeste d'API +14 types, **publié Central (bundle `85598927`)**.)
  _Derniere session terminee_ : 197.
  _Depot_ : `https://github.com/cccp-education/video-kernel-gradle.git`.
- _Prochaine session_ : 198 — **US-1b** : publication `video-kernel 0.5.0` Central (accord pilote) + MEMPHIS BOM/catalog (prérequis US-2 hyperframes).
+ _Prochaine session_ : 198 — alignement MEMPHIS `workspace-bom`/`workspace-catalog` (`video-kernel 0.5.0`, non bloquant) ; sinon au choix pilote.
 
 == Portée
 
@@ -35,7 +35,7 @@ uniquement ; vocabulaire neutre). **Stabilité gardée** : `video.ci.KernelApiSt
 | video-kernel 0.2.0 | **Package neutre `video.kernel.*`** (VK-2, breaking) + publication Central + consommateurs alignés + BOM MEMPHIS `0.0.88` (VK-3) | ✅ Publié (S-194)
 | video-kernel 0.3.0 | **Port partagé `VideoDurationProbe`** (VK-4 US-4a) + parseur pur `FfprobeDurationParser` — capacités engine-neutres au noyau, impls N2 | ✅ Publié (S-195)
 | video-kernel 0.4.0 | **Ports partagés** `TextToSpeech` + `AudioPostProduction`(+`AudioPostSettings`) + `SubtitleBurnIn` (VK-4 US-4b→d) — manifeste d'API 18 types | ✅ Publié (S-196)
-| video-kernel 0.5.0 | **Publication** — `video.kernel.publish` (`VideoPublication`, `VideoChapter`, `VideoLink(s)`, `VideoVisibility`, `VideoPublicationValidator`, `VideoDescriptionComposer`, `VideoPublisher` + `VideoPublicationResult`) — manifeste d'API +14 types (EPIC `HF-YOUTUBE-PUBLISH` US-1). | 🟡 **Local (non publié)** — publication US-1b à venir
+| video-kernel 0.5.0 | **Publication** — `video.kernel.publish` (`VideoPublication`, `VideoChapter`, `VideoLink(s)`, `VideoVisibility`, `VideoPublicationValidator`, `VideoDescriptionComposer`, `VideoPublisher` + `VideoPublicationResult`) — manifeste d'API +14 types (EPIC `HF-YOUTUBE-PUBLISH` US-1). | ✅ Publié (S-197, bundle `85598927`)
 | Consommateurs capsule + hyperframes | dépendent de `education.cccp:video-kernel:0.4.0` (post-production + narration) | ✅ S-196 (adopté)
 | Consommateur hyperframes | Watts (2e moteur) — consomme le port `VideoEngine` en **production** | ✅ S-018
 |===

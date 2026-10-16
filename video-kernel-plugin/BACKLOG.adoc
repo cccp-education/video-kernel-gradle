@@ -15,7 +15,7 @@ hyperframes + capsule) → contrat neutre au noyau, adaptateur réseau en N2
   `VideoPublicationValidator` + `VideoPublicationValidation`,
   `VideoDescriptionComposer`, `VideoPublisher` + `VideoPublicationResult`.
   `0.4.0 → 0.5.0`, manifeste +14 types, 31 unit. | ✅ S-197
-| US-1b | Publication `video-kernel 0.5.0` Central + BOM/catalog MEMPHIS (accord pilote). | 🟡 À FAIRE
+| US-1b | Publication `video-kernel 0.5.0` Central (bundle `85598927`). | ✅ S-197
 |===
 
 _Consommateurs_ : hyperframes (US-2, adaptateur `YouTubeDataApiPublisher`),

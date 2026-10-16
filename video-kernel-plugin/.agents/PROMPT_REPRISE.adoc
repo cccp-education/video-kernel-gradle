@@ -1,12 +1,12 @@
 = PROMPT_REPRISE — video-kernel (Session 197 TERMINÉE → 198)
 :session: 197
 :borough: video-kernel
-:session_precedente: 197 — Port partagé `VideoPublisher` + modèle de publication (EPIC HF-YOUTUBE-PUBLISH US-1) ✅
+:session_precedente: 197 — Port `VideoPublisher` + `video.kernel.publish` (US-1) + publication `0.5.0` (US-1b) ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
 == Contexte Hérité
 
-=== S-197 — Port partagé `VideoPublisher` + `video.kernel.publish` ✅
+=== S-197 — US-1 port `VideoPublisher` + US-1b publication `0.5.0` ✅
 
 Session transverse (video-kernel + hyperframes + capsule), pilotée Watts. Le noyau
 porte le contrat neutre de publication : `VideoPublisher` (fun interface) +
@@ -14,6 +14,8 @@ porte le contrat neutre de publication : `VideoPublisher` (fun interface) +
 `VideoPublicationLimits`/`VideoPublicationValidator` + `VideoPublicationValidation` +
 `VideoDescriptionComposer` + `VideoPublicationResult` (sealed). Additif
 `0.4.0 → 0.5.0`, manifeste d'API **+14 types**, 31 unit. Compiles VERTS.
+**US-1b** : `video-kernel 0.5.0` **publié Maven Central** (bundle `85598927`,
+propagation repo1 confirmée) — débloque l'US-2 hyperframes.
 Cadrage EPIC : `hyperframes-gradle/.../.agents/CADRAGE_EPIC_HF_YOUTUBE_PUBLISH.adoc`.
 Rapport `.agents/sessions/197-video-publisher-shared-port.adoc`.
 
@@ -38,15 +40,14 @@ promus au noyau (additif) :
 Noyau : `video.kernel.VideoDurationProbe` + `FfprobeDurationParser` ; publié Central
 (bundle `892b2756`) ; adopté par capsule + hyperframes.
 
-== Mission Session 198 — US-1b (accord pilote, Règle 2)
+== Mission Session 198 — au choix (pilote)
 
-* Publier **`video-kernel 0.5.0`** sur Maven Central : prérequis **dur** de l'US-2
-  hyperframes (l'adaptateur `hyperframes.publish` importe `video.kernel.publish`,
-  résolu depuis Central).
-* Bumper **MEMPHIS** BOM/catalog (`video-kernel 0.5.0`).
-* Puis session hyperframes : US-2 adaptateur `YouTubeDataApiPublisher` +
-  tâche `publishHyperframesToYouTube`.
-* Alternative : autre demande pilote.
+* **Alignement MEMPHIS** `workspace-bom`/`workspace-catalog` (`video-kernel 0.5.0`,
+  non bloquant — le toml explicite l'emporte).
+* Sinon : autre demande pilote.
+* **US-2 hyperframes fait** (S-035) : l'adaptateur `YouTubeDataApiPublisher` +
+  tâche `publishHyperframesToYouTube` consomment `video-kernel 0.5.0`.
+  Restent US-3 (capsule), US-4 (dogfooding réel), US-5 (release).
 
 == Points d'attention
 
@@ -59,7 +60,7 @@ Noyau : `video.kernel.VideoDurationProbe` + `FfprobeDurationParser` ; publié Ce
 
 == Rappels
 
-* `education.cccp:video-kernel:0.4.0` (Central, bundle `695c4ccd`) —
-  **source locale `0.5.0` en avance** (port publication, non publié).
+* `education.cccp:video-kernel:0.5.0` (Central, bundle `85598927`) — **dernière
+  version publiée** (port publication). Historique : `0.4.0` (bundle `695c4ccd`).
 * Ports partagés : `VideoEngine`, `SegmentSource`, `VideoDurationProbe`,
   `TextToSpeech`, `AudioPostProduction`, `SubtitleBurnIn`, **`VideoPublisher`**.
