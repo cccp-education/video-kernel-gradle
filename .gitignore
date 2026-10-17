@@ -2,3 +2,7 @@
 build/
 !gradle/wrapper/gradle-wrapper.jar
 *.log
+
+# OAuth credentials (gitignored)
+youtube.yaml
+client_secret_*.json

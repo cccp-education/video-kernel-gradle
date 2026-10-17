@@ -1,0 +1,26 @@
+= PROMPT_REPRISE — youtube-auth-plugin (Session 001 TERMINÉE → 002)
+:session: 001
+:borough: video-kernel — module `youtube-auth-plugin`
+:session_precedente: 001 — Création du module + US-1 (domaine pur) + US-2 (plugin/tâche) ✅
+_note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
+
+== État
+
+Module `youtube-auth-plugin` créé (dans le dépôt `video-kernel-gradle`) :
+plugin `education.cccp.video.auth` fournissant la tâche
+`obtainYouTubeRefreshToken` (flux OAuth 2.0 loopback → écrit le refresh token
+dans `youtube.yaml`). Domaine pur `video.auth` (consent URL, parseur de jeton,
+réécriture du fichier) + seams N2 injectables. Compiles+CI : matrice 2 jobs.
+
+== Mission Session 002
+
+* **US-3** — publication `education.cccp:youtube-auth-plugin:0.0.1` (Central,
+  accord pilote) + adoption par bakery/capsule (`plugins { id(...) }`).
+* **Dogfooding** — lancer `./gradlew obtainYouTubeRefreshToken` (navigateur) et
+  écrire le token dans `youtube.yaml`.
+
+== Points d'attention
+
+* **Local = Build, Tests = CI**. **Règle PUBLISH** : accord pilote.
+* **Secrets** : `youtube.yaml` gitignoré ; les valeurs ne sont jamais loggées.
+* URI de redirection à enregistrer : `http://localhost:8765/`.

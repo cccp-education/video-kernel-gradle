@@ -1,0 +1,18 @@
+[versions]
+kotlin = "2.4.10"
+plugin-publish = "2.1.0"
+
+[libraries]
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
+kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+junit-platform-suite = { module = "org.junit.platform:junit-platform-suite" }
+assertj = { module = "org.assertj:assertj-core" }
+cucumber-java = { module = "io.cucumber:cucumber-java" }
+cucumber-junit-platform-engine = { module = "io.cucumber:cucumber-junit-platform-engine" }
+cucumber-picocontainer = { module = "io.cucumber:cucumber-picocontainer" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "plugin-publish" }

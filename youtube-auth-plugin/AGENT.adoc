@@ -1,0 +1,26 @@
+= AGENT.adoc — youtube-auth-plugin (video-kernel)
+
+_Produit_ : Plugin Gradle `education.cccp.video.auth` — tâche
+`obtainYouTubeRefreshToken` (flux OAuth 2.0 loopback) pour obtenir un refresh
+token YouTube et l'écrire dans un `youtube.yaml` git ignoré.
+_Licence_ : Apache 2.0 (OSS).
+_DAG_ : N1 — utilitaire partagé, consommable par les boroughs vidéo (capsule,
+hyperframes) et bakery.
+_Dépendance_ : le port `video.kernel.publish` (noyau N1, non requis au compile —
+le plugin écrit un fichier de credentials, pas un upload).
+
+== Règles absolues
+
+=== 1. GIT — commit/push autorisés (décision pilote 2026-09-17) ; ZERO secret commité
+=== 2. PUBLISH — accord pilote
+=== 3. ZERO secret/token/api key en dur ; les secrets ne sont JAMAIS loggés
+=== 4. Local = Build, Tests = CI
+=== 5. Le noyau `video.kernel` reste PUR (ce module ne l'importe pas pour y écrire)
+
+== Tâche
+
+  ./gradlew obtainYouTubeRefreshToken   → flux OAuth loopback → écrit le refresh token
+
+== Conventions
+
+Le plugin consomme les convention plugins `education.cccp.build.{gradle-plugin,publishing,functional-test}` v0.0.7.

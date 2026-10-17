@@ -1,0 +1,35 @@
+= INDEX — youtube-auth-plugin
+:toc:
+
+_Règles absolues_ : voir `AGENT.adoc`
+_DAG_ : N1 — plugin Gradle utilitaire (tâche d'obtention du refresh token YouTube)
+_Coordonnées_ : `education.cccp:youtube-auth-plugin` (plugin id `education.cccp.video.auth`) — **non publié** (US-3)
+_Dernière mise à jour_ : 2026-10-16 (S-001 — création du module + US-1/US-2)
+
+== Portée
+
+* Domaine pur `video.auth` : consent URL, parseur de jeton, réécriture du fichier
+  de credentials.
+* Plugin + tâche `obtainYouTubeRefreshToken` (flux OAuth loopback).
+
+== Portefeuille
+
+[cols="1,3,1"]
+|===
+| Élément | Description | Statut
+| US-0 | Cadrage | ✅ S-001
+| US-1 | Domaine pur + unit + Cucumber | ✅ S-001
+| US-2 | Plugin + tâche + TestKit | ✅ S-001
+| US-3 | Publication Central + adoption bakery/capsule | 🟡 À FAIRE
+|===
+
+== Fichiers
+
+|===
+| Fichier | Rôle
+| `src/main/kotlin/video/auth/` | Domaine pur + tâche + extension + plugin
+| `src/main/kotlin/video/auth/oauth/` | Loopback + échange de jeton (N2)
+| `src/test/kotlin/video/auth/` | Unit + scénarios Cucumber
+| `src/test/resources/features/` | Features BDD
+| `.agents/CADRAGE_EPIC_HF_YOUTUBE_AUTH.adoc` | Cadrage
+|===

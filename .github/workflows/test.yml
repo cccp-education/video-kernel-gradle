@@ -8,11 +8,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  video-kernel:
+    name: video-kernel (library)
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: video-kernel-plugin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build and test
+        run: ./gradlew build --no-daemon
+
+  youtube-auth:
+    name: youtube-auth (plugin)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: youtube-auth-plugin
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4

@@ -1,0 +1,66 @@
+= Session 001 — `youtube-auth-plugin` : tâche Gradle d'obtention du refresh token YouTube
+:session: 001
+:date: 2026-10-16
+:borough: video-kernel (N1) — module `youtube-auth-plugin`
+:type: feat
+:score: 9/10
+
+== Mission
+
+Le pilote cherche à obtenir un **refresh token YouTube** pour publier
+automatiquement (EPIC transverse `HF-YOUTUBE-PUBLISH`). Décision : fournir une
+**tâche Gradle réutilisable** dans le projet video-kernel (consommable par
+bakery/capsule) plutôt qu'un outil local ad-hoc. Méthodologie baby-step
+DDD/TDD/BDD.
+
+== Livré
+
+=== US-1 — Domaine pur `video.auth` (DDD/TDD/BDD)
+
+* `YouTubeConsentUrl` (pur) — construit l'URL de consentement Google
+  (`access_type=offline`, `prompt=consent`, scope `youtube.upload`).
+* `YouTubeTokenParser` / `YouTubeTokenResponse` (purs) — extrait
+  `refresh_token`/`access_token`/`error` (parseur sans dépendance).
+* `CredentialsFileRewriter` (pur) — réécrit la ligne `refreshToken:` en
+  préservant toutes les autres (commentaires, apiKey, channelId).
+* Tests unit : `YouTubeConsentUrlTest` (5), `YouTubeTokenParserTest` (5),
+  `CredentialsFileRewriterTest` (6).
+* BDD Cucumber : `youtube_auth.feature` (4 scénarios) + `CucumberRunner` +
+  `YouTubeAuthSteps`.
+
+=== US-2 — Plugin + tâche (N2)
+
+* `video.auth.oauth` (N2) : `OAuthRedirectReceiver`/`LoopbackOAuthReceiver`
+  (`com.sun.net.httpserver`, JDK), `HttpFormPoster`/`JdkHttpFormPoster`,
+  `GoogleTokenExchanger`, `BrowserLauncher` (headless-safe).
+* `ObtainYouTubeRefreshTokenTask` — flux complet (URL → navigateur → loopback →
+  échange → parse → réécriture). Secrets jamais loggés.
+* `YouTubeAuthExtension` (`youtubeAuth {}`) + `YouTubeAuthPlugin`
+  (`education.cccp.video.auth`).
+* Test fonctionnel TestKit `YouTubeAuthFunctionalTest` (tâche enregistrée ;
+  échec clair si fichier absent / clientId manquant).
+* Test unit loopback réel (`LoopbackOAuthReceiverTest`).
+
+== Pourquoi un module frère
+
+La **garde `KernelBoundaryAudit`** interdit `org.gradle` dans `video.kernel` →
+une tâche Gradle ne peut pas vivre dans la lib pure. Module distinct
+`youtube-auth-plugin` (artefact plugin), noyau intact.
+
+== Build / CI
+
+* `youtube-auth-plugin/` : build miroir hyperframes (conventions `education.cccp.build.*`
+  0.0.7, `publicationType=PLUGIN`, platform `workspace-bom:0.0.99`).
+* CI `.github/workflows/test.yml` : **matrice 2 jobs** (video-kernel + youtube-auth).
+* **Local = Build** : `compileKotlin` + `compileTestKotlin` + `compileFunctionalTestKotlin`
+  **VERTS**.
+
+== Reste
+
+* **US-3** — publication `education.cccp:youtube-auth-plugin:0.0.1` (Central) +
+  adoption bakery/capsule.
+* Dogfooding réel : `./gradlew obtainYouTubeRefreshToken` (navigateur).
+
+== Fichiers
+
+`youtube-auth-plugin/` (module complet) + `.github/workflows/test.yml` (matrice).

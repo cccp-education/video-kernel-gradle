@@ -1,0 +1,88 @@
+= CADRAGE EPIC — HF-YOUTUBE-AUTH (tâche Gradle d'obtention du refresh token YouTube)
+:toc:
+:_session_: S-001
+:_pilote_: video-kernel (N1) — plugin `youtube-auth-plugin`
+:_statut_: 🟡 CADRÉ + US-1/US-2 livrés (S-001)
+
+'''
+== Objectif
+
+Fournir une **tâche Gradle réutilisable** — `obtainYouTubeRefreshToken` — qui
+obtient un **refresh token OAuth 2.0 YouTube** via un flux *loopback* local
+(navigateur + écoute `http://localhost:<port>/`), puis l'écrit dans le fichier
+de credentials gitignoré (`youtube.yaml`).
+
+Cette tâche **rejoint** le port N1 `video.kernel.publish.VideoPublisher` : on
+obtient le token ici, puis on publie avec `publishHyperframesToYouTube` /
+`publishCapsuleToYouTube`.
+
+'''
+== Pourquoi un plugin (et non la lib `video-kernel`)
+
+`video.kernel` est une **lib pure** (garde `KernelBoundaryAudit` : imports
+`java/kotlin/contracts/video.kernel` uniquement ; interdiction `org.gradle`).
+Une **tâche Gradle** exige `org.gradle.api.*` → elle ne peut pas vivre dans le
+noyau. Décision : **module frère** `youtube-auth-plugin` dans le même dépôt,
+publié comme **artefact Gradle plugin** (`education.cccp.video.auth`), le noyau
+restant pur est intact.
+
+'''
+== Architecture
+
+----
+ youtube-auth-plugin (N1 — tâche/plugin)
+ ┌──────────────────────────────┐      ┌───────────────────────────────────┐
+ │ video.auth (pur, testable)   │      │ video.auth.oauth (N2, I/O)        │
+ │  YouTubeConsentUrl           │      │  OAuthRedirectReceiver (loopback) │
+ │  YouTubeTokenParser          │      │  HttpFormPoster (JDK HttpClient)  │
+ │  CredentialsFileRewriter     │      │  GoogleTokenExchanger             │
+ │  ObtainYouTubeRefreshTokenTask│◀────│  BrowserLauncher                  │
+ │  YouTubeAuthExtension/Plugin │      └───────────────────────────────────┘
+ └──────────────────────────────┘
+----
+
+*Le domaine pur est séparé du réseau/process pour rester unit/BDD-testable ;
+les seams (`OAuthRedirectReceiver`, `HttpFormPoster`) sont injectables.*
+
+'''
+== User Stories
+
+[cols="1,3,1,1", options="header"]
+|===
+| US | Livrable | Statut | Effort
+| US-0 | Cadrage (ce document) | ✅ S-001 | —
+| US-1 | Domaine pur `video.auth` — `YouTubeConsentUrl`, `YouTubeTokenParser`,
+  `CredentialsFileRewriter` + tests unit + BDD Cucumber. | ✅ S-001 | M
+| US-2 | Plugin + tâche `obtainYouTubeRefreshToken` (loopback OAuth) + extension
+  `youtubeAuth {}` + seams + test fonctionnel TestKit. | ✅ S-001 | L
+| US-3 | Publication `education.cccp:youtube-auth-plugin` (Central) + adoption
+  bakery/capsule. | 🟡 À FAIRE | S
+|===
+
+'''
+== Décisions
+
+. **D1** — Plugin Gradle distinct (noyau `video.kernel` pur préservé).
+. **D2** — Domaine pur sans dépendance (parseur JSON main-écrit, pas de Jackson).
+. **D3** — Flow **loopback** (`com.sun.net.httpserver`, JDK) — l'URI
+  `http://localhost:8765/` doit être enregistrée sur le client OAuth.
+. **D4** — Secrets jamais loggés ; le token est écrit dans un fichier gitignoré.
+. **D5** — Seams injectables (`OAuthRedirectReceiver`, `HttpFormPoster`) → tests
+  sans navigateur ni réseau.
+. **D6** — Le plugin est **opt-in** : il n'ajoute qu'une tâche, aucun effet de bord.
+
+'''
+== Usage (consommateur)
+
+[source,kotlin]
+----
+plugins { id("education.cccp.video.auth") version "0.0.1" }
+youtubeAuth {
+    credentialsFile.set("youtube.yaml")   // gitignore, porte clientId/clientSecret
+    port.set(8765)                        // URI de redirection a enregistrer : http://localhost:8765/
+}
+----
+[source,shell]
+----
+./gradlew obtainYouTubeRefreshToken
+----
