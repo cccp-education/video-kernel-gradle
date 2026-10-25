@@ -28,11 +28,19 @@ fun interface OAuthRedirectReceiver {
 /**
  * A [OAuthRedirectReceiver] backed by the JDK HTTP server (`com.sun.net.httpserver`,
  * no dependency), listening on `127.0.0.1:<port>`.
+ *
+ * @param serverFactory seam over server creation (default binds `127.0.0.1:<port>`).
+ *   Tests inject an **already-bound** server (port `0`) so the port is known
+ *   atomically — no probe/rebind race between the free-port lookup and the bind.
  */
-class LoopbackOAuthReceiver : OAuthRedirectReceiver {
+class LoopbackOAuthReceiver(
+    private val serverFactory: (Int) -> HttpServer = { port ->
+        HttpServer.create(InetSocketAddress("127.0.0.1", port), 0)
+    },
+) : OAuthRedirectReceiver {
 
     override fun awaitCode(port: Int, timeoutMillis: Long): String? {
-        val server = HttpServer.create(InetSocketAddress("127.0.0.1", port), 0)
+        val server = serverFactory(port)
         val latch = CountDownLatch(1)
         val captured = AtomicReference<String?>(null)
         server.createContext("/") { exchange ->

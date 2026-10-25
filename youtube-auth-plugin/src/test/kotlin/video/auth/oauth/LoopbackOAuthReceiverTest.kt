@@ -1,6 +1,7 @@
 package video.auth.oauth
 
-import java.net.ServerSocket
+import com.sun.net.httpserver.HttpServer
+import java.net.InetSocketAddress
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -36,70 +37,61 @@ class LoopbackOAuthReceiverTest {
 
     @Test
     fun `captures the authorization code from a real loopback redirect`() {
-        withLoopback { port ->
-            val receiver = LoopbackOAuthReceiver()
-            val executor = Executors.newSingleThreadExecutor()
-            try {
-                val future = executor.submit<String?> { receiver.awaitCode(port, 10_000L) }
+        val bound = boundReceiver()
+        val executor = Executors.newSingleThreadExecutor()
+        try {
+            val future = executor.submit<String?> { bound.receiver.awaitCode(bound.port, 10_000L) }
 
-                val response = getWithRetry("http://127.0.0.1:$port/?code=THE_CODE&scope=x")
-                assertThat(response.statusCode()).isEqualTo(200)
-                assertThat(future.get(10, TimeUnit.SECONDS)).isEqualTo("THE_CODE")
-            } finally {
-                executor.shutdownNow()
-            }
+            val response = getWithRetry("http://127.0.0.1:${bound.port}/?code=THE_CODE&scope=x")
+            assertThat(response.statusCode()).isEqualTo(200)
+            assertThat(future.get(10, TimeUnit.SECONDS)).isEqualTo("THE_CODE")
+        } finally {
+            executor.shutdownNow()
         }
     }
 
     @Test
     fun `a request without an authorization result does not end the wait`() {
-        withLoopback { port ->
-            val receiver = LoopbackOAuthReceiver()
-            val executor = Executors.newSingleThreadExecutor()
-            try {
-                val future = executor.submit<String?> { receiver.awaitCode(port, 10_000L) }
+        val bound = boundReceiver()
+        val executor = Executors.newSingleThreadExecutor()
+        try {
+            val future = executor.submit<String?> { bound.receiver.awaitCode(bound.port, 10_000L) }
 
-                // A favicon-like request (no code/error) must NOT unblock us with a null.
-                assertThat(getWithRetry("http://127.0.0.1:$port/favicon.ico").statusCode()).isEqualTo(200)
-                assertThat(future.isDone).isFalse()
+            // A favicon-like request (no code/error) must NOT unblock us with a null.
+            assertThat(getWithRetry("http://127.0.0.1:${bound.port}/favicon.ico").statusCode()).isEqualTo(200)
+            assertThat(future.isDone).isFalse()
 
-                // The real redirect then unblocks it with the code.
-                assertThat(getWithRetry("http://127.0.0.1:$port/?code=REAL").statusCode()).isEqualTo(200)
-                assertThat(future.get(5, TimeUnit.SECONDS)).isEqualTo("REAL")
-            } finally {
-                executor.shutdownNow()
-            }
+            // The real redirect then unblocks it with the code.
+            assertThat(getWithRetry("http://127.0.0.1:${bound.port}/?code=REAL").statusCode()).isEqualTo(200)
+            assertThat(future.get(5, TimeUnit.SECONDS)).isEqualTo("REAL")
+        } finally {
+            executor.shutdownNow()
         }
     }
 
     @Test
     fun `a timeout returns null`() {
-        val port = ServerSocket(0).use { it.localPort }
+        val bound = boundReceiver()
 
-        val code = LoopbackOAuthReceiver().awaitCode(port, 200L)
+        val code = bound.receiver.awaitCode(bound.port, 200L)
 
         assertThat(code).isNull()
     }
 
     /**
-     * Runs a loopback roundtrip on a free port, retrying the whole scenario when
-     * the port could not be re-bound (the `ServerSocket(0)` probe releases the
-     * port before `HttpServer` claims it — a rare, environment-dependent race on
-     * busy CI runners). Only infrastructure errors are retried; an assertion
-     * failure (a real defect) propagates immediately.
+     * An **already-bound** loopback server (ephemeral port `0`), so the port is
+     * known atomically: no `ServerSocket(0)` probe released before `HttpServer`
+     * claims it (the probe/rebind race that made the roundtrips flaky on busy CI
+     * runners, S-002 CI feedback).
      */
-    private fun withLoopback(block: (Int) -> Unit) {
-        var lastFailure: Exception? = null
-        repeat(3) {
-            val port = ServerSocket(0).use { it.localPort }
-            try {
-                block(port)
-                return
-            } catch (e: Exception) {
-                lastFailure = e
-            }
-        }
-        throw lastFailure ?: IllegalStateException("loopback roundtrip could not bind a free port")
+    private class BoundReceiver(val receiver: LoopbackOAuthReceiver, val port: Int)
+
+    private fun boundReceiver(): BoundReceiver {
+        val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
+        return BoundReceiver(
+            receiver = LoopbackOAuthReceiver(serverFactory = { server }),
+            port = server.address.port,
+        )
     }
 
     private fun getWithRetry(url: String, attempts: Int = 20): HttpResponse<String> {
