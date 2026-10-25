@@ -37,6 +37,14 @@ the wait` (serveur loopback réel sur port éphémère, deux requêtes successiv
 assertion que le futur n'est pas terminé après la requête parasite puis qu'il
 reçoit bien `REAL`).
 
+**Durcissement CI (même session)** : le premier run CI du correctif a révélé un
+test loopback **flaky** (`ConnectException` — la sonde `ServerSocket(0)` libère
+le port avant que `HttpServer` ne le reprenne). Les deux roundtrips passent
+désormais par un helper `withLoopback` qui **rejoue le scénario** sur un nouveau
+port en cas d'erreur d'infrastructure (une assertion en échec — vrai défaut —
+n'est jamais rejouée), et ciblent `127.0.0.1` (adresse réellement bindée) plutôt
+que `localhost` (résolution IPv4/IPv6 dépendante de l'hôte).
+
 Les niveaux supérieurs restent inchangés et pertinents :
 
 * **BDD** (`youtube_auth.feature`) — domaine pur (URL de consentement, parseur,

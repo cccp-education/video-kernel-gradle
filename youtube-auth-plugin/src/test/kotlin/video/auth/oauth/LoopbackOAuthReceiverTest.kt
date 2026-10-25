@@ -36,37 +36,39 @@ class LoopbackOAuthReceiverTest {
 
     @Test
     fun `captures the authorization code from a real loopback redirect`() {
-        val port = ServerSocket(0).use { it.localPort }
-        val receiver = LoopbackOAuthReceiver()
-        val executor = Executors.newSingleThreadExecutor()
-        try {
-            val future = executor.submit<String?> { receiver.awaitCode(port, 10_000L) }
+        withLoopback { port ->
+            val receiver = LoopbackOAuthReceiver()
+            val executor = Executors.newSingleThreadExecutor()
+            try {
+                val future = executor.submit<String?> { receiver.awaitCode(port, 10_000L) }
 
-            val response = getWithRetry("http://localhost:$port/?code=THE_CODE&scope=x")
-            assertThat(response.statusCode()).isEqualTo(200)
-            assertThat(future.get(10, TimeUnit.SECONDS)).isEqualTo("THE_CODE")
-        } finally {
-            executor.shutdownNow()
+                val response = getWithRetry("http://127.0.0.1:$port/?code=THE_CODE&scope=x")
+                assertThat(response.statusCode()).isEqualTo(200)
+                assertThat(future.get(10, TimeUnit.SECONDS)).isEqualTo("THE_CODE")
+            } finally {
+                executor.shutdownNow()
+            }
         }
     }
 
     @Test
     fun `a request without an authorization result does not end the wait`() {
-        val port = ServerSocket(0).use { it.localPort }
-        val receiver = LoopbackOAuthReceiver()
-        val executor = Executors.newSingleThreadExecutor()
-        try {
-            val future = executor.submit<String?> { receiver.awaitCode(port, 10_000L) }
+        withLoopback { port ->
+            val receiver = LoopbackOAuthReceiver()
+            val executor = Executors.newSingleThreadExecutor()
+            try {
+                val future = executor.submit<String?> { receiver.awaitCode(port, 10_000L) }
 
-            // A favicon-like request (no code/error) must NOT unblock us with a null.
-            assertThat(getWithRetry("http://localhost:$port/favicon.ico").statusCode()).isEqualTo(200)
-            assertThat(future.isDone).isFalse()
+                // A favicon-like request (no code/error) must NOT unblock us with a null.
+                assertThat(getWithRetry("http://127.0.0.1:$port/favicon.ico").statusCode()).isEqualTo(200)
+                assertThat(future.isDone).isFalse()
 
-            // The real redirect then unblocks it with the code.
-            assertThat(getWithRetry("http://localhost:$port/?code=REAL").statusCode()).isEqualTo(200)
-            assertThat(future.get(5, TimeUnit.SECONDS)).isEqualTo("REAL")
-        } finally {
-            executor.shutdownNow()
+                // The real redirect then unblocks it with the code.
+                assertThat(getWithRetry("http://127.0.0.1:$port/?code=REAL").statusCode()).isEqualTo(200)
+                assertThat(future.get(5, TimeUnit.SECONDS)).isEqualTo("REAL")
+            } finally {
+                executor.shutdownNow()
+            }
         }
     }
 
@@ -77,6 +79,27 @@ class LoopbackOAuthReceiverTest {
         val code = LoopbackOAuthReceiver().awaitCode(port, 200L)
 
         assertThat(code).isNull()
+    }
+
+    /**
+     * Runs a loopback roundtrip on a free port, retrying the whole scenario when
+     * the port could not be re-bound (the `ServerSocket(0)` probe releases the
+     * port before `HttpServer` claims it — a rare, environment-dependent race on
+     * busy CI runners). Only infrastructure errors are retried; an assertion
+     * failure (a real defect) propagates immediately.
+     */
+    private fun withLoopback(block: (Int) -> Unit) {
+        var lastFailure: Exception? = null
+        repeat(3) {
+            val port = ServerSocket(0).use { it.localPort }
+            try {
+                block(port)
+                return
+            } catch (e: Exception) {
+                lastFailure = e
+            }
+        }
+        throw lastFailure ?: IllegalStateException("loopback roundtrip could not bind a free port")
     }
 
     private fun getWithRetry(url: String, attempts: Int = 20): HttpResponse<String> {
