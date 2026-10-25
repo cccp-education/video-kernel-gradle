@@ -51,6 +51,26 @@ class LoopbackOAuthReceiverTest {
     }
 
     @Test
+    fun `a request without an authorization result does not end the wait`() {
+        val port = ServerSocket(0).use { it.localPort }
+        val receiver = LoopbackOAuthReceiver()
+        val executor = Executors.newSingleThreadExecutor()
+        try {
+            val future = executor.submit<String?> { receiver.awaitCode(port, 10_000L) }
+
+            // A favicon-like request (no code/error) must NOT unblock us with a null.
+            assertThat(getWithRetry("http://localhost:$port/favicon.ico").statusCode()).isEqualTo(200)
+            assertThat(future.isDone).isFalse()
+
+            // The real redirect then unblocks it with the code.
+            assertThat(getWithRetry("http://localhost:$port/?code=REAL").statusCode()).isEqualTo(200)
+            assertThat(future.get(5, TimeUnit.SECONDS)).isEqualTo("REAL")
+        } finally {
+            executor.shutdownNow()
+        }
+    }
+
+    @Test
     fun `a timeout returns null`() {
         val port = ServerSocket(0).use { it.localPort }
 

@@ -9,7 +9,7 @@ plugins {
 
 group = "education.cccp"
 // HF-YOUTUBE-AUTH — first release.
-version = "0.0.1"
+version = "0.0.2"
 
 repositories {
     mavenCentral()

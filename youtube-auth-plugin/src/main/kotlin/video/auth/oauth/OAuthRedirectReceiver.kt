@@ -37,14 +37,24 @@ class LoopbackOAuthReceiver : OAuthRedirectReceiver {
         val captured = AtomicReference<String?>(null)
         server.createContext("/") { exchange ->
             val params = parseQuery(exchange.requestURI.rawQuery ?: "")
-            captured.set(params["code"] ?: params["error"])
-            val html = "<!doctype html><html><body><h2>Authorization received.</h2>" +
-                "<p>You can close this tab and return to the terminal.</p></body></html>"
+            val result = params["code"] ?: params["error"]
+            // Only a request actually carrying the authorization result (a `code`
+            // or an `error`) completes the wait — a stray request without a query
+            // (e.g. `/favicon.ico`) must NOT unblock us with a `null` result.
+            if (result != null) {
+                captured.set(result)
+                latch.countDown()
+            }
+            val html = if (result != null) {
+                "<!doctype html><html><body><h2>Authorization received.</h2>" +
+                    "<p>You can close this tab and return to the terminal.</p></body></html>"
+            } else {
+                "<!doctype html><html><body><p>Waiting for the authorization redirect…</p></body></html>"
+            }
             val bytes = html.toByteArray(StandardCharsets.UTF_8)
             exchange.responseHeaders.add("Content-Type", "text/html; charset=utf-8")
             exchange.sendResponseHeaders(200, bytes.size.toLong())
             exchange.responseBody.use { it.write(bytes) }
-            latch.countDown()
         }
         server.start()
         val received = try {
