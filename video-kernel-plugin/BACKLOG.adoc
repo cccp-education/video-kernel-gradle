@@ -1,7 +1,7 @@
 = BACKLOG — video-kernel
-:last_update: 2026-10-16 (S-197 — `video.kernel.publish` : `VideoPublisher` + modèle de publication, EPIC `HF-YOUTUBE-PUBLISH` US-1 ; `0.4.0 → 0.5.0` additif, non publié.)
+:last_update: 2026-10-17 (S-198 — `youtube-auth-plugin 0.0.2` : loopback OAuth hardening, module non publié. Noyau `video.kernel` inchangé — `0.5.0` Central.)
 
-== 🟡 Port de publication `VideoPublisher` — EPIC HF-YOUTUBE-PUBLISH US-1 (S-197)
+== ✅ Port de publication `VideoPublisher` — EPIC HF-YOUTUBE-PUBLISH US-1 (S-197)
 
 _Décision_ : la publication est une **capacité vidéo partagée** (2 moteurs :
 hyperframes + capsule) → contrat neutre au noyau, adaptateur réseau en N2
@@ -18,9 +18,25 @@ hyperframes + capsule) → contrat neutre au noyau, adaptateur réseau en N2
 | US-1b | Publication `video-kernel 0.5.0` Central (bundle `85598927`). | ✅ S-197
 |===
 
-_Consommateurs_ : hyperframes (US-2, adaptateur `YouTubeDataApiPublisher`),
-capsule (US-3, adoption `VideoDescriptionBuilder`/`YouTubeChaptersFormatter`).
+_Consommateurs_ : hyperframes (US-2, adaptateur `YouTubeDataApiPublisher` ✅ S-035),
+capsule (US-3a/3b, adoption + adaptateur ✅ S-205/S-206), BDD parité des deux moteurs
+✅ S-207. Reste de l'EPIC transverse : dogfooding réel (accord pilote) + module partagé
+`PUBLISH-ADAPTER-N1`.
 _Cadrage transverse_ : `hyperframes-gradle/.../.agents/CADRAGE_EPIC_HF_YOUTUBE_PUBLISH.adoc`.
+
+== 🟡 `youtube-auth-plugin` — tâche d'obtention du refresh token (S-001 → S-002)
+
+_Module frère_ (le noyau reste pur) : plugin `education.cccp.video.auth`, tâche
+`obtainYouTubeRefreshToken` (flux OAuth 2.0 loopback) → écrit le refresh token dans
+un `youtube.yaml` gitignoré. **0.0.2** (non publié).
+
+|===
+| US | Livrable | Statut
+| US-1 | Domaine pur `video.auth` (consent URL, parseur, réécriture) + unit + BDD | ✅ S-001
+| US-2 | Plugin + tâche + TestKit | ✅ S-001
+| US-2b | Loopback hardening (`/favicon.ico` ne termine plus l'attente ; latch décrémenté après l'écriture de la réponse ; seam `serverFactory` port déterministe) + `0.0.2` | ✅ S-002
+| US-3 | Publication Central + adoption consommateurs | 🟡 À FAIRE
+|===
 
 == ✅ VK-4 — Ports de capacités partagées au noyau (S-195 + S-196, clos)
 
