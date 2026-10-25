@@ -37,16 +37,21 @@ the wait` (serveur loopback réel sur port éphémère, deux requêtes successiv
 assertion que le futur n'est pas terminé après la requête parasite puis qu'il
 reçoit bien `REAL`).
 
-**Durcissement CI (même session)** : le run CI du correctif a révélé un test
-loopback **non déterministe** (`ConnectException`) — la sonde `ServerSocket(0)`
-libère le port avant que `HttpServer` ne le reprenne (course probe→bind ; un
-retry ne suffisait pas). Correctif structurel : un **seam `serverFactory`** sur
-`LoopbackOAuthReceiver` (défaut inchangé : bind `127.0.0.1:<port>`) permet aux
-tests d'injecter un serveur **déjà bindé sur le port 0** — le port est donc connu
-atomiquement (`server.address.port`), sans sonde préalable. Les roundtrips
-ciblent `127.0.0.1` (adresse réellement bindée) plutôt que `localhost`
-(résolution IPv4/IPv6 dépendante de l'hôte). Le seam respecte la philosophie du
-module (« seams injectables ») ; la production est inchangée par défaut.
+**Second défaut réel (même session, révélé par la CI)** : le run CI du correctif a
+révélé un `ConnectException` **déterministe** sur le roundtrip. Diagnostic (harnais
+JVM hors tests projet) : `latch.countDown()` était appelé **avant** l'écriture de
+la réponse ; le thread appelant se réveille alors, `awaitCode` exécute
+`server.stop(0)`, qui **coupe la connexion en cours** avant que le client n'ait lu
+la réponse (mesure : 30/30 échecs en countDown-avant-écriture, 0/30 après).
+Correctif : compter le latch **après** l'écriture complète du corps. C'est un
+défaut de production (l'onglet du navigateur peut voir une connexion coupée),
+pas seulement un artefact de test.
+
+**Seam de port** : `LoopbackOAuthReceiver` expose aussi un `serverFactory`
+(défaut inchangé : bind `127.0.0.1:<port>`) ; les tests injectent un serveur
+**déjà bindé sur le port 0** (`server.address.port`), supprimant la course
+probe→bind de `ServerSocket(0)`. Les roundtrips ciblent `127.0.0.1` plutôt que
+`localhost` (résolution IPv4/IPv6 dépendante de l'hôte).
 
 Les niveaux supérieurs restent inchangés et pertinents :
 

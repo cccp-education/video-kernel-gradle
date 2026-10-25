@@ -46,13 +46,6 @@ class LoopbackOAuthReceiver(
         server.createContext("/") { exchange ->
             val params = parseQuery(exchange.requestURI.rawQuery ?: "")
             val result = params["code"] ?: params["error"]
-            // Only a request actually carrying the authorization result (a `code`
-            // or an `error`) completes the wait — a stray request without a query
-            // (e.g. `/favicon.ico`) must NOT unblock us with a `null` result.
-            if (result != null) {
-                captured.set(result)
-                latch.countDown()
-            }
             val html = if (result != null) {
                 "<!doctype html><html><body><h2>Authorization received.</h2>" +
                     "<p>You can close this tab and return to the terminal.</p></body></html>"
@@ -63,6 +56,18 @@ class LoopbackOAuthReceiver(
             exchange.responseHeaders.add("Content-Type", "text/html; charset=utf-8")
             exchange.sendResponseHeaders(200, bytes.size.toLong())
             exchange.responseBody.use { it.write(bytes) }
+            // Only a request actually carrying the authorization result (a `code`
+            // or an `error`) completes the wait — a stray request without a result
+            // (e.g. `/favicon.ico`) must NOT unblock us with a `null` value.
+            //
+            // Count down AFTER the response is fully written: the caller stops the
+            // server as soon as it wakes up, and a stop() racing an in-flight
+            // response closes the connection before the client reads it (CI showed
+            // a deterministic ConnectException on the roundtrip test).
+            if (result != null) {
+                captured.set(result)
+                latch.countDown()
+            }
         }
         server.start()
         val received = try {
