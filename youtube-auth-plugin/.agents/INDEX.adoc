@@ -4,7 +4,7 @@
 _Règles absolues_ : voir `AGENT.adoc`
 _DAG_ : N1 — plugin Gradle utilitaire (tâche d'obtention du refresh token YouTube)
 _Coordonnées_ : `education.cccp:youtube-auth-plugin` (plugin id `education.cccp.video.auth`) — **non publié** (US-3)
-_Dernière mise à jour_ : 2026-10-16 (S-001 — création du module + US-1/US-2)
+_Dernière mise à jour_ : 2026-10-17 (S-002 — loopback hardening : une requête sans `code`/`error` ne termine plus l'attente)
 
 == Portée
 
@@ -20,6 +20,7 @@ _Dernière mise à jour_ : 2026-10-16 (S-001 — création du module + US-1/US-2
 | US-0 | Cadrage | ✅ S-001
 | US-1 | Domaine pur + unit + Cucumber | ✅ S-001
 | US-2 | Plugin + tâche + TestKit | ✅ S-001
+| US-2b | Loopback hardening (stray request must not end the wait) + `0.0.2` | ✅ S-002
 | US-3 | Publication Central + adoption bakery/capsule | 🟡 À FAIRE
 |===
 

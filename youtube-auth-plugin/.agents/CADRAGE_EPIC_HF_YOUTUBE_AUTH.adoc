@@ -2,7 +2,7 @@
 :toc:
 :_session_: S-001
 :_pilote_: video-kernel (N1) — plugin `youtube-auth-plugin`
-:_statut_: 🟡 CADRÉ + US-1/US-2 livrés (S-001)
+:_statut_: 🟡 CADRÉ + US-1/US-2 livrés (S-001) + US-2b loopback hardening (S-002)
 
 '''
 == Objectif
@@ -55,6 +55,8 @@ les seams (`OAuthRedirectReceiver`, `HttpFormPoster`) sont injectables.*
   `CredentialsFileRewriter` + tests unit + BDD Cucumber. | ✅ S-001 | M
 | US-2 | Plugin + tâche `obtainYouTubeRefreshToken` (loopback OAuth) + extension
   `youtubeAuth {}` + seams + test fonctionnel TestKit. | ✅ S-001 | L
+| US-2b | Loopback hardening — une requête sans `code`/`error` (ex. `/favicon.ico`)
+  ne termine plus l'attente ; page « waiting » pour la requête parasite. `0.0.1 → 0.0.2`. | ✅ S-002 | S
 | US-3 | Publication `education.cccp:youtube-auth-plugin` (Central) + adoption
   bakery/capsule. | 🟡 À FAIRE | S
 |===

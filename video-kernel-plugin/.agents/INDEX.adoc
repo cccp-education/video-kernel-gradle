@@ -3,10 +3,10 @@
 
 _Règles absolues_ : voir `AGENT.adoc`
 _DAG_ : N1 — lib utilitaire partagée (noyau vidéo engine-agnostique)
-_Coordonnées_ : `education.cccp:video-kernel:0.4.0` (package neutre `video.kernel.*`, **publié Maven Central**, bundle `695c4ccd`)
+_Coordonnées_ : `education.cccp:video-kernel:0.5.0` (package neutre `video.kernel.*`, **publié Maven Central**, bundle `85598927`)
 
- _Derniere mise a jour_ : 2026-10-16 (S-197 — **Port partagé `VideoPublisher` + modèle de publication** (`video.kernel.publish`, EPIC `HF-YOUTUBE-PUBLISH` US-1/1b, transverse hyperframes/capsule) : `VideoPublication`/`VideoChapter`/`VideoLink(s)`/`VideoVisibility`/`VideoPublicationValidator`/`VideoDescriptionComposer`/`VideoPublisher`+`VideoPublicationResult` ; `0.4.0 → 0.5.0` additif, manifeste d'API +14 types, **publié Central (bundle `85598927`)**.)
- _Derniere session terminee_ : 197.
+ _Derniere mise a jour_ : 2026-10-17 (S-198 — **`youtube-auth-plugin 0.0.2` — loopback OAuth hardening** : une requête parasite sans résultat d'autorisation (`/favicon.ico`) ne termine plus l'attente ; page « waiting » ; test loopback réel. Module non publié. Noyau `video.kernel` inchangé — `0.5.0` Central.)
+ _Derniere session terminee_ : 198 (module `youtube-auth-plugin`) — noyau inchangé depuis 197.
  _Depot_ : `https://github.com/cccp-education/video-kernel-gradle.git`.
  _Prochaine session_ : 198 — alignement MEMPHIS `workspace-bom`/`workspace-catalog` (`video-kernel 0.5.0`, non bloquant) ; sinon au choix pilote.
 

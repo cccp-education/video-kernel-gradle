@@ -1,0 +1,63 @@
+= Session 002 — Loopback OAuth hardening (stray request must not end the wait)
+:session: 002
+:date: 2026-10-17
+:borough: video-kernel — module `youtube-auth-plugin`
+:epic: HF-YOUTUBE-AUTH
+:statut: ✅ TERMINÉE
+
+'''
+== Déclencheur — dogfooding réel du flux loopback
+
+Le dogfooding du flux `obtainYouTubeRefreshToken` (pilote, `youtube.yaml` généré
+sur les deux consommateurs hyperframes et capsule) a révélé un défaut du
+récepteur loopback : le compteur de synchronisation (`CountDownLatch`) était
+décrémenté pour **toute** requête HTTP reçue. Or un navigateur émet des requêtes
+parasites sans résultat d'autorisation — typiquement `/favicon.ico` — juste après
+l'ouverture de la page de consentement.
+
+Conséquence : `awaitCode` pouvait retourner `null` **avant** la vraie redirection
+`?code=…`, et la tâche concluait à un échec d'autorisation alors que le jeton
+était sur le point d'arriver.
+
+'''
+== Correctif (DDD/TDD)
+
+* Le résultat n'est enregistré et le latch décrémenté **que** si la requête porte
+  réellement `code` ou `error` (`OAuthRedirectReceiver.kt`).
+* Une requête sans résultat reçoit une page « Waiting for the authorization
+  redirect… » et **ne débloque pas** l'attente.
+* Version du module `0.0.1 → 0.0.2` (le module reste **non publié** — US-3).
+
+=== Niveau de test — pourquoi unitaire
+
+Le défaut vit dans l'**adapter N2** (`LoopbackOAuthReceiver`, JDK `HttpServer`),
+pas dans le domaine pur `video.auth`. Le bon niveau est donc un test unitaire
+d'intégration locale : `a request without an authorization result does not end
+the wait` (serveur loopback réel sur port éphémère, deux requêtes successives,
+assertion que le futur n'est pas terminé après la requête parasite puis qu'il
+reçoit bien `REAL`).
+
+Les niveaux supérieurs restent inchangés et pertinents :
+
+* **BDD** (`youtube_auth.feature`) — domaine pur (URL de consentement, parseur,
+  réécriture du fichier) ; le flux navigateur est, par construction, la seule
+  étape non testable.
+* **Fonctionnel** (`YouTubeAuthFunctionalTest`, TestKit) — enregistrement de la
+  tâche et extension.
+
+'''
+== Vérification
+
+* `Local = Build, Tests = CI` : la matrice CI `test.yml` (jobs `video-kernel` et
+  `youtube-auth`) exécute `./gradlew build` sur le module — unit + Cucumber.
+* Aucun secret commité : `youtube.yaml` et `client_secret_*.json` sont gitignorés.
+
+'''
+== Reste
+
+* **US-3** — publication Central `education.cccp:youtube-auth-plugin` (accord
+  pilote) + adoption par hyperframes/capsule (aujourd'hui : tâche lancée depuis le
+  dépôt video-kernel avec les credentials du consommateur).
+* **Dogfooding de publication** — `publishCapsuleToYouTube` /
+  `publishHyperframesToYouTube` réels (accord pilote explicite ; le présent
+  correctif lève le défaut qui rendait l'obtention du token fragile).
