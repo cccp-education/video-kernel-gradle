@@ -1,0 +1,127 @@
+= Session 199 — VK-4 US-4e — primitives audio partagées (RmsEnvelope + AudioSilenceDetector)
+:session: 199
+:date: 2026-10-31
+:borough: video-kernel
+:status: ✅ TERMINÉE
+:pattern: baby-step DDD/TDD/BDD (unit N1 + BDD consommateur + functional)
+:scope: transverse video-kernel + capsule + hyperframes + MEMPHIS
+
+== Mission
+
+Promouvoir au noyau N1 les deux primitives audio **pures** qui ont maintenant
+**deux consommateurs réels** :
+
+* `capsule` — `verifyCapsuleVoice` (take muet, S-209) ;
+* `hyperframes` — `generateHyperframesNarration` (narration muette).
+
+Le noyau porte la **décision** (`AudioSilenceDetector`) et la **normalisation**
+(`RmsEnvelope`) ; chaque moteur garde son décodage ffmpeg en N2.
+
+== Constat (audit)
+
+* `capsule.voice.AudioSilenceDetector`, `SilenceAnalysis`, `RmsEnvelope` étaient
+  des copies locales (S-209).
+* `hyperframes` n'avait aucune vérification de silence sur ses narrations
+  `narration-<n>.wav` — un TTS NoOp/cassé restait invisible.
+* La doctrine « factoriser à 2 » (amendement S-195) est satisfaite : deux
+  moteurs, deux usages réels.
+* Le noyau interdit `ProcessBuilder` (`video.ci.KernelBoundaryAudit`) : les
+  décodeurs restent N2.
+
+== Décisions
+
+. **Package `video.kernel.audio`** : `RmsEnvelope`, `AudioSilenceDetector`,
+   `SilenceAnalysis`.
+. **Version `0.5.0 → 0.6.0`** (additif), manifeste d'API **+3 types**.
+. **Capsule adopte directement** : les copies locales sont supprimées, les
+   imports basculent sur `video.kernel.audio.*`.
+. **Hyperframes devient 2ᵉ consommateur** : `AudioEnvelopeProbe` (N2 ffmpeg) +
+   `NarrationSilenceCheck` (pur) + warning dans `generateHyperframesNarration`.
+. **DAG** : `video-kernel 0.6.0` → MEMPHIS `0.0.112` → capsule + hyperframes.
+. **Aucun changement de comportement** pour les consommateurs existants : le
+   détecteur est identique, seul le package change.
+
+== Baby-step DDD/TDD/BDD
+
+=== RED (preuve)
+
+Tests écrits avant les types N1 :
+
+* `src/test/kotlin/video/kernel/audio/RmsEnvelopeTest.kt` (5 tests) ;
+* `src/test/kotlin/video/kernel/audio/AudioSilenceDetectorTest.kt` (7 tests) ;
+* `KernelApiSurface`/`KernelApiStabilityTest` étendus (+3 types, +3 tests).
+
+Preuve RED : `compileTestKotlin` → `Unresolved reference 'RmsEnvelope'`,
+`'AudioSilenceDetector'`.
+
+=== GREEN (noyau)
+
+* `RmsEnvelope.framesFromPcm` (PCM s16le → RMS par frame, pure) ;
+* `AudioSilenceDetector.analyze` + `SilenceAnalysis` (pic RMS, seuil `0.001`,
+  envelope vide = silence, `silentFraction` diagnostique) ;
+* manifeste d'API `0.6.0` + tests de gel.
+
+=== Adoption capsule
+
+* suppression de `capsule/voice/AudioSilenceDetector.kt` et
+  `capsule/voice/RmsEnvelope.kt` ;
+* `AudioEnvelopeExtractor`, `VoiceQuality`, `VoiceVerifier`, tests → imports
+  `video.kernel.audio.*` ;
+* `video-kernel 0.5.0 → 0.6.0`, BOM `0.0.107 → 0.0.112`.
+
+=== Adoption hyperframes (2ᵉ consommateur)
+
+* `hyperframes.post.AudioEnvelopeProbe` (N2 ffmpeg, `-y` obligatoire) ;
+* `hyperframes.post.NarrationSilenceCheck` (pur, injecte la sonde) ;
+* `GenerateHyperframesNarrationTask` : warning `narration is silent` par take
+  muet, jamais fatal (la sonde absente n'est jamais lue comme « propre ») ;
+* tests : `AudioEnvelopeProbeTest` (3 unit), `NarrationSilenceCheckTest` (4
+  unit), `AudioEnvelopeProbeIntegrationTest` (ffmpeg réel, skip-gardé),
+  `narration_silence.feature` (4 scénarios BDD), TestKit
+  `generateHyperframesNarration warns when an existing take is silent` ;
+* `video-kernel 0.6.0`, catalogue/BOM `0.0.112`.
+
+== Publication / propagation
+
+[cols="2,3,2", options="header"]
+|===
+| Artefact | Bundle / preuve | Statut
+| `education.cccp:video-kernel:0.6.0` | Central `9911e841-8e51-4af3-b495-77c50550938c` | ✅ publié
+| MEMPHIS `workspace-bom/catalog:0.0.112` | Central `e8f32286-5a11-43d2-b5b1-98a619f04f04` | ✅ publié
+| Propagation repo1 | `video-kernel 0.6.0` 200 ; BOM/catalog `0.0.112` 200 | ✅
+|===
+
+== Gates locaux (Local = Build)
+
+[source,shell]
+----
+# video-kernel
+./gradlew compileKotlin compileTestKotlin publishToMavenLocal
+# MEMPHIS
+./gradlew publishToMavenLocal
+# capsule
+./gradlew compileKotlin compileTestKotlin compileFunctionalTestKotlin
+# hyperframes
+./gradlew compileKotlin compileTestKotlin compileFunctionalTestKotlin
+----
+
+Tous **BUILD SUCCESSFUL**. Les suites s'exécutent en CI (règle EAGER).
+
+== Fichiers
+
+[cols="1,3", options="header"]
+|===
+| Borough | Fichiers
+| video-kernel | `audio/RmsEnvelope.kt`, `audio/AudioSilenceDetector.kt` (créés), `KernelApiSurface`, `KernelApiStabilityTest`, `build.gradle.kts` (0.6.0), tests audio
+| capsule | suppression des 2 copies locales, imports N1, toml `0.6.0`/`0.0.112`
+| hyperframes | `post/AudioEnvelopeProbe.kt`, `post/NarrationSilenceCheck.kt`, `GenerateHyperframesNarrationTask`, `HyperframesPlugin`, tests/BDD/TestKit, pins `0.0.112`
+| MEMPHIS | `libs.versions.toml` (`0.0.112`, `video-kernel 0.6.0`), garde d'alignement
+|===
+
+== Suite
+
+* CI des trois boroughs sur le commit poussé (video-kernel, MEMPHIS, capsule,
+  hyperframes).
+* Aucune publication supplémentaire (capsule/hyperframes non bumpés — le code
+  consommateur change, pas leur version publiée).
+* YouTube reste gelé.

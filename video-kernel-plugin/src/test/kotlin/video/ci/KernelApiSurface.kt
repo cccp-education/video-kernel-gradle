@@ -14,6 +14,9 @@ import video.kernel.VideoProductionPlan
 import video.kernel.VideoRenderRequest
 import video.kernel.VideoRenderResult
 import video.kernel.VisualSource
+import video.kernel.audio.AudioSilenceDetector
+import video.kernel.audio.RmsEnvelope
+import video.kernel.audio.SilenceAnalysis
 import video.kernel.publish.VideoChapter
 import video.kernel.publish.VideoDescriptionComposer
 import video.kernel.publish.VideoLink
@@ -33,7 +36,7 @@ import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 
 /**
- * Frozen public API surface of the engine-neutral kernel (0.5.0).
+ * Frozen public API surface of the engine-neutral kernel (0.6.0).
  *
  * The 0.0.3 contract is proven by two engines (capsule/reveal.js and
  * hyperframes/Watts), frozen as **0.1.0** and promoted to the neutral
@@ -44,9 +47,13 @@ import java.lang.reflect.Modifier
  * ([TextToSpeech], [AudioPostProduction] + [AudioPostSettings], [SubtitleBurnIn]).
  * **0.5.0** (HF-YOUTUBE-PUBLISH US-1) additively promotes the shared video
  * *publication* capability ([VideoPublisher] + `video.kernel.publish` model),
- * now that a second engine genuinely consumes it. Any change to the exported
- * types, the ports, or the model properties is a breaking change that must be
- * intentional (update this manifest in the same commit as the break).
+ * now that a second engine genuinely consumes it. **0.6.0** (VK-4 US-4e)
+ * additively promotes the shared **audio quality** primitives
+ * ([RmsEnvelope], [AudioSilenceDetector], [SilenceAnalysis]), consumed by
+ * capsule (`verifyCapsuleVoice`) and hyperframes (`generateHyperframesNarration`).
+ * Any change to the exported types, the ports, or the model properties is a
+ * breaking change that must be intentional (update this manifest in the same
+ * commit as the break).
  *
  * Reflection only — no `kotlin-reflect` dependency.
  */
@@ -86,6 +93,9 @@ object KernelApiSurface {
         VideoPublicationValidation::class.java,
         VideoPublicationValidator::class.java,
         VideoDescriptionComposer::class.java,
+        AudioSilenceDetector::class.java,
+        RmsEnvelope::class.java,
+        SilenceAnalysis::class.java,
     )
 
     /** Fully-qualified names of the exported types. */

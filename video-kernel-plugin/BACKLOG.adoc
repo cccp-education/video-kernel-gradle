@@ -1,5 +1,23 @@
 = BACKLOG — video-kernel
-:last_update: 2026-10-17 (S-198 — `youtube-auth-plugin 0.0.2` : loopback OAuth hardening, module non publié. Noyau `video.kernel` inchangé — `0.5.0` Central.)
+:last_update: 2026-10-31 (S-199 — VK-4 US-4e : `video.kernel.audio` (`RmsEnvelope` + `AudioSilenceDetector` + `SilenceAnalysis`), 2 consommateurs, `0.6.0` Central.)
+
+== ✅ VK-4 US-4e — primitives audio partagées (S-199)
+
+_Décision_ : les capacités audio **pures** sont promues au noyau (doctrine
+« factoriser à 2 », amendement S-195) dès lors que **deux moteurs** les
+consomment réellement :
+
+* capsule `verifyCapsuleVoice` (take muet, S-209) ;
+* hyperframes `generateHyperframesNarration` (narration muette, S-199).
+
+[cols="1,3,1", options="header"]
+|===
+| US | Livrable | Statut
+| US-4e | `video.kernel.audio.RmsEnvelope` (PCM s16le → RMS/frame) + `AudioSilenceDetector` + `SilenceAnalysis` (pic RMS, seuil `0.001`, envelope vide = silence). `0.5.0 → 0.6.0`, manifeste +3 types, tests N1. | ✅ S-199
+| US-4e-1 | Publication `video-kernel 0.6.0` Central (bundle `9911e841`) + MEMPHIS `0.0.112` + adoption capsule + hyperframes. | ✅ S-199
+|===
+
+_Rapport_ : `.agents/sessions/199-vk4-us4e-audio-quality-n1.adoc`.
 
 == ✅ Port de publication `VideoPublisher` — EPIC HF-YOUTUBE-PUBLISH US-1 (S-197)
 

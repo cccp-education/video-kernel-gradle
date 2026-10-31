@@ -13,6 +13,9 @@ import video.kernel.VideoProductionEntry
 import video.kernel.VideoProductionPlan
 import video.kernel.VideoRenderRequest
 import video.kernel.VideoRenderResult
+import video.kernel.audio.AudioSilenceDetector
+import video.kernel.audio.RmsEnvelope
+import video.kernel.audio.SilenceAnalysis
 import video.kernel.publish.VideoChapter
 import video.kernel.publish.VideoLink
 import video.kernel.publish.VideoLinks
@@ -36,16 +39,18 @@ import org.junit.jupiter.api.Test
  * additively promoted the shared duration-probe capability. **0.4.0** (VK-4
  * US-4b→d) additively promotes the shared post-production and narration ports.
  * **0.5.0** (HF-YOUTUBE-PUBLISH US-1) additively promotes the shared video
- * *publication* capability. This guard pins the exported types, the ports and
- * the model properties, so a breaking change to the public surface cannot slip
- * in silently — it must be a deliberate manifest edit.
+ * *publication* capability. **0.6.0** (VK-4 US-4e) additively promotes the
+ * shared audio-quality primitives (`RmsEnvelope`, `AudioSilenceDetector`).
+ * This guard pins the exported types, the ports and the model properties, so a
+ * breaking change to the public surface cannot slip in silently — it must be a
+ * deliberate manifest edit.
  *
  * See [KernelApiSurface] for the frozen surface.
  */
 class KernelApiStabilityTest {
 
     @Test
-    fun `the exported kernel type set is frozen at 0_5_0`() {
+    fun `the exported kernel type set is frozen at 0_6_0`() {
         assertThat(KernelApiSurface.typeNames())
             .containsExactlyInAnyOrder(
                 "video.kernel.VideoEngine",
@@ -80,6 +85,9 @@ class KernelApiStabilityTest {
                 "video.kernel.publish.VideoPublicationValidation",
                 "video.kernel.publish.VideoPublicationValidator",
                 "video.kernel.publish.VideoDescriptionComposer",
+                "video.kernel.audio.AudioSilenceDetector",
+                "video.kernel.audio.RmsEnvelope",
+                "video.kernel.audio.SilenceAnalysis",
             )
     }
 
@@ -203,5 +211,27 @@ class KernelApiStabilityTest {
 
         assertThat(KernelApiSurface.getterNames(VideoScript::class.java))
             .containsExactlyInAnyOrder("getName", "getSegments")
+    }
+
+    @Test
+    fun `the audio silence detector is frozen`() {
+        assertThat(KernelApiSurface.functionNames(AudioSilenceDetector::class.java))
+            .containsExactlyInAnyOrder("analyze")
+    }
+
+    @Test
+    fun `the rms envelope is frozen`() {
+        assertThat(KernelApiSurface.functionNames(RmsEnvelope::class.java))
+            .containsExactlyInAnyOrder("framesFromPcm")
+    }
+
+    @Test
+    fun `the silence analysis exposes the frozen property set`() {
+        assertThat(KernelApiSurface.getterNames(SilenceAnalysis::class.java))
+            .containsExactlyInAnyOrder(
+                "getTotalFrames", "getSilentFrames", "getPeakRms", "getThreshold", "getSilentFraction",
+            )
+        assertThat(KernelApiSurface.functionNames(SilenceAnalysis::class.java))
+            .contains("isSilent")
     }
 }
