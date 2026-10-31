@@ -18,7 +18,7 @@ Gradle. Un second moteur (HyperFrames) peut l'implémenter.
 == Règles Absolues
 
 . COMMITS/GIT — autorisés (décision pilote 2026-09-17), zéro secret commité.
-. PUBLISH — accord pilote requis (Règle 2 du workspace).
+. PUBLISH — accord pilote permanent, toujours granted (décision pilote 2026-10-31 ; Règle 2 du workspace révisée).
 . DAG N1 — importable par N2/N3, ne dépend d'aucun N2/N3.
 . ZÉRO secret/token/api key en dur.
 . **Frontière du noyau** — `video.kernel` n'importe que

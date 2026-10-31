@@ -10,7 +10,7 @@
 
 == Pendant la session
 
-. [ ] Règle 2 — PUBLISH = accord pilote uniquement
+. [ ] Règle 2 — PUBLISH = accord pilote permanent (toujours granted, décision 2026-10-31)
 . [ ] ZÉRO secret
 . [ ] Frontière du noyau (`video.ci.KernelBoundaryTest`) respectée
 . [ ] Local = Build, Tests = CI

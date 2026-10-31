@@ -52,7 +52,7 @@ Rapport `.agents/sessions/199-vk4-us4e-audio-quality-n1.adoc`.
 == Points d'attention
 
 * **Local = Build, Tests = CI** : jamais `test`/`check` local.
-* **Règle 2 — PUBLISH** : accord pilote requis (accord donné S-199 pour 0.6.0).
+* **Règle 2 — PUBLISH** : accord pilote permanent (toujours granted, décision 2026-10-31).
 * Frontière : `video.kernel` n'importe que `java/kotlin/contracts/video.kernel`
   (garde `video.ci.KernelBoundaryTest`) ; **interdit `processbuilder`**.
 * Stabilité : toute rupture = édition délibérée du manifeste `KernelApiSurface`.
