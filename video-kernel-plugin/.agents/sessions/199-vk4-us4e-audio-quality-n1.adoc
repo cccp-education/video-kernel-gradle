@@ -107,6 +107,16 @@ Preuve RED : `compileTestKotlin` → `Unresolved reference 'RmsEnvelope'`,
 
 Tous **BUILD SUCCESSFUL**. Les suites s'exécutent en CI (règle EAGER).
 
+=== Preuve CI
+
+|===
+| Workflow | Run | Résultat
+| video-kernel `Test` | `41214453154` | ✅
+| MEMPHIS `runAllTests` | `41214459791` | ✅ **21/21 jobs**
+| hyperframes `Test` | `41214467362` | ✅
+| capsule `Test` + `Full Tests` | `41214473820` / `41214473586` | ✅ **25/25 jobs**
+|===
+
 == Fichiers
 
 [cols="1,3", options="header"]
