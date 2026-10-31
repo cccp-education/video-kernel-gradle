@@ -16,6 +16,11 @@ import video.kernel.VideoRenderResult
 import video.kernel.audio.AudioSilenceDetector
 import video.kernel.audio.RmsEnvelope
 import video.kernel.audio.SilenceAnalysis
+import video.kernel.publish.ChapterLineParser
+import video.kernel.publish.DisabledVideoPublisher
+import video.kernel.publish.HttpTransport
+import video.kernel.publish.PublishHttpRequest
+import video.kernel.publish.PublishHttpResponse
 import video.kernel.publish.VideoChapter
 import video.kernel.publish.VideoLink
 import video.kernel.publish.VideoLinks
@@ -23,6 +28,9 @@ import video.kernel.publish.VideoPublication
 import video.kernel.publish.VideoPublicationResult
 import video.kernel.publish.VideoPublisher
 import video.kernel.publish.VideoVisibility
+import video.kernel.publish.YouTubeCredentials
+import video.kernel.publish.YouTubeCredentialsLoader
+import video.kernel.publish.YouTubePublishCommand
 import video.kernel.segment.SegmentSource
 import video.kernel.segment.VideoScript
 import video.kernel.segment.VideoSegment
@@ -41,6 +49,9 @@ import org.junit.jupiter.api.Test
  * **0.5.0** (HF-YOUTUBE-PUBLISH US-1) additively promotes the shared video
  * *publication* capability. **0.6.0** (VK-4 US-4e) additively promotes the
  * shared audio-quality primitives (`RmsEnvelope`, `AudioSilenceDetector`).
+ * **0.7.0** (PUBLISH-ADAPTER-N1) additively promotes the shared publication
+ * adapter primitives (chapter parser, credentials, command, degraded publisher,
+ * HTTP seam).
  * This guard pins the exported types, the ports and the model properties, so a
  * breaking change to the public surface cannot slip in silently — it must be a
  * deliberate manifest edit.
@@ -50,7 +61,7 @@ import org.junit.jupiter.api.Test
 class KernelApiStabilityTest {
 
     @Test
-    fun `the exported kernel type set is frozen at 0_6_0`() {
+    fun `the exported kernel type set is frozen at 0_7_0`() {
         assertThat(KernelApiSurface.typeNames())
             .containsExactlyInAnyOrder(
                 "video.kernel.VideoEngine",
@@ -85,6 +96,14 @@ class KernelApiStabilityTest {
                 "video.kernel.publish.VideoPublicationValidation",
                 "video.kernel.publish.VideoPublicationValidator",
                 "video.kernel.publish.VideoDescriptionComposer",
+                "video.kernel.publish.ChapterLineParser",
+                "video.kernel.publish.YouTubeCredentials",
+                "video.kernel.publish.YouTubeCredentialsLoader",
+                "video.kernel.publish.YouTubePublishCommand",
+                "video.kernel.publish.DisabledVideoPublisher",
+                "video.kernel.publish.PublishHttpRequest",
+                "video.kernel.publish.PublishHttpResponse",
+                "video.kernel.publish.HttpTransport",
                 "video.kernel.audio.AudioSilenceDetector",
                 "video.kernel.audio.RmsEnvelope",
                 "video.kernel.audio.SilenceAnalysis",

@@ -1,6 +1,16 @@
 = COMPLETED_TASKS_ARCHIVE — Octobre 2026
 :date: 2026-10-15
 
+== Session 200 — PUBLISH-ADAPTER-N1 : `video-kernel 0.7.0` ✅
+
+* Briques pures de publication extraites au noyau : `ChapterLineParser`,
+  `YouTubeCredentials` (+ loader), `YouTubePublishCommand` (sans Jackson),
+  `DisabledVideoPublisher`, seam HTTP (`PublishHttpRequest`/`Response`/`HttpTransport`).
+* `0.6.0 → 0.7.0`, manifeste +8 types ; réseau `JdkHttpTransport` +
+  `YouTubeDataApiPublisher` reste N2.
+* Central bundle `583079e5-e8bd-4450-841b-479997b169ff`, propagation 200.
+* Adopté : MEMPHIS `0.0.115`, capsule `0.0.15`, hyperframes `0.0.14`.
+
 == Session 199 — VK-4 US-4e : primitives audio partagées ✅
 
 * `video.kernel.audio.RmsEnvelope` (PCM s16le → RMS/frame) +

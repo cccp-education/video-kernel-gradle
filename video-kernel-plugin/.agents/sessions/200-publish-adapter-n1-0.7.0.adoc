@@ -1,0 +1,55 @@
+= Session 200 — PUBLISH-ADAPTER-N1 : publication `video-kernel 0.7.0`
+:session: 200
+:date: 2026-10-31
+:borough: video-kernel
+:statut: ✅ TERMINÉE
+
+== Mission
+
+Extraire au noyau N1 les **briques pures** de l'adaptateur de publication
+YouTube dupliquées à l'identique entre capsule et hyperframes (doctrine
+« à 2 »), sans y faire entrer le réseau (reste N2). Décision pilote 2026-10-31 :
+Règle 2 « accord toujours granted ».
+
+== Livré (additif `0.6.0 → 0.7.0`)
+
+Package `video.kernel.publish` :
+
+* `ChapterLineParser` — parseur de chapitres (identique aux deux moteurs) ;
+* `YouTubeCredentials` — modèle OAuth 2.0, `toString` rédigé (jamais de secret) ;
+* `YouTubeCredentialsLoader` — lecture `youtube.yaml` sans dépendance YAML ;
+* `YouTubePublishCommand` — **réécrit sans Jackson** (JSON construit/parsé
+  manuellement, échappement testé) pour respecter la frontière du noyau ;
+* `DisabledVideoPublisher` — publication dégradée sans réseau ;
+* `PublishHttpRequest`, `PublishHttpResponse`, `HttpTransport` — seam HTTP pur.
+
+Restent N2 (par moteur) : `JdkHttpTransport` (`java.net.http`) et
+`YouTubeDataApiPublisher` (séquencement réseau) — le noyau porte le contrat, pas
+l'implémentation (doctrine VK-4).
+
+== Tests N1
+
+* `ChapterLineParserTest` (7), `YouTubeCredentialsLoaderTest` (8),
+  `YouTubePublishCommandTest` (12, dont échappement JSON et parsing),
+  `DisabledVideoPublisherTest` (2).
+* Manifeste d'API `KernelApiSurface` + `KernelApiStabilityTest` : **+8 types**,
+  gel `0.7.0`. Frontière `KernelBoundaryTest` inchangée (java/kotlin/contrat).
+
+== Publication
+
+* `publishToMavenLocal` VERT ; Central **bundle
+  `583079e5-e8bd-4450-841b-479997b169ff`** (AUTOMATIC).
+* Propagation repo1 `video-kernel/0.7.0` **200**.
+
+== Adoption consommateurs
+
+MEMPHIS `0.0.115` déclare `video-kernel 0.7.0` ; capsule `0.0.15` et hyperframes
+`0.0.14` suppriment leurs copies et importent les types N1 (rapports S-212 /
+S-046).
+
+== Fichiers
+
+* Créés : `src/main/kotlin/video/kernel/publish/{PublishHttp,ChapterLineParser,YouTubeCredentials,YouTubeCredentialsLoader,YouTubePublishCommand,DisabledVideoPublisher}.kt`
+  + 4 tests.
+* Modifiés : `build.gradle.kts` (0.7.0), `KernelApiSurface.kt`,
+  `KernelApiStabilityTest.kt`, gouvernance `.agents/`.

@@ -1,0 +1,29 @@
+= Session 003 — Publication `youtube-auth-plugin 0.0.2`
+:session: 003
+:date: 2026-10-31
+:borough: video-kernel — module `youtube-auth-plugin`
+:statut: ✅ TERMINÉE
+
+== Mission
+
+Publier le module `education.cccp:youtube-auth-plugin:0.0.2` (tâche
+`obtainYouTubeRefreshToken`) sur Maven Central et l'inscrire au catalogue
+MEMPHIS pour adoption par les boroughs vidéo. Règle 2 « accord toujours
+granted » (décision pilote 2026-10-31). YouTube (upload) reste gelé.
+
+== Livré
+
+* Pin BOM `workspace-bom:0.0.99 → 0.0.115` (catalogue MEMPHIS 0.0.115).
+* `compileKotlin` / `compileTestKotlin` / `compileFunctionalTestKotlin` /
+  `assemble` / `validatePlugins` / `publishToMavenLocal` VERTS.
+* Central **bundle `283d5451-ac90-4b07-8095-27cab330638d`** (AUTOMATIC).
+* Propagation repo1 vérifiée : `youtube-auth-plugin/0.0.2` **200** + marker
+  `education.cccp.video.auth.gradle.plugin/0.0.2` **200**.
+* MEMPHIS `0.0.115` : entrées catalog `[versions] youtube-auth-plugin`,
+  `[plugins] youtube-auth`, `[libraries] youtube-auth-plugin` + contrainte BOM.
+* Adoption : capsule `0.0.15` et hyperframes `0.0.14` appliquent
+  `alias(libs.plugins.youtube.auth)` (tâche disponible dans chaque build).
+
+== Non fait (gelé)
+
+* Upload YouTube réel / dogfooding US-4b — hors scope (décision pilote S-037).

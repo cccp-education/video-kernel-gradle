@@ -17,6 +17,11 @@ import video.kernel.VisualSource
 import video.kernel.audio.AudioSilenceDetector
 import video.kernel.audio.RmsEnvelope
 import video.kernel.audio.SilenceAnalysis
+import video.kernel.publish.ChapterLineParser
+import video.kernel.publish.DisabledVideoPublisher
+import video.kernel.publish.HttpTransport
+import video.kernel.publish.PublishHttpRequest
+import video.kernel.publish.PublishHttpResponse
 import video.kernel.publish.VideoChapter
 import video.kernel.publish.VideoDescriptionComposer
 import video.kernel.publish.VideoLink
@@ -28,6 +33,9 @@ import video.kernel.publish.VideoPublicationValidation
 import video.kernel.publish.VideoPublicationValidator
 import video.kernel.publish.VideoPublisher
 import video.kernel.publish.VideoVisibility
+import video.kernel.publish.YouTubeCredentials
+import video.kernel.publish.YouTubeCredentialsLoader
+import video.kernel.publish.YouTubePublishCommand
 import video.kernel.segment.SegmentSource
 import video.kernel.segment.VideoKind
 import video.kernel.segment.VideoScript
@@ -51,6 +59,11 @@ import java.lang.reflect.Modifier
  * additively promotes the shared **audio quality** primitives
  * ([RmsEnvelope], [AudioSilenceDetector], [SilenceAnalysis]), consumed by
  * capsule (`verifyCapsuleVoice`) and hyperframes (`generateHyperframesNarration`).
+ * **0.7.0** (PUBLISH-ADAPTER-N1) additively promotes the shared **publication
+ * adapter primitives** ([ChapterLineParser], [YouTubeCredentials],
+ * [YouTubeCredentialsLoader], [YouTubePublishCommand], [DisabledVideoPublisher],
+ * [PublishHttpRequest], [PublishHttpResponse], [HttpTransport]) — the network
+ * implementations stay N2.
  * Any change to the exported types, the ports, or the model properties is a
  * breaking change that must be intentional (update this manifest in the same
  * commit as the break).
@@ -93,6 +106,14 @@ object KernelApiSurface {
         VideoPublicationValidation::class.java,
         VideoPublicationValidator::class.java,
         VideoDescriptionComposer::class.java,
+        ChapterLineParser::class.java,
+        YouTubeCredentials::class.java,
+        YouTubeCredentialsLoader::class.java,
+        YouTubePublishCommand::class.java,
+        DisabledVideoPublisher::class.java,
+        PublishHttpRequest::class.java,
+        PublishHttpResponse::class.java,
+        HttpTransport::class.java,
         AudioSilenceDetector::class.java,
         RmsEnvelope::class.java,
         SilenceAnalysis::class.java,

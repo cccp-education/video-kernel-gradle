@@ -1,8 +1,17 @@
-= PROMPT_REPRISE — youtube-auth-plugin (Session 002 TERMINÉE → 003)
-:session: 002
+= PROMPT_REPRISE — youtube-auth-plugin (Session 003 TERMINÉE → 004)
+:session: 004
 :borough: video-kernel — module `youtube-auth-plugin`
-:session_precedente: 002 — Loopback OAuth hardening (requête parasite `/favicon.ico` ne termine plus l'attente) ✅
+:session_precedente: 003 — Publication `0.0.2` Central + adoption ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
+
+== Session 003 (TERMINÉE) — Publication `0.0.2`
+
+* Pin BOM `workspace-bom 0.0.99 → 0.0.115`.
+* Central bundle `283d5451-ac90-4b07-8095-27cab330638d` (AUTOMATIC),
+  propagation repo1 200 (`youtube-auth-plugin/0.0.2` + marker).
+* MEMPHIS `0.0.115` : entrées catalog version/plugin/library + contrainte BOM.
+* Adoption : capsule `0.0.15` + hyperframes `0.0.14` appliquent le plugin.
+* Rapport `.agents/sessions/003-publication-0.0.2.adoc`.
 
 == État
 
@@ -16,12 +25,10 @@ Le dogfooding réel a été exécuté par le pilote : `youtube.yaml` existe côt
 hyperframes et capsule. Il a révélé puis fait corriger le défaut loopback
 (requête sans `code`/`error` terminant l'attente).
 
-== Mission Session 003 (au choix pilote)
+== Mission Session 004 (au choix pilote)
 
-* **US-3** — publication `education.cccp:youtube-auth-plugin:0.0.2` (Central,
-  accord pilote) + adoption par les consommateurs (`plugins { id(...) }`) pour
-  rendre l'obtention du token reproductible depuis chaque borough.
-* Sinon : maintenance.
+* Maintenance du module (plus aucune US ouverte).
+* YouTube (upload réel) : **gelé** (décision pilote S-037) — ne pas rouvrir.
 
 == Points d'attention
 

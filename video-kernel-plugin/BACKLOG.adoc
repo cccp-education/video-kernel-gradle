@@ -1,5 +1,5 @@
 = BACKLOG — video-kernel
-:last_update: 2026-10-31 (S-199 — VK-4 US-4e : `video.kernel.audio` (`RmsEnvelope` + `AudioSilenceDetector` + `SilenceAnalysis`), 2 consommateurs, `0.6.0` Central.)
+:last_update: 2026-10-31 (S-200 — PUBLISH-ADAPTER-N1 : briques pures de publication au noyau, `0.7.0` Central.)
 
 == ✅ VK-4 US-4e — primitives audio partagées (S-199)
 
@@ -38,9 +38,27 @@ hyperframes + capsule) → contrat neutre au noyau, adaptateur réseau en N2
 
 _Consommateurs_ : hyperframes (US-2, adaptateur `YouTubeDataApiPublisher` ✅ S-035),
 capsule (US-3a/3b, adoption + adaptateur ✅ S-205/S-206), BDD parité des deux moteurs
-✅ S-207. Reste de l'EPIC transverse : dogfooding réel (accord pilote) + module partagé
-`PUBLISH-ADAPTER-N1`.
+✅ S-207. Reste de l'EPIC transverse : dogfooding réel (gelé S-037).
+`PUBLISH-ADAPTER-N1` ✅ **S-200** (extraction N1 des briques pures, `0.7.0`).
 _Cadrage transverse_ : `hyperframes-gradle/.../.agents/CADRAGE_EPIC_HF_YOUTUBE_PUBLISH.adoc`.
+
+== ✅ PUBLISH-ADAPTER-N1 — briques pures de publication au noyau (S-200)
+
+Extraction N1 (doctrine « à 2 ») des fichiers **identiques** capsule ↔ hyperframes :
+
+|===
+| Type | Rôle | Statut
+| `ChapterLineParser` | chapitres `H:MM:SS Titre` → `VideoChapter` | ✅ S-200
+| `YouTubeCredentials` (+ loader) | modèle OAuth 2.0 + lecture `youtube.yaml`, secret rédigé | ✅ S-200
+| `YouTubePublishCommand` | builders/parsers HTTP **sans Jackson** (JSON manuel échappé) | ✅ S-200
+| `DisabledVideoPublisher` | publication dégradée sans réseau | ✅ S-200
+| `PublishHttpRequest`/`PublishHttpResponse`/`HttpTransport` | seam HTTP pur | ✅ S-200
+|===
+
+`version 0.6.0 → 0.7.0` (additif, manifeste +8 types). Réseau (`JdkHttpTransport`,
+`YouTubeDataApiPublisher`) reste N2 — le noyau porte le contrat, pas l'implémentation.
+Publication Central bundle `583079e5` ; MEMPHIS `0.0.115` ; capsule `0.0.15` +
+hyperframes `0.0.14` adoptés.
 
 == 🟡 `youtube-auth-plugin` — tâche d'obtention du refresh token (S-001 → S-002)
 
@@ -78,8 +96,8 @@ spéculative — **S-196** le pilote déclare hyperframes 2ᵉ consommateur.
 Adopté : capsule (`capsule.adapter.kernel.CapsuleKernelPorts` — adaptateurs
 non intrusifs) et hyperframes (2ᵉ consommateur : tâches `postProcessHyperframes`
 + `generateHyperframesNarration`, adaptateurs N2 `hyperframes.post.*`).
-**Reste** : publication Central `video-kernel 0.4.0` (accord pilote) ;
-MEMPHIS BOM/catalog `0.4.0` (prochain amont, non bloquant).
+**Publié** : `video-kernel 0.4.0` Central (S-196) ; MEMPHIS catalog/BOM `0.0.94`
+(S-300). Plus aucun reste sur VK-4.
 
 == ✅ VK-2 — Promotion package neutre `video.kernel.*` + publication `0.2.0` (S-194)
 
