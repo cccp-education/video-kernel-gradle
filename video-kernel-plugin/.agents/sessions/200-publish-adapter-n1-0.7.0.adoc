@@ -53,3 +53,8 @@ S-046).
   + 4 tests.
 * Modifiés : `build.gradle.kts` (0.7.0), `KernelApiSurface.kt`,
   `KernelApiStabilityTest.kt`, gouvernance `.agents/`.
+
+== CI
+
+**CI `Test` verte** : run **`41243892599`** (commit `9f03a59`, matrice
+`video-kernel-plugin` + `youtube-auth-plugin`).

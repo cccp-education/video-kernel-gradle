@@ -27,3 +27,8 @@ granted » (décision pilote 2026-10-31). YouTube (upload) reste gelé.
 == Non fait (gelé)
 
 * Upload YouTube réel / dogfooding US-4b — hors scope (décision pilote S-037).
+
+== CI
+
+**CI `Test` verte** : run **`41243892599`** (commit `9f03a59`, matrice
+`video-kernel-plugin` + `youtube-auth-plugin`).
