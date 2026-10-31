@@ -60,18 +60,19 @@ Extraction N1 (doctrine « à 2 ») des fichiers **identiques** capsule ↔ hype
 Publication Central bundle `583079e5` ; MEMPHIS `0.0.115` ; capsule `0.0.15` +
 hyperframes `0.0.14` adoptés.
 
-== 🟡 `youtube-auth-plugin` — tâche d'obtention du refresh token (S-001 → S-002)
+== ✅ `youtube-auth-plugin` — tâche d'obtention du refresh token (S-001 → S-003, TERMINÉ)
 
 _Module frère_ (le noyau reste pur) : plugin `education.cccp.video.auth`, tâche
 `obtainYouTubeRefreshToken` (flux OAuth 2.0 loopback) → écrit le refresh token dans
-un `youtube.yaml` gitignoré. **0.0.2** (non publié).
+un `youtube.yaml` gitignoré. **0.0.2** (publié Maven Central, bundle `283d5451`,
+catalogué MEMPHIS `0.0.115`).
 
 |===
 | US | Livrable | Statut
 | US-1 | Domaine pur `video.auth` (consent URL, parseur, réécriture) + unit + BDD | ✅ S-001
 | US-2 | Plugin + tâche + TestKit | ✅ S-001
 | US-2b | Loopback hardening (`/favicon.ico` ne termine plus l'attente ; latch décrémenté après l'écriture de la réponse ; seam `serverFactory` port déterministe) + `0.0.2` | ✅ S-002
-| US-3 | Publication Central + adoption consommateurs | 🟡 À FAIRE
+| US-3 | Publication Central + adoption consommateurs | ✅ S-003 (+ catalogue S-316)
 |===
 
 == ✅ VK-4 — Ports de capacités partagées au noyau (S-195 + S-196, clos)
