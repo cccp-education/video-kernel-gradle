@@ -12,7 +12,7 @@ le plugin écrit un fichier de credentials, pas un upload).
 == Règles absolues
 
 === 1. GIT — commit/push autorisés (décision pilote 2026-09-17) ; ZERO secret commité
-=== 2. PUBLISH — accord pilote
+=== 2. PUBLISH — accord pilote permanent (toujours granted, décision 2026-10-31)
 === 3. ZERO secret/token/api key en dur ; les secrets ne sont JAMAIS loggés
 === 4. Local = Build, Tests = CI
 === 5. Le noyau `video.kernel` reste PUR (ce module ne l'importe pas pour y écrire)
