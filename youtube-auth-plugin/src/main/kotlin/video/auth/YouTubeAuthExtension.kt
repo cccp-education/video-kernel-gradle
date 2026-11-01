@@ -22,7 +22,6 @@ import video.auth.oauth.OAuthRedirectReceiver
  * @property exchanger       token-exchange seam (test-injectable).
  */
 abstract class YouTubeAuthExtension {
-
     abstract val credentialsFile: Property<String>
 
     abstract val port: Property<Int>

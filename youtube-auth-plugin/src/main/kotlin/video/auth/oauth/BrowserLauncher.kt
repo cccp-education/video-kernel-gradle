@@ -10,15 +10,15 @@ import java.net.URI
  * the caller then prints the URL for the user to open manually.
  */
 object BrowserLauncher {
-
-    fun open(url: String): Boolean = try {
-        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-            Desktop.getDesktop().browse(URI.create(url))
-            true
-        } else {
+    fun open(url: String): Boolean =
+        try {
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                Desktop.getDesktop().browse(URI.create(url))
+                true
+            } else {
+                false
+            }
+        } catch (e: Exception) {
             false
         }
-    } catch (e: Exception) {
-        false
-    }
 }

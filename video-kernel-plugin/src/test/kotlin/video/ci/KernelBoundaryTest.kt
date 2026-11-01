@@ -14,15 +14,13 @@ import org.junit.jupiter.api.Test
  * set so the coupling cannot reappear silently.
  */
 class KernelBoundaryTest {
-
     @Test
     fun `kernel only imports java, kotlin, contracts or itself`() {
         assertThat(KernelBoundaryAudit.importViolations())
             .describedAs(
                 "video.kernel must stay engine-agnostic: no Gradle, Playwright, " +
                     "adapter or legacy feed dependency",
-            )
-            .isEmpty()
+            ).isEmpty()
     }
 
     @Test
@@ -31,7 +29,6 @@ class KernelBoundaryTest {
             .describedAs(
                 "the kernel speaks segment/visual/engine, never " +
                     "slide/deck/reveal/Playwright/AsciiDoc/Gradle",
-            )
-            .isEmpty()
+            ).isEmpty()
     }
 }

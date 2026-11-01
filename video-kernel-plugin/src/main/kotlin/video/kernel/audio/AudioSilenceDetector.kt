@@ -60,7 +60,6 @@ data class SilenceAnalysis(
  * and hyperframes `generateHyperframesNarration`.
  */
 object AudioSilenceDetector {
-
     /**
      * Normalised RMS threshold (default `0.001`, about -60 dBFS).
      *

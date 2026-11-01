@@ -21,7 +21,6 @@ package video.kernel.publish
  * rejection is [VideoPublicationValidator]'s job.
  */
 object VideoDescriptionComposer {
-
     /** Section label introducing the chapter timeline. */
     const val CHAPTERS_LABEL: String = "Chapters"
 
@@ -29,7 +28,10 @@ object VideoDescriptionComposer {
     const val LINKS_LABEL: String = "Links"
 
     /** Composes the full description, free of forbidden characters. */
-    fun compose(publication: VideoPublication, header: String = ""): String {
+    fun compose(
+        publication: VideoPublication,
+        header: String = "",
+    ): String {
         val blocks = mutableListOf<String>()
 
         if (header.isNotBlank()) blocks += header.trim()
@@ -61,8 +63,7 @@ object VideoDescriptionComposer {
     }
 
     /** Removes every [VideoPublicationLimits.FORBIDDEN_CHARS] character. */
-    fun sanitize(text: String): String =
-        text.filterNot { it in VideoPublicationLimits.FORBIDDEN_CHARS }
+    fun sanitize(text: String): String = text.filterNot { it in VideoPublicationLimits.FORBIDDEN_CHARS }
 
     private fun chapterBlock(chapters: List<VideoChapter>): String? {
         if (chapters.isEmpty()) return null

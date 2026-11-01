@@ -23,7 +23,6 @@ data class YouTubeTokenResponse(
  * object whose three relevant fields are simple quoted strings.
  */
 object YouTubeTokenParser {
-
     fun parse(json: String): YouTubeTokenResponse {
         require(json.isNotBlank()) { "token response must not be blank" }
         return YouTubeTokenResponse(
@@ -34,8 +33,15 @@ object YouTubeTokenParser {
         )
     }
 
-    private fun extract(json: String, key: String): String? =
-        FIELD_PATTERN(key).find(json)?.groupValues?.get(1)?.takeIf { it.isNotBlank() }
+    private fun extract(
+        json: String,
+        key: String,
+    ): String? =
+        fieldPattern(key)
+            .find(json)
+            ?.groupValues
+            ?.get(1)
+            ?.takeIf { it.isNotBlank() }
 
-    private fun FIELD_PATTERN(key: String) = Regex("\"$key\"\\s*:\\s*\"([^\"]*)\"")
+    private fun fieldPattern(key: String) = Regex("\"$key\"\\s*:\\s*\"([^\"]*)\"")
 }

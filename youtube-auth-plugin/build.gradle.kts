@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.plugin.publish)
     id("education.cccp.build.gradle-plugin") version "0.0.7"
     id("education.cccp.build.publishing") version "0.0.7"
+    id("education.cccp.build.lint") version "0.0.7"
     id("education.cccp.build.functional-test") version "0.0.7"
 }
 
@@ -41,26 +42,35 @@ sourceSets.test {
     resources.srcDir("src/test/resources/features")
 }
 
-val cucumberTest = tasks.register<Test>("cucumberTest") {
-    description = "Runs Cucumber BDD tests"
-    group = "verification"
-    testClassesDirs = sourceSets.test.get().output.classesDirs
-    classpath = configurations.testRuntimeClasspath.get() +
-        sourceSets.test.get().output +
-        sourceSets.main.get().output +
-        files(tasks.named("jar").get().outputs.files)
+val cucumberTest =
+    tasks.register<Test>("cucumberTest") {
+        description = "Runs Cucumber BDD tests"
+        group = "verification"
+        testClassesDirs =
+            sourceSets.test
+                .get()
+                .output.classesDirs
+        classpath = configurations.testRuntimeClasspath.get() +
+            sourceSets.test.get().output +
+            sourceSets.main.get().output +
+            files(
+                tasks
+                    .named("jar")
+                    .get()
+                    .outputs.files,
+            )
 
-    dependsOn(tasks.classes)
-    useJUnitPlatform {
-        excludeEngines("junit-jupiter")
+        dependsOn(tasks.classes)
+        useJUnitPlatform {
+            excludeEngines("junit-jupiter")
+        }
+        filter {
+            includeTestsMatching("video.auth.scenarios.CucumberRunner")
+        }
+        systemProperty("cucumber.junit-platform.naming-strategy", "long")
+        val cucumberTags = project.findProperty("cucumber.tags")?.toString() ?: "not @wip"
+        systemProperty("cucumber.filter.tags", cucumberTags)
     }
-    filter {
-        includeTestsMatching("video.auth.scenarios.CucumberRunner")
-    }
-    systemProperty("cucumber.junit-platform.naming-strategy", "long")
-    val cucumberTags = project.findProperty("cucumber.tags")?.toString() ?: "not @wip"
-    systemProperty("cucumber.filter.tags", cucumberTags)
-}
 
 tasks.named("check") { dependsOn(cucumberTest) }
 

@@ -19,23 +19,23 @@ import java.io.File
  *    `processbuilder`, `org.gradle`).
  */
 object KernelBoundaryAudit {
-
     private val kernelDir = File("src/main/kotlin/video/kernel")
 
     internal val allowedImportPrefixes = listOf("java.", "kotlin.", "contracts.", "video.kernel.")
 
-    internal val forbiddenTokens = listOf(
-        "playwright",
-        "reveal",
-        ".slides",
-        "data-audio",
-        "data-capsule-slide",
-        "asciidoc",
-        "processbuilder",
-        "org.gradle",
-        "slide",
-        "deck",
-    )
+    internal val forbiddenTokens =
+        listOf(
+            "playwright",
+            "reveal",
+            ".slides",
+            "data-audio",
+            "data-capsule-slide",
+            "asciidoc",
+            "processbuilder",
+            "org.gradle",
+            "slide",
+            "deck",
+        )
 
     fun files(): List<File> {
         require(kernelDir.isDirectory) { "kernel source dir not found at ${kernelDir.absolutePath}" }
@@ -44,13 +44,17 @@ object KernelBoundaryAudit {
 
     /** Removes block and line comments so the vocabulary rule only sees code. */
     fun stripComments(source: String): String =
-        source.replace(Regex("(?s)/\\*.*?\\*/"), " ")
-            .lines().joinToString("\n") { it.substringBefore("//") }
+        source
+            .replace(Regex("(?s)/\\*.*?\\*/"), " ")
+            .lines()
+            .joinToString("\n") { it.substringBefore("//") }
 
     /** Import statements referencing a forbidden package, as `file: import …`. */
     fun importViolations(): List<String> =
         files().flatMap { file ->
-            file.readLines().map { it.trim() }
+            file
+                .readLines()
+                .map { it.trim() }
                 .filter { it.startsWith("import ") }
                 .mapNotNull { line ->
                     val fqcn = line.removePrefix("import ").removeSuffix(";").trim()

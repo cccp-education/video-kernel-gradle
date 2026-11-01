@@ -32,17 +32,17 @@ data class YouTubeCredentials(
      * Names of the upload fields that are still missing (never their values) —
      * lets the resolver report an actionable message without leaking a secret.
      */
-    fun missingUploadFields(): List<String> = buildList {
-        if (clientId.isBlank()) add("clientId")
-        if (clientSecret.isBlank()) add("clientSecret")
-        if (refreshToken.isBlank()) add("refreshToken")
-    }
+    fun missingUploadFields(): List<String> =
+        buildList {
+            if (clientId.isBlank()) add("clientId")
+            if (clientSecret.isBlank()) add("clientSecret")
+            if (refreshToken.isBlank()) add("refreshToken")
+        }
 
     /** Redacted representation — never prints a secret. */
     override fun toString(): String =
         "YouTubeCredentials(clientId=${redact(clientId)}, clientSecret=***, " +
             "refreshToken=***, channelId=$channelId, apiKey=${if (apiKey.isBlank()) "" else "***"})"
 
-    private fun redact(value: String): String =
-        if (value.isBlank()) "" else "${value.take(6)}…"
+    private fun redact(value: String): String = if (value.isBlank()) "" else "${value.take(6)}…"
 }

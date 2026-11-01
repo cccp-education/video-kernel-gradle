@@ -8,7 +8,6 @@ import java.io.File
  * TDD — pure [VideoDescriptionComposer] (HF-YOUTUBE-PUBLISH US-1).
  */
 class VideoDescriptionComposerTest {
-
     private fun publication(
         description: String = "",
         hashtags: List<String> = emptyList(),
@@ -50,15 +49,17 @@ class VideoDescriptionComposerTest {
 
     @Test
     fun `renders the chapter block with timestamps`() {
-        val text = VideoDescriptionComposer.compose(
-            publication(
-                chapters = listOf(
-                    VideoChapter(0, "Intro"),
-                    VideoChapter(10, "Setup"),
-                    VideoChapter(20, "Outro"),
+        val text =
+            VideoDescriptionComposer.compose(
+                publication(
+                    chapters =
+                        listOf(
+                            VideoChapter(0, "Intro"),
+                            VideoChapter(10, "Setup"),
+                            VideoChapter(20, "Outro"),
+                        ),
                 ),
-            ),
-        )
+            )
 
         assertThat(text).isEqualTo(
             "Chapters\n0:00 Intro\n0:10 Setup\n0:20 Outro",
@@ -67,19 +68,22 @@ class VideoDescriptionComposerTest {
 
     @Test
     fun `renders identity links then navigation`() {
-        val text = VideoDescriptionComposer.compose(
-            publication(
-                links = VideoLinks(
-                    entries = listOf(
-                        VideoLink("Site", "https://cccp.education/"),
-                        VideoLink("Formations", "https://talaria.school/"),
-                        VideoLink("Auteur", "https://cheroliv.com/"),
-                    ),
-                    previousVideo = "https://youtu.be/prev",
-                    nextVideo = "https://youtu.be/next",
+        val text =
+            VideoDescriptionComposer.compose(
+                publication(
+                    links =
+                        VideoLinks(
+                            entries =
+                                listOf(
+                                    VideoLink("Site", "https://cccp.education/"),
+                                    VideoLink("Formations", "https://talaria.school/"),
+                                    VideoLink("Auteur", "https://cheroliv.com/"),
+                                ),
+                            previousVideo = "https://youtu.be/prev",
+                            nextVideo = "https://youtu.be/next",
+                        ),
                 ),
-            ),
-        )
+            )
 
         assertThat(text).isEqualTo(
             """
@@ -109,19 +113,21 @@ class VideoDescriptionComposerTest {
 
     @Test
     fun `assembles every section in order`() {
-        val text = VideoDescriptionComposer.compose(
-            publication(
-                description = "Body",
-                chapters = listOf(
-                    VideoChapter(0, "Intro"),
-                    VideoChapter(10, "Setup"),
-                    VideoChapter(20, "Outro"),
+        val text =
+            VideoDescriptionComposer.compose(
+                publication(
+                    description = "Body",
+                    chapters =
+                        listOf(
+                            VideoChapter(0, "Intro"),
+                            VideoChapter(10, "Setup"),
+                            VideoChapter(20, "Outro"),
+                        ),
+                    links = VideoLinks(entries = listOf(VideoLink("Site", "https://cccp.education/"))),
+                    hashtags = listOf("cccp"),
                 ),
-                links = VideoLinks(entries = listOf(VideoLink("Site", "https://cccp.education/"))),
-                hashtags = listOf("cccp"),
-            ),
-            header = "Header",
-        )
+                header = "Header",
+            )
 
         assertThat(text).isEqualTo(
             """

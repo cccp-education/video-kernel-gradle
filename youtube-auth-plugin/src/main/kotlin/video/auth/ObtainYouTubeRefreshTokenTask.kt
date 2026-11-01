@@ -1,6 +1,5 @@
 package video.auth
 
-import java.io.File
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.provider.Property
@@ -32,7 +31,6 @@ import video.auth.oauth.OAuthRedirectReceiver
  */
 @DisableCachingByDefault(because = "Interactive OAuth flow (browser + loopback): never cacheable")
 abstract class ObtainYouTubeRefreshTokenTask : DefaultTask() {
-
     /** Gitignored credentials file carrying `clientId`/`clientSecret` and receiving the token. */
     @get:Input
     abstract val credentialsFile: Property<String>
@@ -67,10 +65,12 @@ abstract class ObtainYouTubeRefreshTokenTask : DefaultTask() {
             )
         }
         val content = file.readText()
-        val clientId = CredentialsFileRewriter.clientId(content)
-            ?: throw GradleException("clientId is missing in ${file.name}")
-        val clientSecret = CredentialsFileRewriter.clientSecret(content)
-            ?: throw GradleException("clientSecret is missing in ${file.name}")
+        val clientId =
+            CredentialsFileRewriter.clientId(content)
+                ?: throw GradleException("clientId is missing in ${file.name}")
+        val clientSecret =
+            CredentialsFileRewriter.clientSecret(content)
+                ?: throw GradleException("clientSecret is missing in ${file.name}")
 
         val redirectUri = YouTubeConsentUrl.loopbackRedirect(port.get())
         val consentUrl = YouTubeConsentUrl.build(clientId, redirectUri, scope.get())
@@ -82,8 +82,9 @@ abstract class ObtainYouTubeRefreshTokenTask : DefaultTask() {
         }
         logger.lifecycle("Waiting for the authorization redirect on $redirectUri …")
 
-        val code = receiver.get().awaitCode(port.get(), timeoutSeconds.get() * 1000L)
-            ?: throw GradleException("no authorization code received within ${timeoutSeconds.get()} s")
+        val code =
+            receiver.get().awaitCode(port.get(), timeoutSeconds.get() * 1000L)
+                ?: throw GradleException("no authorization code received within ${timeoutSeconds.get()} s")
 
         val json = exchanger.get().exchange(code, clientId, clientSecret, redirectUri)
         val response = YouTubeTokenParser.parse(json)

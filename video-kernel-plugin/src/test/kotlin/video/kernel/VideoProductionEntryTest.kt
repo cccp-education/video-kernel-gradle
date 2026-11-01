@@ -13,7 +13,6 @@ import java.nio.file.Path
  * TDD — engine-neutral [VideoProductionEntry] (CAP-ENGINE-DECOUPLING US-1).
  */
 class VideoProductionEntryTest {
-
     @TempDir
     lateinit var tempDir: Path
 
@@ -32,12 +31,13 @@ class VideoProductionEntryTest {
         val scriptFile = touch("scripts/demo_en-script.txt")
         val output = tempDir.resolve("out/demo_en.webm").toFile()
 
-        val entry = VideoProductionEntry(
-            visual = FileVisualSource(visualFile),
-            scriptFile = scriptFile,
-            language = language("en"),
-            outputVideo = output,
-        )
+        val entry =
+            VideoProductionEntry(
+                visual = FileVisualSource(visualFile),
+                scriptFile = scriptFile,
+                language = language("en"),
+                outputVideo = output,
+            )
 
         assertThat(entry.visual.file).isEqualTo(visualFile)
         assertThat(entry.scriptFile).isEqualTo(scriptFile)
@@ -86,5 +86,4 @@ class VideoProductionEntryTest {
             )
         }
     }
-
 }

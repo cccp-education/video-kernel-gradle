@@ -1,12 +1,12 @@
 package video.auth
 
-import java.io.File
-import java.nio.file.Path
-import kotlin.test.assertContains
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import java.io.File
+import java.nio.file.Path
+import kotlin.test.assertContains
 
 /**
  * Functional acceptance (Gradle TestKit) for the `obtainYouTubeRefreshToken`
@@ -16,7 +16,6 @@ import org.junit.jupiter.api.io.TempDir
  * never the interactive browser flow.
  */
 class YouTubeAuthFunctionalTest {
-
     @TempDir
     lateinit var tempDir: Path
     private lateinit var projectDir: File
@@ -36,11 +35,13 @@ class YouTubeAuthFunctionalTest {
 
     @Test
     fun `the task fails clearly when the credentials file is missing`() {
-        val result = GradleRunner.create()
-            .withProjectDir(projectDir)
-            .withPluginClasspath()
-            .withArguments("obtainYouTubeRefreshToken")
-            .buildAndFail()
+        val result =
+            GradleRunner
+                .create()
+                .withProjectDir(projectDir)
+                .withPluginClasspath()
+                .withArguments("obtainYouTubeRefreshToken")
+                .buildAndFail()
 
         assertContains(result.output, "credentials file not found")
     }
@@ -49,20 +50,24 @@ class YouTubeAuthFunctionalTest {
     fun `the task fails clearly when clientId is missing`() {
         projectDir.resolve("youtube.yaml").writeText("youtube:\n  clientSecret: \"GOCSPX-x\"\n")
 
-        val result = GradleRunner.create()
-            .withProjectDir(projectDir)
-            .withPluginClasspath()
-            .withArguments("obtainYouTubeRefreshToken")
-            .buildAndFail()
+        val result =
+            GradleRunner
+                .create()
+                .withProjectDir(projectDir)
+                .withPluginClasspath()
+                .withArguments("obtainYouTubeRefreshToken")
+                .buildAndFail()
 
         assertContains(result.output, "clientId is missing")
     }
 
-    private fun runner(vararg args: String) = GradleRunner.create()
-        .withProjectDir(projectDir)
-        .withPluginClasspath()
-        .withArguments(*args)
-        .build()
+    private fun runner(vararg args: String) =
+        GradleRunner
+            .create()
+            .withProjectDir(projectDir)
+            .withPluginClasspath()
+            .withArguments(*args)
+            .build()
 
     private fun writeBuildFiles() {
         projectDir.resolve("settings.gradle.kts").writeText(

@@ -1,5 +1,7 @@
 package video.ci
 
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 import video.kernel.AudioPostProduction
 import video.kernel.AudioPostSettings
 import video.kernel.FfprobeDurationParser
@@ -16,11 +18,6 @@ import video.kernel.VideoRenderResult
 import video.kernel.audio.AudioSilenceDetector
 import video.kernel.audio.RmsEnvelope
 import video.kernel.audio.SilenceAnalysis
-import video.kernel.publish.ChapterLineParser
-import video.kernel.publish.DisabledVideoPublisher
-import video.kernel.publish.HttpTransport
-import video.kernel.publish.PublishHttpRequest
-import video.kernel.publish.PublishHttpResponse
 import video.kernel.publish.VideoChapter
 import video.kernel.publish.VideoLink
 import video.kernel.publish.VideoLinks
@@ -28,14 +25,9 @@ import video.kernel.publish.VideoPublication
 import video.kernel.publish.VideoPublicationResult
 import video.kernel.publish.VideoPublisher
 import video.kernel.publish.VideoVisibility
-import video.kernel.publish.YouTubeCredentials
-import video.kernel.publish.YouTubeCredentialsLoader
-import video.kernel.publish.YouTubePublishCommand
 import video.kernel.segment.SegmentSource
 import video.kernel.segment.VideoScript
 import video.kernel.segment.VideoSegment
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
 
 /**
  * Contract-freeze guard (video-kernel 0.5.0).
@@ -59,7 +51,6 @@ import org.junit.jupiter.api.Test
  * See [KernelApiSurface] for the frozen surface.
  */
 class KernelApiStabilityTest {
-
     @Test
     fun `the exported kernel type set is frozen at 0_7_0`() {
         assertThat(KernelApiSurface.typeNames())
@@ -160,9 +151,19 @@ class KernelApiStabilityTest {
     fun `the publication model data classes expose the frozen property set`() {
         assertThat(KernelApiSurface.getterNames(VideoPublication::class.java))
             .containsExactlyInAnyOrder(
-                "getVideoFile", "getTitle", "getDescription", "getTags", "getHashtags",
-                "getChapters", "getLinks", "getVisibility", "getCategoryId",
-                "getLanguageCode", "getMadeForKids", "getThumbnailFile", "getPublishAt",
+                "getVideoFile",
+                "getTitle",
+                "getDescription",
+                "getTags",
+                "getHashtags",
+                "getChapters",
+                "getLinks",
+                "getVisibility",
+                "getCategoryId",
+                "getLanguageCode",
+                "getMadeForKids",
+                "getThumbnailFile",
+                "getPublishAt",
             )
 
         assertThat(KernelApiSurface.getterNames(VideoChapter::class.java))
@@ -185,8 +186,12 @@ class KernelApiStabilityTest {
     fun `the AudioPostSettings data class exposes the frozen property set`() {
         assertThat(KernelApiSurface.getterNames(AudioPostSettings::class.java))
             .containsExactlyInAnyOrder(
-                "getBgmEnabled", "getBgmFile", "getBgmLevelDb", "getLoudnessTargetLufs",
-                "getDuckingEnabled", "getTwoPassLoudness",
+                "getBgmEnabled",
+                "getBgmFile",
+                "getBgmLevelDb",
+                "getLoudnessTargetLufs",
+                "getDuckingEnabled",
+                "getTwoPassLoudness",
             )
     }
 
@@ -224,8 +229,13 @@ class KernelApiStabilityTest {
 
         assertThat(KernelApiSurface.getterNames(VideoSegment::class.java))
             .containsExactlyInAnyOrder(
-                "getIndex", "getTitle", "getNarration", "getKind", "getScene",
-                "getSpeakerNote", "getManimScene",
+                "getIndex",
+                "getTitle",
+                "getNarration",
+                "getKind",
+                "getScene",
+                "getSpeakerNote",
+                "getManimScene",
             )
 
         assertThat(KernelApiSurface.getterNames(VideoScript::class.java))
@@ -248,7 +258,11 @@ class KernelApiStabilityTest {
     fun `the silence analysis exposes the frozen property set`() {
         assertThat(KernelApiSurface.getterNames(SilenceAnalysis::class.java))
             .containsExactlyInAnyOrder(
-                "getTotalFrames", "getSilentFrames", "getPeakRms", "getThreshold", "getSilentFraction",
+                "getTotalFrames",
+                "getSilentFrames",
+                "getPeakRms",
+                "getThreshold",
+                "getSilentFraction",
             )
         assertThat(KernelApiSurface.functionNames(SilenceAnalysis::class.java))
             .contains("isSilent")

@@ -18,7 +18,6 @@ import java.io.File
  * invoke [close] once the render is done.
  */
 interface VideoEngine {
-
     /** Human-readable engine name (diagnostics only). */
     fun name(): String
 

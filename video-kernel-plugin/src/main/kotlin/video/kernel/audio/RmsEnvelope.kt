@@ -13,14 +13,17 @@ import kotlin.math.sqrt
  * biases the noise floor downward.
  */
 object RmsEnvelope {
-
     /**
      * @param pcm            raw little-endian signed 16-bit samples.
      * @param bytesPerSample sample width in bytes (default 2 — s16le).
      * @param frameSamples   number of samples per frame (e.g. 320 = 20 ms @ 16 kHz).
      * @return one normalised RMS amplitude in `[0, 1]` per full frame.
      */
-    fun framesFromPcm(pcm: ByteArray, bytesPerSample: Int = 2, frameSamples: Int = 320): DoubleArray {
+    fun framesFromPcm(
+        pcm: ByteArray,
+        bytesPerSample: Int = 2,
+        frameSamples: Int = 320,
+    ): DoubleArray {
         require(bytesPerSample > 0) { "bytesPerSample must be > 0, got $bytesPerSample" }
         require(frameSamples > 0) { "frameSamples must be > 0, got $frameSamples" }
 

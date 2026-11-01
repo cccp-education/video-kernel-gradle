@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test
  * TDD — engine-neutral [VideoOutcome] descriptor (video-kernel 0.0.3).
  */
 class VideoOutcomeTest {
-
     @Test
     fun `defaults are neutral when a property is unknown`() {
         val outcome = VideoOutcome()
@@ -21,13 +20,14 @@ class VideoOutcomeTest {
 
     @Test
     fun `carries the produced video properties`() {
-        val outcome = VideoOutcome(
-            durationSeconds = 30.0,
-            width = 1080,
-            height = 1920,
-            sizeBytes = 4_200_000L,
-            codec = "h264",
-        )
+        val outcome =
+            VideoOutcome(
+                durationSeconds = 30.0,
+                width = 1080,
+                height = 1920,
+                sizeBytes = 4_200_000L,
+                codec = "h264",
+            )
 
         assertThat(outcome.durationSeconds).isEqualTo(30.0)
         assertThat(outcome.codec).isEqualTo("h264")

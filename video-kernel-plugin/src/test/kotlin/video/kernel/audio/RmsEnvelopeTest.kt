@@ -13,7 +13,6 @@ import kotlin.test.assertTrue
  * silence and SNR checks in both engines (capsule + hyperframes).
  */
 class RmsEnvelopeTest {
-
     private fun pcm(vararg samples: Int): ByteArray {
         val out = ByteArrayOutputStream()
         samples.forEach { sample ->

@@ -1,19 +1,19 @@
 package video.kernel.publish
 
-import java.io.File
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import java.io.File
 
 /**
  * PUBLISH-ADAPTER-N1 — network-free degraded publisher (moved from capsule +
  * hyperframes).
  */
 class DisabledVideoPublisherTest {
-
-    private fun publication() = VideoPublication(
-        videoFile = File("video.mp4"),
-        title = "Title",
-    )
+    private fun publication() =
+        VideoPublication(
+            videoFile = File("video.mp4"),
+            title = "Title",
+        )
 
     @Test
     fun `reports a degraded result with the default reason`() {

@@ -21,7 +21,6 @@ import java.io.File
  * lines) — no YAML library dependency. It **never logs the values**.
  */
 object YouTubeCredentialsLoader {
-
     /** Loads credentials from [file], or `null` when the file is absent/empty. */
     fun load(file: File): YouTubeCredentials? {
         if (!file.exists() || !file.isFile) return null
@@ -61,5 +60,9 @@ object YouTubeCredentialsLoader {
 
     /** `client-id` / `client_id` / `clientId` → `clientid` (names, never values). */
     private fun normaliseKey(raw: String): String =
-        raw.trim().lowercase().replace("_", "").replace("-", "")
+        raw
+            .trim()
+            .lowercase()
+            .replace("_", "")
+            .replace("-", "")
 }

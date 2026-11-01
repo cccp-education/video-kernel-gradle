@@ -15,25 +15,34 @@ import java.time.Duration
  * canned token JSON, so the exchange is exercised without the network.
  */
 fun interface HttpFormPoster {
-    fun post(url: String, form: Map<String, String>): String
+    fun post(
+        url: String,
+        form: Map<String, String>,
+    ): String
 }
 
 /** Default [HttpFormPoster] built on the JDK `HttpClient` (no dependency). */
 class JdkHttpFormPoster(
     private val timeout: Duration = Duration.ofSeconds(30),
 ) : HttpFormPoster {
-
-    private val client: HttpClient = HttpClient.newBuilder()
-        .connectTimeout(Duration.ofSeconds(15))
-        .build()
-
-    override fun post(url: String, form: Map<String, String>): String {
-        val body = form.entries.joinToString("&") { (key, value) -> "${encode(key)}=${encode(value)}" }
-        val request = HttpRequest.newBuilder(URI.create(url))
-            .timeout(timeout)
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .POST(HttpRequest.BodyPublishers.ofString(body))
+    private val client: HttpClient =
+        HttpClient
+            .newBuilder()
+            .connectTimeout(Duration.ofSeconds(15))
             .build()
+
+    override fun post(
+        url: String,
+        form: Map<String, String>,
+    ): String {
+        val body = form.entries.joinToString("&") { (key, value) -> "${encode(key)}=${encode(value)}" }
+        val request =
+            HttpRequest
+                .newBuilder(URI.create(url))
+                .timeout(timeout)
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .build()
         return client.send(request, HttpResponse.BodyHandlers.ofString()).body()
     }
 
@@ -47,9 +56,15 @@ class JdkHttpFormPoster(
  * Returns the **raw JSON body**; parsing is [video.auth.YouTubeTokenParser]'s job
  * (pure, testable).
  */
-class GoogleTokenExchanger(private val poster: HttpFormPoster = JdkHttpFormPoster()) {
-
-    fun exchange(code: String, clientId: String, clientSecret: String, redirectUri: String): String =
+class GoogleTokenExchanger(
+    private val poster: HttpFormPoster = JdkHttpFormPoster(),
+) {
+    fun exchange(
+        code: String,
+        clientId: String,
+        clientSecret: String,
+        redirectUri: String,
+    ): String =
         poster.post(
             TOKEN_ENDPOINT,
             mapOf(

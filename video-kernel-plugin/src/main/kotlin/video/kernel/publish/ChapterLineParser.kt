@@ -17,9 +17,7 @@ package video.kernel.publish
  * cannot be parsed are ignored (defensive: a typo never breaks the build).
  */
 object ChapterLineParser {
-
-    fun parse(lines: List<String>): List<VideoChapter> =
-        lines.mapNotNull(::parseLine)
+    fun parse(lines: List<String>): List<VideoChapter> = lines.mapNotNull(::parseLine)
 
     /** Parses one line, or `null` when it carries no usable timestamp/title. */
     fun parseLine(line: String): VideoChapter? {

@@ -20,12 +20,13 @@ data class PublishHttpRequest(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is PublishHttpRequest) return false
-        return method == other.method && url == other.url &&
-            headers == other.headers && body.contentEquals(other.body)
+        return method == other.method &&
+            url == other.url &&
+            headers == other.headers &&
+            body.contentEquals(other.body)
     }
 
-    override fun hashCode(): Int =
-        ((method.hashCode() * 31 + url.hashCode()) * 31 + headers.hashCode()) * 31 + body.contentHashCode()
+    override fun hashCode(): Int = ((method.hashCode() * 31 + url.hashCode()) * 31 + headers.hashCode()) * 31 + body.contentHashCode()
 }
 
 /**

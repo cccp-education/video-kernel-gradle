@@ -1,16 +1,15 @@
 package video.kernel.publish
 
-import java.io.File
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import java.io.File
 
 /**
  * PUBLISH-ADAPTER-N1 — pure request builders / response parsers (moved from
  * hyperframes, now dependency-free: no JSON library).
  */
 class YouTubePublishCommandTest {
-
     @TempDir
     lateinit var tempDir: File
 
@@ -31,9 +30,10 @@ class YouTubePublishCommandTest {
 
     @Test
     fun `token request body is a refresh-token form`() {
-        val body = YouTubePublishCommand.tokenRequestBody(
-            YouTubeCredentials("cid", "secret", "refresh"),
-        )
+        val body =
+            YouTubePublishCommand.tokenRequestBody(
+                YouTubeCredentials("cid", "secret", "refresh"),
+            )
 
         assertThat(body).contains("grant_type=refresh_token")
         assertThat(body).contains("client_id=cid")
@@ -42,9 +42,10 @@ class YouTubePublishCommandTest {
 
     @Test
     fun `metadata json carries snippet and status`() {
-        val json = YouTubePublishCommand.metadataJson(
-            publication(title = "Hello", description = "Body", tags = listOf("a", "b")),
-        )
+        val json =
+            YouTubePublishCommand.metadataJson(
+                publication(title = "Hello", description = "Body", tags = listOf("a", "b")),
+            )
 
         assertThat(json).contains("\"title\":\"Hello\"")
         assertThat(json).contains("\"description\":\"Body\"")
@@ -64,9 +65,10 @@ class YouTubePublishCommandTest {
 
     @Test
     fun `metadata json escapes quotes and backslashes`() {
-        val json = YouTubePublishCommand.metadataJson(
-            publication(title = """a"b\c""", description = "line1\nline2"),
-        )
+        val json =
+            YouTubePublishCommand.metadataJson(
+                publication(title = """a"b\c""", description = "line1\nline2"),
+            )
 
         assertThat(json).contains(""""title":"a\"b\\c"""")
         assertThat(json).contains(""""description":"line1\nline2"""")

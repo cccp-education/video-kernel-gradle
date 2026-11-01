@@ -8,8 +8,8 @@ package video.kernel.publish
  * when credentials are absent: publication is skipped and reported as
  * [VideoPublicationResult.Degraded] so the build keeps going. Economy of ink.
  */
-class DisabledVideoPublisher(private val reason: String = "YouTube publication disabled") : VideoPublisher {
-
-    override fun publish(publication: VideoPublication): VideoPublicationResult =
-        VideoPublicationResult.Degraded(reason)
+class DisabledVideoPublisher(
+    private val reason: String = "YouTube publication disabled",
+) : VideoPublisher {
+    override fun publish(publication: VideoPublication): VideoPublicationResult = VideoPublicationResult.Degraded(reason)
 }

@@ -38,6 +38,5 @@ data class VideoLinks(
     val previousVideo: String = "",
 ) {
     /** `true` when no link at all is configured. */
-    fun isEmpty(): Boolean =
-        entries.isEmpty() && nextVideo.isBlank() && previousVideo.isBlank()
+    fun isEmpty(): Boolean = entries.isEmpty() && nextVideo.isBlank() && previousVideo.isBlank()
 }

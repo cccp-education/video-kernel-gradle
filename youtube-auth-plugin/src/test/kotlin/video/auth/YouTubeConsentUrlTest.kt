@@ -10,7 +10,6 @@ import java.nio.charset.StandardCharsets
  * TDD — pure [YouTubeConsentUrl] (HF-YOUTUBE-AUTH US-1).
  */
 class YouTubeConsentUrlTest {
-
     @Test
     fun `loopback redirect is a localhost url on the given port`() {
         assertThat(YouTubeConsentUrl.loopbackRedirect(8765)).isEqualTo("http://localhost:8765/")
@@ -30,9 +29,10 @@ class YouTubeConsentUrlTest {
 
     @Test
     fun `build requests offline access with a fresh consent`() {
-        val query = decodeQuery(
-            YouTubeConsentUrl.build("cid", "http://localhost:8765/").substringAfter("?"),
-        )
+        val query =
+            decodeQuery(
+                YouTubeConsentUrl.build("cid", "http://localhost:8765/").substringAfter("?"),
+            )
 
         assertThat(query["access_type"]).isEqualTo("offline")
         assertThat(query["prompt"]).isEqualTo("consent")
@@ -40,9 +40,10 @@ class YouTubeConsentUrlTest {
 
     @Test
     fun `build honours a custom scope`() {
-        val query = decodeQuery(
-            YouTubeConsentUrl.build("cid", "http://localhost:1/", "scope-x").substringAfter("?"),
-        )
+        val query =
+            decodeQuery(
+                YouTubeConsentUrl.build("cid", "http://localhost:1/", "scope-x").substringAfter("?"),
+            )
 
         assertThat(query["scope"]).isEqualTo("scope-x")
     }

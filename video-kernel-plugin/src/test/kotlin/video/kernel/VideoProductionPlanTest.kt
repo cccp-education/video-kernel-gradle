@@ -5,26 +5,26 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
-import java.io.File
 import java.nio.file.Path
 
 /**
  * TDD — engine-neutral [VideoProductionPlan] (CAP-ENGINE-DECOUPLING US-1).
  */
 class VideoProductionPlanTest {
-
     @TempDir
     lateinit var tempDir: Path
 
     private fun entry(code: String): VideoProductionEntry {
-        val visual = tempDir.resolve("visuals/demo_$code-deck.html").toFile().apply {
-            parentFile?.mkdirs()
-            writeText("dummy")
-        }
-        val script = tempDir.resolve("scripts/demo_$code-script.txt").toFile().apply {
-            parentFile?.mkdirs()
-            writeText("dummy")
-        }
+        val visual =
+            tempDir.resolve("visuals/demo_$code-deck.html").toFile().apply {
+                parentFile?.mkdirs()
+                writeText("dummy")
+            }
+        val script =
+            tempDir.resolve("scripts/demo_$code-script.txt").toFile().apply {
+                parentFile?.mkdirs()
+                writeText("dummy")
+            }
         return VideoProductionEntry(
             visual = FileVisualSource(visual),
             scriptFile = script,

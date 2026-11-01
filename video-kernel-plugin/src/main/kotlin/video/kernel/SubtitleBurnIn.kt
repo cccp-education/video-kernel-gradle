@@ -19,7 +19,6 @@ import java.io.File
  * keeps the original video instead of failing the build.
  */
 fun interface SubtitleBurnIn {
-
     /**
      * Burns [subtitles] into [video] and writes the result to [output].
      *
@@ -28,5 +27,9 @@ fun interface SubtitleBurnIn {
      * @param output    the video file with burned-in subtitles to write.
      * @return `true` when [output] was produced, `false` on degradation.
      */
-    fun burnIn(video: File, subtitles: File, output: File): Boolean
+    fun burnIn(
+        video: File,
+        subtitles: File,
+        output: File,
+    ): Boolean
 }

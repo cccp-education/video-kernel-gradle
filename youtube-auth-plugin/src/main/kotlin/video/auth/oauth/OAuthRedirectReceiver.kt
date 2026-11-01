@@ -16,13 +16,15 @@ import java.util.concurrent.atomic.AtomicReference
  * the OAuth flow is exercised without a browser.
  */
 fun interface OAuthRedirectReceiver {
-
     /**
      * Blocks until Google redirects the authorization `code` to `http://localhost:port/`.
      *
      * @return the `code` (or the `error` value), or `null` on timeout.
      */
-    fun awaitCode(port: Int, timeoutMillis: Long): String?
+    fun awaitCode(
+        port: Int,
+        timeoutMillis: Long,
+    ): String?
 }
 
 /**
@@ -38,20 +40,23 @@ class LoopbackOAuthReceiver(
         HttpServer.create(InetSocketAddress("127.0.0.1", port), 0)
     },
 ) : OAuthRedirectReceiver {
-
-    override fun awaitCode(port: Int, timeoutMillis: Long): String? {
+    override fun awaitCode(
+        port: Int,
+        timeoutMillis: Long,
+    ): String? {
         val server = serverFactory(port)
         val latch = CountDownLatch(1)
         val captured = AtomicReference<String?>(null)
         server.createContext("/") { exchange ->
             val params = parseQuery(exchange.requestURI.rawQuery ?: "")
             val result = params["code"] ?: params["error"]
-            val html = if (result != null) {
-                "<!doctype html><html><body><h2>Authorization received.</h2>" +
-                    "<p>You can close this tab and return to the terminal.</p></body></html>"
-            } else {
-                "<!doctype html><html><body><p>Waiting for the authorization redirect…</p></body></html>"
-            }
+            val html =
+                if (result != null) {
+                    "<!doctype html><html><body><h2>Authorization received.</h2>" +
+                        "<p>You can close this tab and return to the terminal.</p></body></html>"
+                } else {
+                    "<!doctype html><html><body><p>Waiting for the authorization redirect…</p></body></html>"
+                }
             val bytes = html.toByteArray(StandardCharsets.UTF_8)
             exchange.responseHeaders.add("Content-Type", "text/html; charset=utf-8")
             exchange.sendResponseHeaders(200, bytes.size.toLong())
@@ -70,27 +75,31 @@ class LoopbackOAuthReceiver(
             }
         }
         server.start()
-        val received = try {
-            latch.await(timeoutMillis, TimeUnit.MILLISECONDS)
-        } catch (e: InterruptedException) {
-            Thread.currentThread().interrupt()
-            false
-        } finally {
-            server.stop(0)
-        }
+        val received =
+            try {
+                latch.await(timeoutMillis, TimeUnit.MILLISECONDS)
+            } catch (e: InterruptedException) {
+                Thread.currentThread().interrupt()
+                false
+            } finally {
+                server.stop(0)
+            }
         return if (received) captured.get() else null
     }
 
     companion object {
         /** Parses a URL query string into a decoded key/value map. */
         fun parseQuery(query: String): Map<String, String> =
-            query.split("&")
+            query
+                .split("&")
                 .mapNotNull { pair ->
                     val separator = pair.indexOf('=')
-                    if (separator < 0) null
-                    else decode(pair.substring(0, separator)) to decode(pair.substring(separator + 1))
-                }
-                .toMap()
+                    if (separator < 0) {
+                        null
+                    } else {
+                        decode(pair.substring(0, separator)) to decode(pair.substring(separator + 1))
+                    }
+                }.toMap()
 
         private fun decode(value: String): String = URLDecoder.decode(value, StandardCharsets.UTF_8)
     }

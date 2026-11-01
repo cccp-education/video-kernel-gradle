@@ -22,7 +22,6 @@ import java.io.File
  * an optional prober is unavailable.
  */
 fun interface VideoDurationProbe {
-
     /**
      * @param video the produced video file.
      * @return the duration in seconds, or `0.0` when unknown.
@@ -42,7 +41,6 @@ fun interface VideoDurationProbe {
  *         `null` (unknown — the caller degrades to `0.0`).
  */
 object FfprobeDurationParser {
-
     fun parse(stdout: String): Double? {
         val line = stdout.lineSequence().map { it.trim() }.firstOrNull { it.isNotEmpty() } ?: return null
         val value = line.toDoubleOrNull() ?: return null

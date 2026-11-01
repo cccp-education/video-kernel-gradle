@@ -3,12 +3,12 @@ package video.auth.scenarios
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
-import java.net.URLDecoder
-import java.nio.charset.StandardCharsets
 import video.auth.CredentialsFileRewriter
 import video.auth.YouTubeConsentUrl
 import video.auth.YouTubeTokenParser
 import video.auth.YouTubeTokenResponse
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
 /**
  * Steps for the pure YouTube OAuth domain (HF-YOUTUBE-AUTH US-1).
@@ -17,13 +17,15 @@ import video.auth.YouTubeTokenResponse
  * browser/network parts are not exercised here.
  */
 class YouTubeAuthSteps {
-
     private var consentUrl: String = ""
     private var tokenResponse: YouTubeTokenResponse? = null
     private var credentials: String = ""
 
     @When("I build the youtube consent URL for client {string} on port {int}")
-    fun buildConsent(clientId: String, port: Int) {
+    fun buildConsent(
+        clientId: String,
+        port: Int,
+    ) {
         consentUrl = YouTubeConsentUrl.build(clientId, YouTubeConsentUrl.loopbackRedirect(port))
     }
 
@@ -33,7 +35,10 @@ class YouTubeAuthSteps {
     }
 
     @Then("the consent URL carries query {string} equal to {string}")
-    fun queryEquals(key: String, expected: String) {
+    fun queryEquals(
+        key: String,
+        expected: String,
+    ) {
         check(query()[key] == expected) { "query '$key' was '${query()[key]}' (expected '$expected')" }
     }
 
@@ -58,7 +63,10 @@ class YouTubeAuthSteps {
     }
 
     @Given("a youtube credentials file with clientId {string} and clientSecret {string}")
-    fun credentialsFile(clientId: String, clientSecret: String) {
+    fun credentialsFile(
+        clientId: String,
+        clientSecret: String,
+    ) {
         credentials = "youtube:\n  clientId: \"$clientId\"\n  clientSecret: \"$clientSecret\"\n  refreshToken: \"\"\n"
     }
 

@@ -23,7 +23,6 @@ import org.gradle.api.Project
  * ```
  */
 class YouTubeAuthPlugin : Plugin<Project> {
-
     override fun apply(target: Project) {
         val extension = target.extensions.create("youtubeAuth", YouTubeAuthExtension::class.java)
 

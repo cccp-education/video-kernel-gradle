@@ -10,9 +10,11 @@ package video.auth
  * the caller owns file reading/writing.
  */
 object CredentialsFileRewriter {
-
     /** Returns [content] with its `refreshToken:` value set to [refreshToken]. */
-    fun withRefreshToken(content: String, refreshToken: String): String {
+    fun withRefreshToken(
+        content: String,
+        refreshToken: String,
+    ): String {
         require(refreshToken.isNotBlank()) { "refreshToken must not be blank" }
         val trailingNewline = content.endsWith("\n")
         val lines = content.removeSuffix("\n").lines().toMutableList()
@@ -32,8 +34,12 @@ object CredentialsFileRewriter {
     /** Reads the `refreshToken` value, or `null` when absent/blank. */
     fun refreshToken(content: String): String? = field(content, "refreshToken")
 
-    private fun field(content: String, key: String): String? =
-        content.lineSequence()
+    private fun field(
+        content: String,
+        key: String,
+    ): String? =
+        content
+            .lineSequence()
             .map { it.substringBefore('#').trim() }
             .firstOrNull { it.startsWith("$key:") }
             ?.substringAfter(":")

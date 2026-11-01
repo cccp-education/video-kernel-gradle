@@ -19,7 +19,6 @@ package video.kernel.publish
  * skipped, [VideoPublicationResult.Failed] when the platform refused it.
  */
 fun interface VideoPublisher {
-
     /**
      * Publishes [publication].
      *

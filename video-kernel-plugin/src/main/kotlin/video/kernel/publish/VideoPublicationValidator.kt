@@ -22,7 +22,6 @@ package video.kernel.publish
  * - the thumbnail, when present, must exist.
  */
 object VideoPublicationValidator {
-
     /** Validates [publication] and returns the full, ordered list of violations. */
     fun validate(publication: VideoPublication): VideoPublicationValidation {
         val reasons = mutableListOf<String>()
@@ -57,8 +56,11 @@ object VideoPublicationValidator {
             }
         }
 
-        return if (reasons.isEmpty()) VideoPublicationValidation.VALID
-        else VideoPublicationValidation.invalid(reasons)
+        return if (reasons.isEmpty()) {
+            VideoPublicationValidation.VALID
+        } else {
+            VideoPublicationValidation.invalid(reasons)
+        }
     }
 
     private fun validateTags(tags: List<String>): List<String> {
@@ -77,7 +79,10 @@ object VideoPublicationValidator {
         return reasons
     }
 
-    private fun validateFreeText(kind: String, values: List<String>): List<String> {
+    private fun validateFreeText(
+        kind: String,
+        values: List<String>,
+    ): List<String> {
         val reasons = mutableListOf<String>()
         values.forEach { value ->
             if (value.isBlank()) reasons += "${kind}s must not contain blank entries"
@@ -105,7 +110,7 @@ object VideoPublicationValidator {
                 reasons += "chapter starts must strictly increase " +
                     "(chapter ${i + 1} at ${chapters[i].startSeconds})"
             } else if (delta < VideoPublicationLimits.MIN_CHAPTER_DURATION_SECONDS) {
-                reasons += "chapter ${i} lasts $delta s, minimum is " +
+                reasons += "chapter $i lasts $delta s, minimum is " +
                     "${VideoPublicationLimits.MIN_CHAPTER_DURATION_SECONDS} s"
             }
         }

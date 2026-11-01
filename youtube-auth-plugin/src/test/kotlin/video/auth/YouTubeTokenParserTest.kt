@@ -8,12 +8,12 @@ import org.junit.jupiter.api.Test
  * TDD — pure [YouTubeTokenParser] (HF-YOUTUBE-AUTH US-1).
  */
 class YouTubeTokenParserTest {
-
     @Test
     fun `parses refresh and access tokens`() {
-        val response = YouTubeTokenParser.parse(
-            """{"access_token":"ya29.abc","refresh_token":"1//0gXYZ","expires_in":3599,"token_type":"Bearer"}""",
-        )
+        val response =
+            YouTubeTokenParser.parse(
+                """{"access_token":"ya29.abc","refresh_token":"1//0gXYZ","expires_in":3599,"token_type":"Bearer"}""",
+            )
 
         assertThat(response.accessToken).isEqualTo("ya29.abc")
         assertThat(response.refreshToken).isEqualTo("1//0gXYZ")
@@ -30,9 +30,10 @@ class YouTubeTokenParserTest {
 
     @Test
     fun `parses an error response`() {
-        val response = YouTubeTokenParser.parse(
-            """{"error":"invalid_grant","error_description":"Bad Request"}""",
-        )
+        val response =
+            YouTubeTokenParser.parse(
+                """{"error":"invalid_grant","error_description":"Bad Request"}""",
+            )
 
         assertThat(response.error).isEqualTo("invalid_grant")
         assertThat(response.errorDescription).isEqualTo("Bad Request")
@@ -41,9 +42,10 @@ class YouTubeTokenParserTest {
 
     @Test
     fun `tolerates surrounding whitespace in the json`() {
-        val response = YouTubeTokenParser.parse(
-            "  { \"refresh_token\" : \"1//0g\" }  ",
-        )
+        val response =
+            YouTubeTokenParser.parse(
+                "  { \"refresh_token\" : \"1//0g\" }  ",
+            )
 
         assertThat(response.refreshToken).isEqualTo("1//0g")
     }

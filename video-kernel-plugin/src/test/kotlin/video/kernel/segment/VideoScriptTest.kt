@@ -8,16 +8,17 @@ import org.junit.jupiter.api.assertThrows
  * TDD — engine-neutral [VideoScript] aggregate (CAP-ENGINE-DECOUPLING US-1).
  */
 class VideoScriptTest {
-
     @Test
     fun `holds a name and ordered segments`() {
-        val script = VideoScript(
-            name = "production",
-            segments = listOf(
-                VideoSegment(index = 1, title = "A", narration = "a."),
-                VideoSegment(index = 2, title = "B", narration = "b."),
-            ),
-        )
+        val script =
+            VideoScript(
+                name = "production",
+                segments =
+                    listOf(
+                        VideoSegment(index = 1, title = "A", narration = "a."),
+                        VideoSegment(index = 2, title = "B", narration = "b."),
+                    ),
+            )
 
         assertThat(script.name).isEqualTo("production")
         assertThat(script.segments).hasSize(2)
@@ -37,5 +38,4 @@ class VideoScriptTest {
             VideoScript(name = "  ", segments = emptyList())
         }
     }
-
 }

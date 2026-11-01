@@ -22,7 +22,6 @@ import java.io.File
  * espeak voice is language-bound), never of this neutral contract.
  */
 fun interface TextToSpeech {
-
     /**
      * Synthesizes [text] into [output].
      *
@@ -30,5 +29,8 @@ fun interface TextToSpeech {
      * @param output the audio file to write (the engine chooses the container).
      * @return `true` when [output] was produced, `false` on degradation.
      */
-    fun synthesize(text: String, output: File): Boolean
+    fun synthesize(
+        text: String,
+        output: File,
+    ): Boolean
 }

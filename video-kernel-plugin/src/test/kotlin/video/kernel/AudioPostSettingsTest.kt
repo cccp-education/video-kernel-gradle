@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test
  * defaults to disabled/empty.
  */
 class AudioPostSettingsTest {
-
     @Test
     fun `defaults are all disabled and empty`() {
         val settings = AudioPostSettings()
@@ -26,14 +25,15 @@ class AudioPostSettingsTest {
 
     @Test
     fun `explicit values are preserved`() {
-        val settings = AudioPostSettings(
-            bgmEnabled = true,
-            bgmFile = "music.mp3",
-            bgmLevelDb = -12.5,
-            loudnessTargetLufs = -14.0,
-            duckingEnabled = true,
-            twoPassLoudness = true,
-        )
+        val settings =
+            AudioPostSettings(
+                bgmEnabled = true,
+                bgmFile = "music.mp3",
+                bgmLevelDb = -12.5,
+                loudnessTargetLufs = -14.0,
+                duckingEnabled = true,
+                twoPassLoudness = true,
+            )
 
         assertThat(settings.bgmEnabled).isTrue()
         assertThat(settings.bgmFile).isEqualTo("music.mp3")

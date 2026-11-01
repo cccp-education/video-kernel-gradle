@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
  * TDD — invariants of the publication value objects (HF-YOUTUBE-PUBLISH US-1).
  */
 class VideoPublicationModelTest {
-
     @Test
     fun `a chapter rejects a negative start`() {
         assertThatThrownBy { VideoChapter(-1, "Intro") }

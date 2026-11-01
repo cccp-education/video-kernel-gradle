@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test
  * TDD — pure [CredentialsFileRewriter] (HF-YOUTUBE-AUTH US-1).
  */
 class CredentialsFileRewriterTest {
-
-    private val yaml = """
+    private val yaml =
+        """
         youtube:
           clientId: "cid.apps.googleusercontent.com"
           clientSecret: "GOCSPX-xyz"
@@ -17,7 +17,7 @@ class CredentialsFileRewriterTest {
           channelId: "UC123"
           # Optionnel — lecture publique uniquement
           apiKey: ""
-    """.trimIndent() + "\n"
+        """.trimIndent() + "\n"
 
     @Test
     fun `reads the client id and secret`() {

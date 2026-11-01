@@ -20,7 +20,6 @@ import java.io.File
  * caller keeps the original video instead of failing the build.
  */
 fun interface AudioPostProduction {
-
     /**
      * Applies post-production to [video] and writes the result to [output].
      *
@@ -29,7 +28,11 @@ fun interface AudioPostProduction {
      * @param settings the neutral post-production settings.
      * @return `true` when [output] was produced, `false` on degradation.
      */
-    fun process(video: File, output: File, settings: AudioPostSettings): Boolean
+    fun process(
+        video: File,
+        output: File,
+        settings: AudioPostSettings,
+    ): Boolean
 }
 
 /**

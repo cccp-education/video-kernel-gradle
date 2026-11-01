@@ -19,11 +19,9 @@ data class VideoPublicationValidation(
         val VALID: VideoPublicationValidation = VideoPublicationValidation(true, emptyList())
 
         /** An invalid outcome from one or more [reasons]. */
-        fun invalid(vararg reasons: String): VideoPublicationValidation =
-            VideoPublicationValidation(false, reasons.toList())
+        fun invalid(vararg reasons: String): VideoPublicationValidation = VideoPublicationValidation(false, reasons.toList())
 
         /** An invalid outcome from a [reasons] list. */
-        fun invalid(reasons: List<String>): VideoPublicationValidation =
-            VideoPublicationValidation(false, reasons)
+        fun invalid(reasons: List<String>): VideoPublicationValidation = VideoPublicationValidation(false, reasons)
     }
 }

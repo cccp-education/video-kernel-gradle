@@ -12,7 +12,6 @@ import java.io.File
  * parsing lives in the adapters.
  */
 interface SegmentSource {
-
     /** Human-readable source name (diagnostics only). */
     fun name(): String
 

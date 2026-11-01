@@ -15,7 +15,6 @@ import java.nio.charset.StandardCharsets
  * token on a fresh consent).
  */
 object YouTubeConsentUrl {
-
     /** Google OAuth 2.0 authorization endpoint. */
     const val AUTH_ENDPOINT: String = "https://accounts.google.com/o/oauth2/v2/auth"
 
@@ -37,14 +36,15 @@ object YouTubeConsentUrl {
     ): String {
         require(clientId.isNotBlank()) { "clientId must not be blank" }
         require(redirectUri.isNotBlank()) { "redirectUri must not be blank" }
-        val params = listOf(
-            "client_id" to clientId,
-            "redirect_uri" to redirectUri,
-            "response_type" to "code",
-            "scope" to scope,
-            "access_type" to "offline",
-            "prompt" to "consent",
-        )
+        val params =
+            listOf(
+                "client_id" to clientId,
+                "redirect_uri" to redirectUri,
+                "response_type" to "code",
+                "scope" to scope,
+                "access_type" to "offline",
+                "prompt" to "consent",
+            )
         return AUTH_ENDPOINT + "?" + params.joinToString("&") { (key, value) -> "$key=${encode(value)}" }
     }
 

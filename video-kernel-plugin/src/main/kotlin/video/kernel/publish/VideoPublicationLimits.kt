@@ -14,7 +14,6 @@ package video.kernel.publish
  * never drift apart.
  */
 object VideoPublicationLimits {
-
     /** Maximum title length, in characters. */
     const val TITLE_MAX_LENGTH: Int = 100
 

@@ -11,7 +11,6 @@ import java.io.File
  * kinds (deck HTML, composition HTML, …) are adapter concerns.
  */
 interface VisualSource {
-
     /** The file the engine adapter consumes to produce the visuals. */
     val file: File
 }
@@ -25,4 +24,6 @@ interface VisualSource {
  * @property file the visual file, must exist on disk (checked by
  * [VideoProductionEntry]).
  */
-data class FileVisualSource(override val file: File) : VisualSource
+data class FileVisualSource(
+    override val file: File,
+) : VisualSource

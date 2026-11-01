@@ -11,7 +11,6 @@ import java.io.File
  * process, no `ProcessBuilder` (the concrete ffprobe prober is an N2 adapter).
  */
 class VideoDurationProbeTest {
-
     @Test
     fun `the port is a SAM lambda`() {
         val probe = VideoDurationProbe { 12.5 }

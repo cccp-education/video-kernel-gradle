@@ -14,7 +14,6 @@ package video.kernel.publish
  *   setting.
  */
 sealed interface VideoPublicationResult {
-
     /** The video was accepted by the platform. */
     data class Published(
         /** Platform-assigned video identifier. */
@@ -24,8 +23,12 @@ sealed interface VideoPublicationResult {
     ) : VideoPublicationResult
 
     /** Publication was safely skipped ([reason] explains why). */
-    data class Degraded(val reason: String) : VideoPublicationResult
+    data class Degraded(
+        val reason: String,
+    ) : VideoPublicationResult
 
     /** The platform refused the publication ([reason] carries the cause). */
-    data class Failed(val reason: String) : VideoPublicationResult
+    data class Failed(
+        val reason: String,
+    ) : VideoPublicationResult
 }

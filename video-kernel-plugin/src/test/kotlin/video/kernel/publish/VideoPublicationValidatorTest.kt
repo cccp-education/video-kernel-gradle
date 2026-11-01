@@ -12,19 +12,20 @@ import java.io.File
  * (existence is a genuine rule).
  */
 class VideoPublicationValidatorTest {
-
     @TempDir
     lateinit var tempDir: File
 
     private fun video(): File = File(tempDir, "video.mp4").apply { writeText("x") }
 
-    private fun valid(tags: List<String> = emptyList(), chapters: List<VideoChapter> = emptyList()) =
-        VideoPublication(
-            videoFile = video(),
-            title = "A title",
-            tags = tags,
-            chapters = chapters,
-        )
+    private fun valid(
+        tags: List<String> = emptyList(),
+        chapters: List<VideoChapter> = emptyList(),
+    ) = VideoPublication(
+        videoFile = video(),
+        title = "A title",
+        tags = tags,
+        chapters = chapters,
+    )
 
     @Test
     fun `a minimal publication is valid`() {
@@ -44,40 +45,44 @@ class VideoPublicationValidatorTest {
 
     @Test
     fun `a blank title is rejected`() {
-        val result = VideoPublicationValidator.validate(
-            VideoPublication(videoFile = video(), title = "   "),
-        )
+        val result =
+            VideoPublicationValidator.validate(
+                VideoPublication(videoFile = video(), title = "   "),
+            )
 
         assertThat(result.reasons).anyMatch { it.contains("title must not be blank") }
     }
 
     @Test
     fun `a title longer than the limit is rejected`() {
-        val result = VideoPublicationValidator.validate(
-            VideoPublication(videoFile = video(), title = "x".repeat(VideoPublicationLimits.TITLE_MAX_LENGTH + 1)),
-        )
+        val result =
+            VideoPublicationValidator.validate(
+                VideoPublication(videoFile = video(), title = "x".repeat(VideoPublicationLimits.TITLE_MAX_LENGTH + 1)),
+            )
 
         assertThat(result.reasons).anyMatch { it.contains("title exceeds") }
     }
 
     @Test
     fun `a description longer than the limit is rejected`() {
-        val result = VideoPublicationValidator.validate(
-            VideoPublication(
-                videoFile = video(),
-                title = "t",
-                description = "x".repeat(VideoPublicationLimits.DESCRIPTION_MAX_LENGTH + 1),
-            ),
-        )
+        val result =
+            VideoPublicationValidator.validate(
+                VideoPublication(
+                    videoFile = video(),
+                    title = "t",
+                    description = "x".repeat(VideoPublicationLimits.DESCRIPTION_MAX_LENGTH + 1),
+                ),
+            )
 
         assertThat(result.reasons).anyMatch { it.contains("description exceeds") }
     }
 
     @Test
     fun `a description with forbidden characters is rejected`() {
-        val result = VideoPublicationValidator.validate(
-            VideoPublication(videoFile = video(), title = "t", description = "a < b > c"),
-        )
+        val result =
+            VideoPublicationValidator.validate(
+                VideoPublication(videoFile = video(), title = "t", description = "a < b > c"),
+            )
 
         assertThat(result.reasons).anyMatch { it.contains("description contains forbidden") }
     }
@@ -107,45 +112,50 @@ class VideoPublicationValidatorTest {
 
     @Test
     fun `fewer than three chapters is rejected`() {
-        val result = VideoPublicationValidator.validate(
-            valid(chapters = listOf(VideoChapter(0, "a"), VideoChapter(10, "b"))),
-        )
+        val result =
+            VideoPublicationValidator.validate(
+                valid(chapters = listOf(VideoChapter(0, "a"), VideoChapter(10, "b"))),
+            )
 
         assertThat(result.reasons).anyMatch { it.contains("at least 3") }
     }
 
     @Test
     fun `a first chapter not at zero is rejected`() {
-        val result = VideoPublicationValidator.validate(
-            valid(chapters = listOf(VideoChapter(5, "a"), VideoChapter(15, "b"), VideoChapter(25, "c"))),
-        )
+        val result =
+            VideoPublicationValidator.validate(
+                valid(chapters = listOf(VideoChapter(5, "a"), VideoChapter(15, "b"), VideoChapter(25, "c"))),
+            )
 
         assertThat(result.reasons).anyMatch { it.contains("must start at 0") }
     }
 
     @Test
     fun `non increasing chapter starts are rejected`() {
-        val result = VideoPublicationValidator.validate(
-            valid(chapters = listOf(VideoChapter(0, "a"), VideoChapter(10, "b"), VideoChapter(10, "c"))),
-        )
+        val result =
+            VideoPublicationValidator.validate(
+                valid(chapters = listOf(VideoChapter(0, "a"), VideoChapter(10, "b"), VideoChapter(10, "c"))),
+            )
 
         assertThat(result.reasons).anyMatch { it.contains("strictly increase") }
     }
 
     @Test
     fun `a chapter shorter than the minimum is rejected`() {
-        val result = VideoPublicationValidator.validate(
-            valid(chapters = listOf(VideoChapter(0, "a"), VideoChapter(5, "b"), VideoChapter(20, "c"))),
-        )
+        val result =
+            VideoPublicationValidator.validate(
+                valid(chapters = listOf(VideoChapter(0, "a"), VideoChapter(5, "b"), VideoChapter(20, "c"))),
+            )
 
         assertThat(result.reasons).anyMatch { it.contains("minimum is") }
     }
 
     @Test
     fun `three well spaced chapters are valid`() {
-        val result = VideoPublicationValidator.validate(
-            valid(chapters = listOf(VideoChapter(0, "a"), VideoChapter(10, "b"), VideoChapter(20, "c"))),
-        )
+        val result =
+            VideoPublicationValidator.validate(
+                valid(chapters = listOf(VideoChapter(0, "a"), VideoChapter(10, "b"), VideoChapter(20, "c"))),
+            )
 
         assertThat(result.valid).isTrue()
     }

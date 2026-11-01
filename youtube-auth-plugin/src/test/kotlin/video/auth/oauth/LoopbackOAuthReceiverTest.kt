@@ -1,6 +1,8 @@
 package video.auth.oauth
 
 import com.sun.net.httpserver.HttpServer
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 import java.net.InetSocketAddress
 import java.net.URI
 import java.net.http.HttpClient
@@ -9,8 +11,6 @@ import java.net.http.HttpResponse
 import java.time.Duration
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
 
 /**
  * TDD — [OAuthRedirectReceiver] + loopback roundtrip (HF-YOUTUBE-AUTH US-2).
@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test
  * external network.
  */
 class LoopbackOAuthReceiverTest {
-
     @Test
     fun `parses and decodes a query string`() {
         val params = LoopbackOAuthReceiver.parseQuery("code=4%2F0A&scope=https%3A%2F%2Fexample&state=abc")
@@ -84,7 +83,10 @@ class LoopbackOAuthReceiverTest {
      * claims it (the probe/rebind race that made the roundtrips flaky on busy CI
      * runners, S-002 CI feedback).
      */
-    private class BoundReceiver(val receiver: LoopbackOAuthReceiver, val port: Int)
+    private class BoundReceiver(
+        val receiver: LoopbackOAuthReceiver,
+        val port: Int,
+    )
 
     private fun boundReceiver(): BoundReceiver {
         val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
@@ -94,7 +96,10 @@ class LoopbackOAuthReceiverTest {
         )
     }
 
-    private fun getWithRetry(url: String, attempts: Int = 20): HttpResponse<String> {
+    private fun getWithRetry(
+        url: String,
+        attempts: Int = 20,
+    ): HttpResponse<String> {
         val client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(2)).build()
         val request = HttpRequest.newBuilder(URI.create(url)).GET().build()
         var last: Exception? = null

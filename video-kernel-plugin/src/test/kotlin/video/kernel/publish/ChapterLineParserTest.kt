@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test
  * PUBLISH-ADAPTER-N1 — pure chapter-line parser (moved from capsule + hyperframes).
  */
 class ChapterLineParserTest {
-
     @Test
     fun `parses a minute-second timestamp`() {
         assertThat(ChapterLineParser.parseLine("1:30 Setup"))

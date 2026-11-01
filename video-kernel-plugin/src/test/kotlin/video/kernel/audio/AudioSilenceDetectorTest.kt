@@ -12,7 +12,6 @@ import kotlin.test.assertTrue
  * (`verifyCapsuleVoice`) and hyperframes (`generateHyperframesNarration`).
  */
 class AudioSilenceDetectorTest {
-
     @Test
     fun `digital silence is silent`() {
         val analysis = AudioSilenceDetector.analyze(DoubleArray(50) { 0.0 })
@@ -47,18 +46,20 @@ class AudioSilenceDetectorTest {
 
     @Test
     fun `a frame at the threshold counts as silent`() {
-        val analysis = AudioSilenceDetector.analyze(
-            doubleArrayOf(AudioSilenceDetector.DEFAULT_RMS_THRESHOLD),
-        )
+        val analysis =
+            AudioSilenceDetector.analyze(
+                doubleArrayOf(AudioSilenceDetector.DEFAULT_RMS_THRESHOLD),
+            )
 
         assertTrue(analysis.isSilent)
     }
 
     @Test
     fun `a frame above the threshold is audible`() {
-        val analysis = AudioSilenceDetector.analyze(
-            doubleArrayOf(AudioSilenceDetector.DEFAULT_RMS_THRESHOLD * 2.0),
-        )
+        val analysis =
+            AudioSilenceDetector.analyze(
+                doubleArrayOf(AudioSilenceDetector.DEFAULT_RMS_THRESHOLD * 2.0),
+            )
 
         assertFalse(analysis.isSilent)
     }

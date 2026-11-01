@@ -1,31 +1,31 @@
 package video.kernel.publish
 
-import java.io.File
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import java.io.File
 
 /**
  * PUBLISH-ADAPTER-N1 — pure credentials loader + redaction (moved from capsule +
  * hyperframes).
  */
 class YouTubeCredentialsLoaderTest {
-
     @TempDir
     lateinit var tempDir: File
 
     @Test
     fun `parses a youtube section with quoted values`() {
-        val values = YouTubeCredentialsLoader.parse(
-            """
-            youtube:
-              clientId: "abc.apps.googleusercontent.com"
-              clientSecret: "sekret"
-              refreshToken: "refresh"
-              channelId: "UC123"
-              apiKey: 'AIza'
-            """.trimIndent(),
-        )
+        val values =
+            YouTubeCredentialsLoader.parse(
+                """
+                youtube:
+                  clientId: "abc.apps.googleusercontent.com"
+                  clientSecret: "sekret"
+                  refreshToken: "refresh"
+                  channelId: "UC123"
+                  apiKey: 'AIza'
+                """.trimIndent(),
+            )
 
         assertThat(values["clientid"]).isEqualTo("abc.apps.googleusercontent.com")
         assertThat(values["clientsecret"]).isEqualTo("sekret")
@@ -36,15 +36,16 @@ class YouTubeCredentialsLoaderTest {
 
     @Test
     fun `ignores comments and blank lines`() {
-        val values = YouTubeCredentialsLoader.parse(
-            """
-            # a comment
-            youtube:
-              clientId: abc
+        val values =
+            YouTubeCredentialsLoader.parse(
+                """
+                # a comment
+                youtube:
+                  clientId: abc
 
-              clientSecret: s # inline comment
-            """.trimIndent(),
-        )
+                  clientSecret: s # inline comment
+                """.trimIndent(),
+            )
 
         assertThat(values["clientid"]).isEqualTo("abc")
         assertThat(values["clientsecret"]).isEqualTo("s")
@@ -52,15 +53,16 @@ class YouTubeCredentialsLoaderTest {
 
     @Test
     fun `normalises snake_case and kebab-case keys`() {
-        val values = YouTubeCredentialsLoader.parse(
-            """
-            youtube:
-              client_id: a
-              client-secret: b
-              refresh_token: c
-              channel-id: UC123
-            """.trimIndent(),
-        )
+        val values =
+            YouTubeCredentialsLoader.parse(
+                """
+                youtube:
+                  client_id: a
+                  client-secret: b
+                  refresh_token: c
+                  channel-id: UC123
+                """.trimIndent(),
+            )
 
         assertThat(values["clientid"]).isEqualTo("a")
         assertThat(values["clientsecret"]).isEqualTo("b")
@@ -101,13 +103,14 @@ class YouTubeCredentialsLoaderTest {
 
     @Test
     fun `toString redacts every secret`() {
-        val credentials = YouTubeCredentials(
-            clientId = "1234567890.apps.googleusercontent.com",
-            clientSecret = "super-secret-value",
-            refreshToken = "1//0refresh-token-value",
-            channelId = "UC123",
-            apiKey = "AIzaSecretKey",
-        )
+        val credentials =
+            YouTubeCredentials(
+                clientId = "1234567890.apps.googleusercontent.com",
+                clientSecret = "super-secret-value",
+                refreshToken = "1//0refresh-token-value",
+                channelId = "UC123",
+                apiKey = "AIzaSecretKey",
+            )
 
         val text = credentials.toString()
 
