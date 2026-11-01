@@ -88,14 +88,15 @@ abstract class ObtainYouTubeRefreshTokenTask : DefaultTask() {
 
         val json = exchanger.get().exchange(code, clientId, clientSecret, redirectUri)
         val response = YouTubeTokenParser.parse(json)
-        if (!response.hasRefreshToken()) {
+        val refreshToken = response.refreshToken
+        if (refreshToken.isNullOrBlank()) {
             throw GradleException(
                 "no refresh token returned by Google " +
                     "(${response.error ?: "unknown error"}: ${response.errorDescription ?: "no description"})",
             )
         }
 
-        val updated = CredentialsFileRewriter.withRefreshToken(content, response.refreshToken!!)
+        val updated = CredentialsFileRewriter.withRefreshToken(content, refreshToken)
         file.writeText(updated)
         logger.lifecycle("Refresh token written to ${file.absolutePath}")
     }

@@ -56,10 +56,10 @@ class VideoSegmentTest {
                 scene = "Scene1",
             )
 
-        @Suppress("DEPRECATION")
-        assertThat(segment.speakerNote).isEqualTo("Body.")
-
-        @Suppress("DEPRECATION")
-        assertThat(segment.manimScene).isEqualTo("Scene1")
+        // The aliases are deprecated on purpose (frozen public surface): read them
+        // reflectively so this compatibility check emits no DEPRECATION warning
+        // (MEM-WARN-FREE — fix the cause, never suppress).
+        assertThat(VideoSegment::class.java.getMethod("getSpeakerNote").invoke(segment)).isEqualTo("Body.")
+        assertThat(VideoSegment::class.java.getMethod("getManimScene").invoke(segment)).isEqualTo("Scene1")
     }
 }
