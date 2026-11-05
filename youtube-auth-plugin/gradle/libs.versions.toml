@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.4.10"
-plugin-publish = "2.1.0"
+plugin-publish = "2.2.1"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }

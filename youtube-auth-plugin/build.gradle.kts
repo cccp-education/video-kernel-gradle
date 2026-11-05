@@ -1,3 +1,5 @@
+import org.gradle.plugin.compatibility.compatibility
+
 plugins {
     `java-library`
     alias(libs.plugins.kotlin.jvm)
@@ -91,6 +93,12 @@ gradlePlugin {
                 "(flux OAuth 2.0 loopback) pour obtenir un refresh token YouTube, reutilisable " +
                 "par les boroughs consommateurs (video-kernel)."
             tags.set(listOf("youtube", "oauth", "video", "gradle"))
+            compatibility {
+                features {
+                    configurationCache.set(false)
+                    isolatedProjects.set(false)
+                }
+            }
         }
     }
     website = "https://github.com/cccp-education/video-kernel-gradle"
