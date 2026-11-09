@@ -53,3 +53,7 @@ uniquement ; vocabulaire neutre). **Stabilité gardée** : `video.ci.KernelApiSt
 | `src/main/kotlin/video/kernel/` | Noyau (modèle + ports)
 | `src/test/kotlin/video/ci/` | Gardes de frontière + de stabilité d'API
 |===
+
+== Session 201 — JitPack mirror (CNV-16)
+
+Publication JitPack de video-kernel 0.7.0 et youtube-auth 0.0.2. JitPack : BLOQUÉ — SDKMAN ne télécharge pas le JDK 25 sur JitPack ; retry nécessaire.
