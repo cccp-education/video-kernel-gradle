@@ -1,0 +1,11 @@
+# CNV-16 — JitPack build recipe for the video-kernel repo.
+# Two independent sub-builds with different versions; each tag publishes only
+# the matching artifact so the served version stays correct.
+before_install:
+  - sdk install java 25.0.5.0+8-tem
+  - sdk use java 25.0.5.0+8-tem
+install:
+  - if [ "${VERSION#v}" = "0.7.0" ]; then ./video-kernel-plugin/gradlew -p video-kernel-plugin publishToMavenLocal; fi
+  - if [ "${VERSION#v}" = "0.0.2" ]; then ./youtube-auth-plugin/gradlew -p youtube-auth-plugin publishToMavenLocal; fi
+env:
+  CI: "true"
