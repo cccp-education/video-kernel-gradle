@@ -8,6 +8,8 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
+import video.auth.oauth.BrowserLaunchOptions
+import video.auth.oauth.BrowserLaunchResult
 import video.auth.oauth.BrowserLauncher
 import video.auth.oauth.GoogleTokenExchanger
 import video.auth.oauth.OAuthRedirectReceiver
@@ -46,6 +48,19 @@ abstract class ObtainYouTubeRefreshTokenTask : DefaultTask() {
     @get:Input
     abstract val openBrowser: Property<Boolean>
 
+    /** Explicit Chrome/Chromium binary; blank auto-detects. */
+    @get:Input
+    @get:Optional
+    abstract val browserExecutable: Property<String>
+
+    /** Isolated profile base directory; blank resolves to `<buildDir>/youtube-auth/browser-profile`. */
+    @get:Internal
+    abstract val browserProfileDir: Property<String>
+
+    /** Start from a brand-new cookie-less session on every run (default `true`). */
+    @get:Input
+    abstract val freshBrowserProfile: Property<Boolean>
+
     @get:Input
     abstract val timeoutSeconds: Property<Long>
 
@@ -77,9 +92,12 @@ abstract class ObtainYouTubeRefreshTokenTask : DefaultTask() {
 
         logger.lifecycle("YouTube Auth — open this URL and grant the scope:")
         logger.lifecycle(consentUrl)
-        if (openBrowser.get() && BrowserLauncher.open(consentUrl)) {
-            logger.lifecycle("(consent URL opened in the default browser)")
-        }
+        val launch =
+            if (openBrowser.get()) {
+                openConsentUrl(consentUrl)
+            } else {
+                null
+            }
         logger.lifecycle("Waiting for the authorization redirect on $redirectUri …")
 
         val code =
@@ -99,5 +117,53 @@ abstract class ObtainYouTubeRefreshTokenTask : DefaultTask() {
         val updated = CredentialsFileRewriter.withRefreshToken(content, refreshToken)
         file.writeText(updated)
         logger.lifecycle("Refresh token written to ${file.absolutePath}")
+
+        if (launch is BrowserLaunchResult.OpenedInIsolatedProfile && launch.ephemeral) {
+            if (launch.profileDir.deleteRecursively()) {
+                logger.lifecycle("Temporary browser profile removed: ${launch.profileDir}")
+            }
+        }
+    }
+
+    /**
+     * Opens the consent URL in an isolated Chromium profile so the user can pick the
+     * Google account that owns the target channel (HF-YOUTUBE-AUTH US-4).
+     */
+    private fun openConsentUrl(consentUrl: String): BrowserLaunchResult {
+        val profileDir =
+            browserProfileDir.orNull
+                ?.takeIf { it.isNotBlank() }
+                ?.let(project::file)
+                ?: project.layout.buildDirectory
+                    .dir("youtube-auth/browser-profile")
+                    .get()
+                    .asFile
+        val options =
+            BrowserLaunchOptions(
+                executable = browserExecutable.orNull?.takeIf { it.isNotBlank() },
+                profileDir = profileDir,
+                freshProfile = freshBrowserProfile.get(),
+            )
+        return when (val result = BrowserLauncher.open(consentUrl, options)) {
+            is BrowserLaunchResult.OpenedInIsolatedProfile -> {
+                logger.lifecycle(
+                    "(consent URL opened in an isolated browser profile: ${result.profileDir}) — " +
+                        "sign in with the Google account that owns the target channel",
+                )
+                result
+            }
+            is BrowserLaunchResult.OpenedInDefaultBrowser -> {
+                logger.warn(
+                    "(consent URL opened in the default browser) — it may already be signed in to " +
+                        "another Google account: sign out or set youtubeAuth.browserExecutable to an " +
+                        "isolated Chromium profile",
+                )
+                result
+            }
+            BrowserLaunchResult.Unavailable -> {
+                logger.lifecycle("(no browser available — open the URL above in a private window)")
+                result
+            }
+        }
     }
 }

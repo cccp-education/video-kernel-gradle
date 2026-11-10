@@ -7,6 +7,8 @@ import video.auth.CredentialsFileRewriter
 import video.auth.YouTubeConsentUrl
 import video.auth.YouTubeTokenParser
 import video.auth.YouTubeTokenResponse
+import video.auth.oauth.ChromiumLaunchCommand
+import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 
@@ -20,6 +22,7 @@ class YouTubeAuthSteps {
     private var consentUrl: String = ""
     private var tokenResponse: YouTubeTokenResponse? = null
     private var credentials: String = ""
+    private var browserCommand: List<String> = emptyList()
 
     @When("I build the youtube consent URL for client {string} on port {int}")
     fun buildConsent(
@@ -83,6 +86,29 @@ class YouTubeAuthSteps {
     @Then("the written credentials carry refresh token {string}")
     fun carriesToken(token: String) {
         check(credentials.contains("refreshToken: \"$token\"")) { credentials }
+    }
+
+    @When("I build the isolated chromium command for url {string}")
+    fun buildIsolatedBrowserCommand(url: String) {
+        browserCommand =
+            ChromiumLaunchCommand
+                .build("google-chrome", File("/tmp/youtube-auth-profile/session-bdd"), url)
+    }
+
+    @Then("the browser command carries a dedicated user data directory")
+    fun carriesUserDataDir() {
+        check(browserCommand.any { it.startsWith(ChromiumLaunchCommand.USER_DATA_DIR + "=") }) { browserCommand.toString() }
+    }
+
+    @Then("the browser command disables first run and default browser checks")
+    fun disablesFirstRunPrompts() {
+        check(browserCommand.contains("--no-first-run")) { browserCommand.toString() }
+        check(browserCommand.contains("--no-default-browser-check")) { browserCommand.toString() }
+    }
+
+    @Then("the browser command ends with the consent url")
+    fun endsWithConsentUrl() {
+        check(browserCommand.lastOrNull()?.startsWith("https://accounts.google.com/") == true) { browserCommand.toString() }
     }
 
     private fun query(): Map<String, String> =

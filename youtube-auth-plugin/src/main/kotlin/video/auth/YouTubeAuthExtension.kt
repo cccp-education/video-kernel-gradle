@@ -16,7 +16,13 @@ import video.auth.oauth.OAuthRedirectReceiver
  *                           `http://localhost:8765/` redirect URI must be
  *                           registered on the OAuth client.
  * @property scope           OAuth scope (default `…/auth/youtube.upload`).
- * @property openBrowser     open the consent URL in the default browser (default `true`).
+ * @property openBrowser     open the consent URL in a browser (default `true`).
+ * @property browserExecutable explicit Chrome/Chromium binary; blank auto-detects
+ *                           (default `""`).
+ * @property browserProfileDir isolated profile base directory; blank resolves to
+ *                           `<buildDir>/youtube-auth/browser-profile` (default `""`).
+ * @property freshBrowserProfile start from a brand-new cookie-less session on every run
+ *                           (default `true`). `false` reuses the isolated profile.
  * @property timeoutSeconds  how long to wait for the redirect (default `300`).
  * @property receiver        redirect-receiver seam (test-injectable).
  * @property exchanger       token-exchange seam (test-injectable).
@@ -29,6 +35,12 @@ abstract class YouTubeAuthExtension {
     abstract val scope: Property<String>
 
     abstract val openBrowser: Property<Boolean>
+
+    abstract val browserExecutable: Property<String>
+
+    abstract val browserProfileDir: Property<String>
+
+    abstract val freshBrowserProfile: Property<Boolean>
 
     abstract val timeoutSeconds: Property<Long>
 
@@ -43,6 +55,9 @@ abstract class YouTubeAuthExtension {
         port.convention(8765)
         scope.convention(YouTubeConsentUrl.YOUTUBE_UPLOAD_SCOPE)
         openBrowser.convention(true)
+        browserExecutable.convention("")
+        browserProfileDir.convention("")
+        freshBrowserProfile.convention(true)
         timeoutSeconds.convention(300L)
         receiver.convention(LoopbackOAuthReceiver())
         exchanger.convention(GoogleTokenExchanger())

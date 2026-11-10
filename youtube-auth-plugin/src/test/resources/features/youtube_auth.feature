@@ -33,3 +33,9 @@ Feature: HF-YOUTUBE-AUTH — YouTube OAuth refresh-token acquisition (pure domai
     Then the written credentials still contain "cid"
     And the written credentials still contain "GOCSPX-secret"
     And the written credentials carry refresh token "1//0gNEW"
+
+  Scenario: The consent browser uses a dedicated, cookie-free profile
+    When I build the isolated chromium command for url "https://accounts.google.com/o/oauth2/v2/auth"
+    Then the browser command carries a dedicated user data directory
+    And the browser command disables first run and default browser checks
+    And the browser command ends with the consent url

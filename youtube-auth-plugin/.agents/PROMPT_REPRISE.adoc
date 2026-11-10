@@ -1,45 +1,48 @@
-= PROMPT_REPRISE — youtube-auth-plugin (Session 003 TERMINÉE → 004)
-:session: 004
+= PROMPT_REPRISE — youtube-auth-plugin (Session 004 TERMINÉE → 005)
+:session: 005
 :borough: video-kernel — module `youtube-auth-plugin`
-:session_precedente: 003 — Publication `0.0.2` Central + adoption ✅
+:session_precedente: 004 — Session navigateur isolée (US-4) ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
-== Session 003 (TERMINÉE) — Publication `0.0.2`
+== Session 004 (TERMINÉE) — Session navigateur isolée
 
-* Pin BOM `workspace-bom 0.0.99 → 0.0.115`.
-* Central bundle `283d5451-ac90-4b07-8095-27cab330638d` (AUTOMATIC),
-  propagation repo1 200 (`youtube-auth-plugin/0.0.2` + marker).
-* MEMPHIS `0.0.115` : entrées catalog version/plugin/library + contrainte BOM.
-* Adoption : capsule `0.0.15` + hyperframes `0.0.14` appliquent le plugin.
-* Rapport `.agents/sessions/003-publication-0.0.2.adoc`.
+* Défaut réel : `BrowserLauncher` ouvrait l'URL de consentement dans le
+  navigateur par défaut. Sur une machine dont le profil Chrome est déjà connecté
+  à un autre compte Google, Google répondait avec ce compte → refresh token
+  attaché à la mauvaise chaîne.
+* Correctif : `ChromiumLaunchCommand` (pur) construit un argv avec
+  `--user-data-dir=<profil neuf>`, `--no-first-run`, `--no-default-browser-check` ;
+  `BrowserExecutableResolver` auto-détecte Chrome/Chromium/Brave/Edge/Vivaldi
+  (Linux/macOS/Windows) ; `BrowserLauncher` lance le binaire avec un profil neuf
+  par défaut, supprimé après succès. Repli navigateur par défaut = dernier recours
+  + avertissement.
+* DSL : `youtubeAuth.browserExecutable`, `youtubeAuth.browserProfileDir`,
+  `youtubeAuth.freshBrowserProfile` (défaut `true`).
+* Tests : 3 unit (`ChromiumLaunchCommand`, `BrowserExecutableResolver`,
+  `BrowserLauncher` via seams) + 1 scénario BDD (`youtube_auth.feature`).
+* Version locale `0.0.2 → 0.0.3` (non publiée).
+* Local = Build : `compileKotlin`/`compileTestKotlin`/`compileFunctionalTestKotlin`
+  + `ktlintCheck` + `validatePlugins` VERTS. Tests délégués à la CI.
 
 == État
 
 Module `youtube-auth-plugin` (dans le dépôt `video-kernel-gradle`) : plugin
 `education.cccp.video.auth` fournissant la tâche `obtainYouTubeRefreshToken`
 (flux OAuth 2.0 loopback → écrit le refresh token dans un `youtube.yaml`
-gitignoré). Version **0.0.2** (non publiée). Domaine pur `video.auth` (consent
-URL, parseur de jeton, réécriture du fichier) + seams N2 injectables.
-
-Le dogfooding réel a été exécuté par le pilote : `youtube.yaml` existe côté
-hyperframes et capsule. Il a révélé puis fait corriger le défaut loopback
-(requête sans `code`/`error` terminant l'attente).
+gitignoré). Source **0.0.3** (non publiée) ; Central reste **0.0.2**.
 
 == Prochaine session transverse
 
-Le backlog restant est côté **MEMPHIS** : publication `plantuml-contracts:0.0.1`,
-gardes `MEM-CI-CONSISTENCY` US-3/4/5, `CI-1.4` (Ollama qwen3), `MEM-3.5` (BDD
-i18n). Voir `workspace-bom/PROMPT_REPRISE.adoc`. YouTube (upload) reste gelé.
-
-== Mission Session 004 (au choix pilote)
-
-* Maintenance du module (plus aucune US ouverte).
-* YouTube (upload réel) : **gelé** (décision pilote S-037) — ne pas rouvrir.
+* Si le pilote veut la correction dans capsule/hyperframes : DAG N0→N2 —
+  publier `youtube-auth-plugin 0.0.3` (CI verte requise), bump du catalogue
+  MEMPHIS, puis bump `youtube-auth` dans les deux consommateurs. **Ne pas**
+  bumper les catalogues consommateurs tant que `0.0.3` n'est pas publiée.
+* YouTube (upload réel) reste **gelé** (décision pilote S-037).
 
 == Points d'attention
 
 * **Local = Build, Tests = CI**. **Règle PUBLISH** : accord pilote.
 * **Secrets** : `youtube.yaml` gitignoré ; les valeurs ne sont jamais loggées.
 * URI de redirection à enregistrer : `http://localhost:8765/`.
-* CI : matrice 2 jobs (`video-kernel-plugin`, `youtube-auth-plugin`) —
-  `./gradlew build` dans chaque sous-build.
+* Le profil navigateur neuf vit sous `<buildDir>/youtube-auth/browser-profile/`
+  et est supprimé après succès (pas de cookies résiduels).

@@ -58,7 +58,10 @@ les seams (`OAuthRedirectReceiver`, `HttpFormPoster`) sont injectables.*
 | US-2b | Loopback hardening — une requête sans `code`/`error` (ex. `/favicon.ico`)
   ne termine plus l'attente ; page « waiting » pour la requête parasite. `0.0.1 → 0.0.2`. | ✅ S-002 | S
 | US-3 | Publication `education.cccp:youtube-auth-plugin` (Central) + adoption
-  bakery/capsule. | 🟡 À FAIRE | S
+  capsule/hyperframes. | ✅ S-003 | S
+| US-4 | Session navigateur **isolée** — profil Chromium dédié et neuf
+  (`--user-data-dir`), auto-détection du binaire, repli par défaut averti,
+  DSL `browserExecutable`/`browserProfileDir`/`freshBrowserProfile`. `0.0.2 → 0.0.3`. | ✅ S-004 | M
 |===
 
 '''
@@ -72,6 +75,10 @@ les seams (`OAuthRedirectReceiver`, `HttpFormPoster`) sont injectables.*
 . **D5** — Seams injectables (`OAuthRedirectReceiver`, `HttpFormPoster`) → tests
   sans navigateur ni réseau.
 . **D6** — Le plugin est **opt-in** : il n'ajoute qu'une tâche, aucun effet de bord.
+. **D7** — Le consentement est ouvert dans un **profil Chromium isolé** (profil
+  neuf sans cookie par défaut) : le navigateur par défaut peut être connecté à un
+  autre compte Google et attacher le refresh token à la mauvaise chaîne. Le repli
+  navigateur par défaut est un dernier recours averti.
 
 '''
 == Usage (consommateur)

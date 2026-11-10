@@ -3,8 +3,8 @@
 
 _Règles absolues_ : voir `AGENT.adoc`
 _DAG_ : N1 — plugin Gradle utilitaire (tâche d'obtention du refresh token YouTube)
-_Coordonnées_ : `education.cccp:youtube-auth-plugin:0.0.2` (plugin id `education.cccp.video.auth`) — **publié Maven Central** (bundle `283d5451`)
-_Dernière mise à jour_ : 2026-10-31 (S-003 — publication `0.0.2` Central + entrée catalog MEMPHIS `0.0.115` + adoption capsule/hyperframes. **CI verte** `Test` `41243892599`.)
+_Coordonnées_ : `education.cccp:youtube-auth-plugin:0.0.2` (plugin id `education.cccp.video.auth`) — **publié Maven Central** (bundle `283d5451`) ; source locale **0.0.3** (US-4, non publiée)
+_Dernière mise à jour_ : 2026-11-10 (S-004 — **US-4 session navigateur isolée** : le consentement Google s'ouvre dans un profil Chromium dédié et neuf, plus de réutilisation du compte du profil par défaut. Local = Build vert : compiles ×3 + `ktlintCheck` + `validatePlugins`.)
 
 == Portée
 
@@ -22,6 +22,7 @@ _Dernière mise à jour_ : 2026-10-31 (S-003 — publication `0.0.2` Central + e
 | US-2 | Plugin + tâche + TestKit | ✅ S-001
 | US-2b | Loopback hardening (stray request must not end the wait) + `0.0.2` | ✅ S-002
 | US-3 | Publication Central + adoption consommateurs ✅ S-003 (+ catalogué S-316) |
+| US-4 | Session navigateur **isolée** (profil Chromium neuf, zéro cookie) + `0.0.3` local | ✅ S-004
 |===
 
 == Fichiers
@@ -29,7 +30,7 @@ _Dernière mise à jour_ : 2026-10-31 (S-003 — publication `0.0.2` Central + e
 |===
 | Fichier | Rôle
 | `src/main/kotlin/video/auth/` | Domaine pur + tâche + extension + plugin
-| `src/main/kotlin/video/auth/oauth/` | Loopback + échange de jeton (N2)
+| `src/main/kotlin/video/auth/oauth/` | Loopback + échange de jeton + lanceur navigateur isolé (N2)
 | `src/test/kotlin/video/auth/` | Unit + scénarios Cucumber
 | `src/test/resources/features/` | Features BDD
 | `.agents/CADRAGE_EPIC_HF_YOUTUBE_AUTH.adoc` | Cadrage

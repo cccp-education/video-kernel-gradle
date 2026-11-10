@@ -21,6 +21,16 @@ le plugin écrit un fichier de credentials, pas un upload).
 
   ./gradlew obtainYouTubeRefreshToken   → flux OAuth loopback → écrit le refresh token
 
+=== Session navigateur isolée (règle US-4)
+
+Le consentement Google est ouvert dans un **profil Chromium dédié et neuf**
+(`--user-data-dir` + `--no-first-run`), jamais dans le profil par défaut : sur
+une machine déjà connectée à un autre compte Google, le flux loopback attachait
+sinon le refresh token au mauvais compte. Le profil neuf est supprimé après
+succès ; le repli sur le navigateur par défaut est un dernier recours et
+journalise un avertissement. Réglages : `youtubeAuth.browserExecutable`,
+`youtubeAuth.browserProfileDir`, `youtubeAuth.freshBrowserProfile`.
+
 == Conventions
 
 Le plugin consomme les convention plugins `education.cccp.build.{gradle-plugin,publishing,functional-test}` v0.0.7.

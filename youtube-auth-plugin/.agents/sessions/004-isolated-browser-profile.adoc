@@ -1,0 +1,73 @@
+= Session 004 — Session navigateur isolée (profil Chromium sans cookie)
+:session: 004
+:date: 2026-11-10
+:borough: video-kernel — module `youtube-auth-plugin`
+:epic: HF-YOUTUBE-AUTH
+:statut: ✅ TERMINÉE
+
+'''
+== Déclencheur — mauvais compte Google dans le consentement
+
+Le flux `obtainYouTubeRefreshToken` ouvrait l'URL de consentement dans le
+**navigateur par défaut** (`Desktop.browse`). Sur le poste du pilote, le profil
+Chrome par défaut est déjà connecté à un compte Google qui n'est pas celui de la
+chaîne YouTube cible : Google répondait au consentement avec ce compte, et le
+refresh token produit pointait la mauvaise chaîne.
+
+Le consentement n'est pas un simple GET : c'est une **session navigateur**. Il
+faut donc une session **sans cookie** qui laisse l'utilisateur choisir le compte
+initialement, au lieu d'hériter de la session ouverte.
+
+'''
+== Correctif (DDD/TDD)
+
+Nouveau domaine/adapter dans `video.auth.oauth` :
+
+* `BrowserLaunchOptions` — binaire explicite, répertoire de profil, mode
+  `freshProfile`, arguments supplémentaires.
+* `ChromiumLaunchCommand` *(pur)* — construit l'argv
+  `chromium --user-data-dir=<profil> --no-first-run --no-default-browser-check
+  --disable-search-engine-choice-screen --new-window <url>`.
+* `BrowserExecutableResolver` *(pur à probe injectée)* — auto-détection
+  Chrome/Chromium/Brave/Edge/Vivaldi (Linux/macOS/Windows), un binaire explicite
+  restant prioritaire.
+* `BrowserLauncher` — lance Chromium sur un profil **neuf** à chaque exécution
+  (`session-<epoch>-<uuid>`), donc un pot à cookies vide ; repli sur le
+  navigateur par défaut seulement si aucun Chromium n'est présent (avec
+  avertissement). Le profil temporaire est supprimé après succès.
+* `YouTubeAuthExtension` — `browserExecutable`, `browserProfileDir`,
+  `freshBrowserProfile` (défaut `true`).
+* `ObtainYouTubeRefreshTokenTask` — câblage + messages (profil isolé vs repli +
+  consigne « connectez-vous avec le compte de la chaîne cible »).
+
+Aucun changement de comportement hors navigateur : le flux loopback, l'échange de
+token et la réécriture du fichier sont inchangés.
+
+'''
+== Tests
+
+* **Unit** — `ChromiumLaunchCommandTest` (profil dédié, flags d'isolation, URL en
+  dernier, rejet des entrées vides), `BrowserExecutableResolverTest`
+  (précédence binaire explicite > candidats, OS), `BrowserLauncherTest` (profil
+  neuf non partagé, réutilisation opt-in, repli navigateur, indisponibilité,
+  échec de démarrage) via seams process/desktop injectés.
+* **BDD** — scénario ajouté à `youtube_auth.feature` : « The consent browser uses
+  a dedicated, cookie-free profile ».
+* **Fonctionnel** — `YouTubeAuthFunctionalTest` inchangé (enregistrement de la
+  tâche, chemins de validation).
+
+'''
+== Vérification locale (Local = Build)
+
+* `compileKotlin` / `compileTestKotlin` / `compileFunctionalTestKotlin` VERTS.
+* `ktlintCheck` VERT.
+* `validatePlugins` VERT.
+* Aucun test lancé localement : la preuve est le run CI (Tests = CI).
+
+'''
+== Version et suite
+
+* Version locale `0.0.2 → 0.0.3` (non publiée). Central reste `0.0.2`.
+* Pour propager à capsule/hyperframes : DAG N0→N2 (publication `0.0.3` après CI
+  verte → catalogue MEMPHIS → bump `youtube-auth` dans les deux consommateurs).
+  Ne pas bumper les catalogues consommateurs avant la publication.
