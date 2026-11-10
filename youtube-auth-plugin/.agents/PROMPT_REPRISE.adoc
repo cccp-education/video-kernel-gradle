@@ -20,7 +20,8 @@ _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
   `youtubeAuth.freshBrowserProfile` (défaut `true`).
 * Tests : 3 unit (`ChromiumLaunchCommand`, `BrowserExecutableResolver`,
   `BrowserLauncher` via seams) + 1 scénario BDD (`youtube_auth.feature`).
-* Version locale `0.0.2 → 0.0.3` (non publiée).
+* Version locale `0.0.2 → 0.0.4` (JitPack `v0.0.4` ; le tag `v0.0.3` a échoué
+  sur l'installation SDKMAN de JitPack).
 * Local = Build : `compileKotlin`/`compileTestKotlin`/`compileFunctionalTestKotlin`
   + `ktlintCheck` + `validatePlugins` VERTS. Tests délégués à la CI.
 
@@ -29,14 +30,15 @@ _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 Module `youtube-auth-plugin` (dans le dépôt `video-kernel-gradle`) : plugin
 `education.cccp.video.auth` fournissant la tâche `obtainYouTubeRefreshToken`
 (flux OAuth 2.0 loopback → écrit le refresh token dans un `youtube.yaml`
-gitignoré). Source **0.0.3** (non publiée) ; Central reste **0.0.2**.
+gitignoré). Source **0.0.4** publiée sur **JitPack** ; Central reste **0.0.2**.
 
 == Prochaine session transverse
 
-* Si le pilote veut la correction dans capsule/hyperframes : DAG N0→N2 —
-  publier `youtube-auth-plugin 0.0.3` (CI verte requise), bump du catalogue
-  MEMPHIS, puis bump `youtube-auth` dans les deux consommateurs. **Ne pas**
-  bumper les catalogues consommateurs tant que `0.0.3` n'est pas publiée.
+* Si le pilote veut la correction dans capsule/hyperframes via **Central** :
+  DAG N0→N2 — publier `youtube-auth-plugin` (CI verte requise), bump du
+  catalogue MEMPHIS, puis bump `youtube-auth` dans les deux consommateurs.
+  **Ne pas** bumper les catalogues consommateurs avant la publication Central ;
+  le canal JitPack (`0.0.4`) est indépendant.
 * YouTube (upload réel) reste **gelé** (décision pilote S-037).
 
 == Points d'attention

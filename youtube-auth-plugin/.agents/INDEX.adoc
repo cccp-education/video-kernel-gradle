@@ -3,8 +3,8 @@
 
 _Règles absolues_ : voir `AGENT.adoc`
 _DAG_ : N1 — plugin Gradle utilitaire (tâche d'obtention du refresh token YouTube)
-_Coordonnées_ : `education.cccp:youtube-auth-plugin:0.0.2` (plugin id `education.cccp.video.auth`) — **publié Maven Central** (bundle `283d5451`) ; source locale **0.0.3** (US-4, non publiée)
-_Dernière mise à jour_ : 2026-11-10 (S-004 — **US-4 session navigateur isolée** : le consentement Google s'ouvre dans un profil Chromium dédié et neuf, plus de réutilisation du compte du profil par défaut. Local = Build vert : compiles ×3 + `ktlintCheck` + `validatePlugins`.)
+_Coordonnées_ : `education.cccp:youtube-auth-plugin:0.0.2` (plugin id `education.cccp.video.auth`) — **publié Maven Central** (bundle `283d5451`) ; source locale **0.0.4** (US-4, publiée sur **JitPack** via le tag `v0.0.4` ; le tag `v0.0.3` a échoué sur l'installation SDKMAN de JitPack)
+_Dernière mise à jour_ : 2026-11-10 (S-004 — **US-4 session navigateur isolée** : le consentement Google s'ouvre dans un profil Chromium dédié et neuf, plus de réutilisation du compte du profil par défaut. Local = Build vert : compiles ×3 + `ktlintCheck` + `validatePlugins`. JitPack `0.0.4` + `video-kernel 0.7.1`.)
 
 == Portée
 
@@ -22,7 +22,7 @@ _Dernière mise à jour_ : 2026-11-10 (S-004 — **US-4 session navigateur isol�
 | US-2 | Plugin + tâche + TestKit | ✅ S-001
 | US-2b | Loopback hardening (stray request must not end the wait) + `0.0.2` | ✅ S-002
 | US-3 | Publication Central + adoption consommateurs ✅ S-003 (+ catalogué S-316) |
-| US-4 | Session navigateur **isolée** (profil Chromium neuf, zéro cookie) + `0.0.3` local | ✅ S-004
+| US-4 | Session navigateur **isolée** (profil Chromium neuf, zéro cookie) + JitPack `0.0.4` | ✅ S-004
 |===
 
 == Fichiers

@@ -61,7 +61,7 @@ les seams (`OAuthRedirectReceiver`, `HttpFormPoster`) sont injectables.*
   capsule/hyperframes. | ✅ S-003 | S
 | US-4 | Session navigateur **isolée** — profil Chromium dédié et neuf
   (`--user-data-dir`), auto-détection du binaire, repli par défaut averti,
-  DSL `browserExecutable`/`browserProfileDir`/`freshBrowserProfile`. `0.0.2 → 0.0.3`. | ✅ S-004 | M
+  DSL `browserExecutable`/`browserProfileDir`/`freshBrowserProfile`. JitPack `0.0.4`. | ✅ S-004 | M
 |===
 
 '''

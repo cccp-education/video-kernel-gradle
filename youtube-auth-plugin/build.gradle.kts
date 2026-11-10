@@ -13,7 +13,7 @@ plugins {
 group = "education.cccp"
 // HF-YOUTUBE-AUTH — US-4: isolated cookie-free browser profile.
 // CNV-16 — JitPack derives the published version from the git tag.
-version = providers.gradleProperty("version").getOrElse("0.0.3")
+version = providers.gradleProperty("version").getOrElse("0.0.4")
 
 repositories {
     mavenCentral()

@@ -67,7 +67,12 @@ token et la réécriture du fichier sont inchangés.
 '''
 == Version et suite
 
-* Version locale `0.0.2 → 0.0.3` (non publiée). Central reste `0.0.2`.
-* Pour propager à capsule/hyperframes : DAG N0→N2 (publication `0.0.3` après CI
-  verte → catalogue MEMPHIS → bump `youtube-auth` dans les deux consommateurs).
-  Ne pas bumper les catalogues consommateurs avant la publication.
+* Version locale `0.0.2 → 0.0.4` (JitPack). Central reste `0.0.2`.
+* **JitPack** : le tag `v0.0.3` a échoué (SDKMAN `25.0.5.0+8-tem` indisponible
+  sur le CDN au moment du build). Le `jitpack.yml` utilise désormais le
+  candidat SDKMAN `25-open` et la release JitPack utile est **`0.0.4`**
+  (`v0.0.4`, commit distinct). Le kernel est publié en `0.7.1`.
+* Pour propager à capsule/hyperframes via le canal **Central** : DAG N0→N2
+  (publication Central après CI verte → catalogue MEMPHIS → bump
+  `youtube-auth` dans les deux consommateurs). Ne pas bumper les catalogues
+  consommateurs avant la publication Central ; le canal JitPack est indépendant.

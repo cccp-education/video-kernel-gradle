@@ -3,15 +3,16 @@
 # the matching artifact so the served version stays correct.
 before_install:
   # JitPack defaults to JDK 8; the workspace requires Java 25.
-  # One retry covers the transient SDKMAN CDN failures observed in S-041.
-  - sdk install java 25.0.5.0+8-tem || (sleep 10 && sdk install java 25.0.5.0+8-tem)
-  - sdk use java 25.0.5.0+8-tem
+  # `25-open` is the SDKMAN candidate that resolves on the JitPack image
+  # (the pinned Temurin build intermittently 404s on the SDKMAN CDN).
+  - sdk install java 25-open || (sleep 10 && sdk install java 25-open)
+  - sdk use java 25-open
   # Fail loudly instead of silently falling back to JDK 8.
   - java -version 2>&1 | grep -q 'version "25'
 install:
   # The version is derived from the git tag and forced into the sub-build so
   # the POM/module metadata matches the JitPack coordinate.
   - if [ "${VERSION#v}" = "0.7.1" ] || [ "${VERSION#v}" = "0.7.0" ]; then ./video-kernel-plugin/gradlew -p video-kernel-plugin publishToMavenLocal -Pversion="${VERSION#v}"; fi
-  - if [ "${VERSION#v}" = "0.0.3" ]; then ./youtube-auth-plugin/gradlew -p youtube-auth-plugin publishToMavenLocal -Pversion="${VERSION#v}"; fi
+  - if [ "${VERSION#v}" = "0.0.4" ]; then ./youtube-auth-plugin/gradlew -p youtube-auth-plugin publishToMavenLocal -Pversion="${VERSION#v}"; fi
 env:
   CI: "true"
