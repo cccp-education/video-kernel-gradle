@@ -61,6 +61,43 @@ class YouTubeAuthFunctionalTest {
         assertContains(result.output, "clientId is missing")
     }
 
+    @Test
+    fun `plugin registers the verifyYouTubeCredentials task under deploy`() {
+        val result = runner("tasks", "--group=deploy")
+
+        assertContains(result.output, "verifyYouTubeCredentials")
+    }
+
+    @Test
+    fun `the preflight fails clearly when the credentials file is missing`() {
+        val result =
+            GradleRunner
+                .create()
+                .withProjectDir(projectDir)
+                .withPluginClasspath()
+                .withArguments("verifyYouTubeCredentials")
+                .buildAndFail()
+
+        assertContains(result.output, "credentials file not found")
+    }
+
+    @Test
+    fun `the preflight fails clearly when the refresh token is missing`() {
+        projectDir
+            .resolve("youtube.yaml")
+            .writeText("youtube:\n  clientId: \"cid\"\n  clientSecret: \"GOCSPX-x\"\n")
+
+        val result =
+            GradleRunner
+                .create()
+                .withProjectDir(projectDir)
+                .withPluginClasspath()
+                .withArguments("verifyYouTubeCredentials")
+                .buildAndFail()
+
+        assertContains(result.output, "missing refreshToken")
+    }
+
     private fun runner(vararg args: String) =
         GradleRunner
             .create()

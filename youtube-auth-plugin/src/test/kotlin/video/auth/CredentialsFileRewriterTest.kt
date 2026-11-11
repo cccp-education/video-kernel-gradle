@@ -63,4 +63,10 @@ class CredentialsFileRewriterTest {
         assertThatThrownBy { CredentialsFileRewriter.withRefreshToken(yaml, "  ") }
             .isInstanceOf(IllegalArgumentException::class.java)
     }
+
+    @Test
+    fun `reads the configured channel id`() {
+        assertThat(CredentialsFileRewriter.channelId(yaml)).isEqualTo("UC123")
+        assertThat(CredentialsFileRewriter.channelId("youtube:\n  clientId: \"cid\"\n")).isNull()
+    }
 }

@@ -3,6 +3,8 @@ package video.auth
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
 import video.auth.oauth.GoogleTokenExchanger
+import video.auth.oauth.JdkJsonGetTransport
+import video.auth.oauth.JsonGetTransport
 import video.auth.oauth.LoopbackOAuthReceiver
 import video.auth.oauth.OAuthRedirectReceiver
 
@@ -24,8 +26,13 @@ import video.auth.oauth.OAuthRedirectReceiver
  * @property freshBrowserProfile start from a brand-new cookie-less session on every run
  *                           (default `true`). `false` reuses the isolated profile.
  * @property timeoutSeconds  how long to wait for the redirect (default `300`).
+ * @property verifyChannelId target channel checked by `verifyYouTubeCredentials`
+ *                           (default `""` — falls back to the file's `channelId`).
+ * @property verifyStrict    fail the preflight on an unusable/mismatched credential
+ *                           (default `true`).
  * @property receiver        redirect-receiver seam (test-injectable).
  * @property exchanger       token-exchange seam (test-injectable).
+ * @property channelTransport authenticated JSON GET seam (test-injectable).
  */
 abstract class YouTubeAuthExtension {
     abstract val credentialsFile: Property<String>
@@ -44,11 +51,18 @@ abstract class YouTubeAuthExtension {
 
     abstract val timeoutSeconds: Property<Long>
 
+    abstract val verifyChannelId: Property<String>
+
+    abstract val verifyStrict: Property<Boolean>
+
     @get:Internal
     abstract val receiver: Property<OAuthRedirectReceiver>
 
     @get:Internal
     abstract val exchanger: Property<GoogleTokenExchanger>
+
+    @get:Internal
+    abstract val channelTransport: Property<JsonGetTransport>
 
     init {
         credentialsFile.convention("youtube.yaml")
@@ -59,7 +73,10 @@ abstract class YouTubeAuthExtension {
         browserProfileDir.convention("")
         freshBrowserProfile.convention(true)
         timeoutSeconds.convention(300L)
+        verifyChannelId.convention("")
+        verifyStrict.convention(true)
         receiver.convention(LoopbackOAuthReceiver())
         exchanger.convention(GoogleTokenExchanger())
+        channelTransport.convention(JdkJsonGetTransport())
     }
 }

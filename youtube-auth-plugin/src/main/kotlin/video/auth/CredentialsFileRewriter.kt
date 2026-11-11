@@ -34,6 +34,9 @@ object CredentialsFileRewriter {
     /** Reads the `refreshToken` value, or `null` when absent/blank. */
     fun refreshToken(content: String): String? = field(content, "refreshToken")
 
+    /** Reads the `channelId` value, or `null` when absent/blank. */
+    fun channelId(content: String): String? = field(content, "channelId")
+
     private fun field(
         content: String,
         key: String,

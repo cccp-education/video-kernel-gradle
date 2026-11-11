@@ -1,50 +1,36 @@
-= PROMPT_REPRISE — youtube-auth-plugin (Session 004 TERMINÉE → 005)
-:session: 005
+= PROMPT_REPRISE — youtube-auth-plugin (Session 005 TERMINÉE → 006)
+:session: 006
 :borough: video-kernel — module `youtube-auth-plugin`
-:session_precedente: 004 — Session navigateur isolée (US-4) ✅
+:session_precedente: 005 — Preflight `verifyYouTubeCredentials` ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
-== Session 004 (TERMINÉE) — Session navigateur isolée
+== Session 005 (TERMINÉE)
 
-* Défaut réel : `BrowserLauncher` ouvrait l'URL de consentement dans le
-  navigateur par défaut. Sur une machine dont le profil Chrome est déjà connecté
-  à un autre compte Google, Google répondait avec ce compte → refresh token
-  attaché à la mauvaise chaîne.
-* Correctif : `ChromiumLaunchCommand` (pur) construit un argv avec
-  `--user-data-dir=<profil neuf>`, `--no-first-run`, `--no-default-browser-check` ;
-  `BrowserExecutableResolver` auto-détecte Chrome/Chromium/Brave/Edge/Vivaldi
-  (Linux/macOS/Windows) ; `BrowserLauncher` lance le binaire avec un profil neuf
-  par défaut, supprimé après succès. Repli navigateur par défaut = dernier recours
-  + avertissement.
-* DSL : `youtubeAuth.browserExecutable`, `youtubeAuth.browserProfileDir`,
-  `youtubeAuth.freshBrowserProfile` (défaut `true`).
-* Tests : 3 unit (`ChromiumLaunchCommand`, `BrowserExecutableResolver`,
-  `BrowserLauncher` via seams) + 1 scénario BDD (`youtube_auth.feature`).
-* Version locale `0.0.2 → 0.0.4` (JitPack `v0.0.4` ; le tag `v0.0.3` a échoué
-  sur l'installation SDKMAN de JitPack).
-* Local = Build : `compileKotlin`/`compileTestKotlin`/`compileFunctionalTestKotlin`
-  + `ktlintCheck` + `validatePlugins` VERTS. Tests délégués à la CI.
+* **US-5 preflight** : tâche `verifyYouTubeCredentials` (refresh du token +
+  `channels.list?mine=true` + comparaison de chaîne, lecture seule) ; rapport
+  `build/youtube-auth/verify.json` ; DSL `verifyChannelId`/`verifyStrict`/
+  `channelTransport`.
+* Domaine pur : `YouTubeChannelProbe`, `YouTubeChannelCheck`,
+  `YouTubeRefreshRequest` ; `CredentialsFileRewriter.channelId` ;
+  `GoogleTokenExchanger.refresh` ; seam `JsonGetTransport`.
+* Tests : 10 unit + 4 scénarios BDD + 3 fonctionnels TestKit (délégués CI).
+* Local = Build : compiles ×3 + `ktlintCheck` VERTS. Version `0.0.4 → 0.0.5`.
 
 == État
 
-Module `youtube-auth-plugin` (dans le dépôt `video-kernel-gradle`) : plugin
-`education.cccp.video.auth` fournissant la tâche `obtainYouTubeRefreshToken`
-(flux OAuth 2.0 loopback → écrit le refresh token dans un `youtube.yaml`
-gitignoré). Source **0.0.4** publiée sur **JitPack** ; Central reste **0.0.2**.
+* Source **0.0.5** (non publiée) ; Central **0.0.2** ; JitPack **0.0.4**.
+* Déploiement YouTube réel **bloqué** : verrou Google ~48 h + `refreshToken`
+  vide dans les `youtube.yaml` des consommateurs.
 
-== Prochaine session transverse
+== Mission Session 006 — au choix pilote
 
-* Si le pilote veut la correction dans capsule/hyperframes via **Central** :
-  DAG N0→N2 — publier `youtube-auth-plugin` (CI verte requise), bump du
-  catalogue MEMPHIS, puis bump `youtube-auth` dans les deux consommateurs.
-  **Ne pas** bumper les catalogues consommateurs avant la publication Central ;
-  le canal JitPack (`0.0.4`) est indépendant.
-* YouTube (upload réel) reste **gelé** (décision pilote S-037).
+. **Publication** `youtube-auth-plugin 0.0.5` (Central, DAG MEMPHIS) puis
+   adoption `hyperframes`/`capsule` (catalogue) — CI verte requise avant.
+. **Chromium snap** : cadrer/corriger la délégation (US-4 inopérante sur snap).
+. Reprise du consentement quand le lien Google arrive (voir rapport 005).
 
 == Points d'attention
 
-* **Local = Build, Tests = CI**. **Règle PUBLISH** : accord pilote.
-* **Secrets** : `youtube.yaml` gitignoré ; les valeurs ne sont jamais loggées.
-* URI de redirection à enregistrer : `http://localhost:8765/`.
-* Le profil navigateur neuf vit sous `<buildDir>/youtube-auth/browser-profile/`
-  et est supprimé après succès (pas de cookies résiduels).
+* **Local = Build, Tests = CI**. **Règle PUBLISH** : accord permanent.
+* Secrets : `youtube.yaml` gitignoré, jamais lu ni journalisé.
+* Client OAuth : **Desktop app** recommandé (loopback sans déclaration).

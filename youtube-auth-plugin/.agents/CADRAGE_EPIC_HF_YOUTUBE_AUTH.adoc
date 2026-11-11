@@ -62,6 +62,10 @@ les seams (`OAuthRedirectReceiver`, `HttpFormPoster`) sont injectables.*
 | US-4 | Session navigateur **isolée** — profil Chromium dédié et neuf
   (`--user-data-dir`), auto-détection du binaire, repli par défaut averti,
   DSL `browserExecutable`/`browserProfileDir`/`freshBrowserProfile`. JitPack `0.0.4`. | ✅ S-004 | M
+| US-5 | **Preflight** `verifyYouTubeCredentials` — refresh du token
+  (`grant_type=refresh_token`) + `channels.list?mine=true`, comparaison avec la
+  chaîne configurée, rapport `verify.json`, zéro upload, zéro secret journalisé.
+  Seams `JsonGetTransport`/`GoogleTokenExchanger` (fakes en test). `0.0.4 → 0.0.5`. | ✅ S-005 | M
 |===
 
 '''
@@ -95,3 +99,18 @@ youtubeAuth {
 ----
 ./gradlew obtainYouTubeRefreshToken
 ----
+
+'''
+== Constats du premier run réel (2026-11-11)
+
+. *Refresh token absent* : les `youtube.yaml` des consommateurs portent
+  `clientId`/`clientSecret`/`channelId` mais un `refreshToken` vide
+  (`canUpload=false`) — le déploiement n'avait jamais été exécuté. US-5 rend ce
+  cas explicite au lieu d'un upload dégradé silencieux.
+. *Client `Web application`* : le loopback `http://localhost:8765/` doit être
+  déclaré sur le client, sinon `redirect_uri_mismatch` **après**
+  l'authentification. Privilégier un client **Desktop app** (aucune déclaration).
+. *Chromium snap* : `/snap/bin/chromium` délègue à l'instance déjà ouverte et
+  ignore `--user-data-dir` → la garantie US-4 ne tient pas sur snap ;
+  workaround `--incognito`.
+. *Verrou Google ~48 h* après des échecs de consentement répétés.

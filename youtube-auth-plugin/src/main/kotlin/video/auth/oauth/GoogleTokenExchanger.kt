@@ -1,5 +1,6 @@
 package video.auth.oauth
 
+import video.auth.YouTubeRefreshRequest
 import java.net.URI
 import java.net.URLEncoder
 import java.net.http.HttpClient
@@ -75,6 +76,16 @@ class GoogleTokenExchanger(
                 "grant_type" to "authorization_code",
             ),
         )
+
+    /**
+     * Exchanges a stored refresh token for a short-lived access token
+     * (HF-YOUTUBE-AUTH US-5 — preflight). Same endpoint, refresh-token grant.
+     */
+    fun refresh(
+        clientId: String,
+        clientSecret: String,
+        refreshToken: String,
+    ): String = poster.post(TOKEN_ENDPOINT, YouTubeRefreshRequest.form(clientId, clientSecret, refreshToken))
 
     companion object {
         /** Google OAuth 2.0 token endpoint. */

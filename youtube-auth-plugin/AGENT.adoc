@@ -20,6 +20,12 @@ le plugin écrit un fichier de credentials, pas un upload).
 == Tâche
 
   ./gradlew obtainYouTubeRefreshToken   → flux OAuth loopback → écrit le refresh token
+  ./gradlew verifyYouTubeCredentials    → preflight lecture seule (refresh + canal ciblé)
+
+Le preflight ne publie rien : il rafraîchit le token, interroge
+`channels.list?mine=true` et compare la chaîne au `channelId` configuré (ou à
+`youtubeAuth.verifyChannelId`). `youtubeAuth.verifyStrict` (défaut `true`) en
+fait une garde dure ; il écrit `build/youtube-auth/verify.json`.
 
 === Session navigateur isolée (règle US-4)
 

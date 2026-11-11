@@ -41,5 +41,17 @@ class YouTubeAuthPlugin : Plugin<Project> {
             task.receiver.set(extension.receiver)
             task.exchanger.set(extension.exchanger)
         }
+
+        target.tasks.register("verifyYouTubeCredentials", VerifyYouTubeCredentialsTask::class.java) { task ->
+            task.group = "deploy"
+            task.description =
+                "Verify the YouTube OAuth credentials (refresh the token, report the targeted channel; read-only)"
+            task.credentialsFile.set(extension.credentialsFile)
+            task.expectedChannelId.set(extension.verifyChannelId)
+            task.strict.set(extension.verifyStrict)
+            task.outputDir.set(target.layout.buildDirectory.dir("youtube-auth/verify"))
+            task.exchanger.set(extension.exchanger)
+            task.channelTransport.set(extension.channelTransport)
+        }
     }
 }

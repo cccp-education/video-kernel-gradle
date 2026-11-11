@@ -4,7 +4,11 @@ import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import video.auth.CredentialsFileRewriter
+import video.auth.YouTubeChannel
+import video.auth.YouTubeChannelCheck
+import video.auth.YouTubeChannelProbe
 import video.auth.YouTubeConsentUrl
+import video.auth.YouTubeRefreshRequest
 import video.auth.YouTubeTokenParser
 import video.auth.YouTubeTokenResponse
 import video.auth.oauth.ChromiumLaunchCommand
@@ -23,6 +27,9 @@ class YouTubeAuthSteps {
     private var tokenResponse: YouTubeTokenResponse? = null
     private var credentials: String = ""
     private var browserCommand: List<String> = emptyList()
+    private var channel: YouTubeChannel? = null
+    private var grant: Map<String, String> = emptyMap()
+    private var channelCheck: YouTubeChannelCheck? = null
 
     @When("I build the youtube consent URL for client {string} on port {int}")
     fun buildConsent(
@@ -109,6 +116,58 @@ class YouTubeAuthSteps {
     @Then("the browser command ends with the consent url")
     fun endsWithConsentUrl() {
         check(browserCommand.lastOrNull()?.startsWith("https://accounts.google.com/") == true) { browserCommand.toString() }
+    }
+
+    @When("I probe the youtube channel from response:")
+    fun probeChannel(json: String) {
+        channel = YouTubeChannelProbe.parse(json.trim())
+    }
+
+    @Then("the probed channel id is {string}")
+    fun probedChannelId(expected: String) {
+        check(channel?.id == expected) { "probed channel id was ${channel?.id}" }
+    }
+
+    @Then("the probed channel title is {string}")
+    fun probedChannelTitle(expected: String) {
+        check(channel?.title == expected) { "probed channel title was ${channel?.title}" }
+    }
+
+    @When("I build the youtube refresh token grant for client {string}")
+    fun buildRefreshGrant(clientId: String) {
+        grant = YouTubeRefreshRequest.form(clientId, "GOCSPX-secret", "1//0gXYZ")
+    }
+
+    @Then("the grant carries {string} equal to {string}")
+    fun grantCarries(
+        key: String,
+        expected: String,
+    ) {
+        check(grant[key] == expected) { "grant '$key' was '${grant[key]}' (expected '$expected')" }
+    }
+
+    @When("I check the youtube channel {string} titled {string} against expected {string}")
+    fun checkChannel(
+        id: String,
+        title: String,
+        expected: String,
+    ) {
+        channelCheck = YouTubeChannelCheck(expected, YouTubeChannel(id, title))
+    }
+
+    @Then("the youtube channel check passes")
+    fun channelCheckPasses() {
+        check(channelCheck?.matches() == true) { channelCheck?.summary().orEmpty() }
+    }
+
+    @Then("the youtube channel check fails")
+    fun channelCheckFails() {
+        check(channelCheck?.matches() == false) { channelCheck?.summary().orEmpty() }
+    }
+
+    @Then("the youtube channel check mentions {string}")
+    fun channelCheckMentions(value: String) {
+        check(channelCheck?.summary()?.contains(value) == true) { channelCheck?.summary().orEmpty() }
     }
 
     private fun query(): Map<String, String> =
