@@ -1,48 +1,39 @@
-= PROMPT_REPRISE — video-kernel (Session 200 TERMINÉE → 201)
-:session: 201
+= PROMPT_REPRISE — video-kernel (Session 201 TERMINÉE → 202)
+:session: 202
 :borough: video-kernel
-:session_precedente: 200 — PUBLISH-ADAPTER-N1 : publication `video-kernel 0.7.0` ✅
+:session_precedente: 201 — Contrat musique/séquence `video-kernel 0.8.0` ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
-== Session 200 (TERMINÉE) — PUBLISH-ADAPTER-N1
+== Session 201 (TERMINÉE) — HF-MUSIC-LIBRARY US-2
 
-Briques **pures** de publication extraites au noyau (les copies identiques
-capsule ↔ hyperframes disparaissent) :
-
-* `video.kernel.publish.ChapterLineParser` ;
-* `YouTubeCredentials` + `YouTubeCredentialsLoader` (secret rédigé) ;
-* `YouTubePublishCommand` — **réécrit sans Jackson** (JSON manuel échappé) ;
-* `DisabledVideoPublisher` ;
-* `PublishHttpRequest` / `PublishHttpResponse` / `HttpTransport` (seam pur).
-
-`0.6.0 → 0.7.0`, manifeste +8 types. Réseau (`JdkHttpTransport`,
-`YouTubeDataApiPublisher`) reste N2. Central bundle `583079e5`, propagation 200 ;
-MEMPHIS `0.0.115` ; capsule `0.0.15` + hyperframes `0.0.14` adoptés.
-Rapport `.agents/sessions/200-publish-adapter-n1-0.7.0.adoc`.
+* `video.kernel.music` : `MusicLicence` (fail-closed), `MusicTrack`,
+  `MusicLibrary`, `MusicSelection`/`MusicTrackSelector` (déterministe, sans LLM),
+  `SoundCue`, `SoundSequence`, `SoundSequenceValidator`.
+* `0.7.0 → 0.8.0`, manifeste +13 types, 27 tests N1.
+* Local = Build : compiles + `ktlintCheck` VERTS ; **CI verte** `Test` `43143503043`.
+* **Publié JitPack** `com.github.cccp-education:video-kernel-gradle:v0.8.0`
+  (HTTP 200 ; JAR contient `video/kernel/music/*`).
+* Rapport `.agents/sessions/201-music-library-contract.adoc`.
 
 == État
 
-* `education.cccp:video-kernel:0.7.0` (Central).
-* `youtube-auth-plugin 0.0.2` publié (module frère) + catalogué.
-* MEMPHIS `0.0.115` ; capsule `0.0.15` ; hyperframes `0.0.14`.
-* YouTube (upload réel) **gelé** (S-037).
+* `education.cccp:video-kernel:0.8.0` (source) ; Central `0.7.0` ;
+  JitPack repo-level `v0.8.0`.
+* EPIC `HF-MUSIC-LIBRARY` : US-2 ✅ ; reste US-1 (newpipe producteur), US-3/4/5
+  (hyperframes), US-6 (capsule), US-7/8/9.
+* EPIC `HF-SPEAKER-NOTES` (hyperframes) : cadré, non démarré.
 
-== Mission Session 201 — au choix pilote
+== Mission Session 202 — au choix pilote
 
-. CI des trois boroughs (video-kernel, MEMPHIS, capsule, hyperframes).
-. Maintenance / re-pin éventuel.
-. YouTube : ne pas rouvrir sans décision explicite.
-
-== Prochaine session transverse
-
-Le backlog restant est côté **MEMPHIS** : publication `plantuml-contracts:0.0.1`,
-gardes `MEM-CI-CONSISTENCY` US-3/4/5, `CI-1.4` (Ollama qwen3), `MEM-3.5` (BDD
-i18n). Voir `workspace-bom/PROMPT_REPRISE.adoc`. YouTube (upload) reste gelé.
+. US-1 `HF-MUSIC-LIBRARY` (newpipe) : manifeste `music-library.json` +
+   gate de licence + audio gitignoré (consomme `video.kernel.music`).
+. US-3 hyperframes : DSL `[.hyperframes-music]` + résolution + injection.
+. US-1 `HF-SPEAKER-NOTES` (N1 `SpeakerNoteBlockParser`).
 
 == Points d'attention
 
-* **Local = Build, Tests = CI** : jamais `test`/`check` local.
-* **Règle 2 — PUBLISH** : accord pilote permanent (toujours granted, décision 2026-10-31).
-* Frontière : `video.kernel` n'importe que `java/kotlin/contracts/video.kernel`
-  (garde `video.ci.KernelBoundaryTest`) ; **interdit `processbuilder`**.
+* **Local = Build, Tests = CI** ; **Règle 2** accord permanent (2026-11-11).
+* Frontière : `video.kernel` n'importe que `java/kotlin/contracts/video.kernel` ;
+  **interdit `processbuilder`**.
 * Stabilité : toute rupture = édition délibérée du manifeste `KernelApiSurface`.
+* Musique : aucune piste sans licence déclarée (fail-closed) ; audio jamais publié.

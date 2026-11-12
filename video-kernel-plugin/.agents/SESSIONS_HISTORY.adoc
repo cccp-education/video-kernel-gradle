@@ -36,3 +36,12 @@
 Publication JitPack de video-kernel 0.7.0 et youtube-auth 0.0.2. JitPack : BLOQUÉ — SDKMAN ne télécharge pas le JDK 25 sur JitPack ; retry nécessaire. Shim `useModule` pour
 `education.cccp.build.*` (tag JitPack `0.0.15`). Rapport
 `video-kernel-plugin/.agents/sessions/201-jitpack-mirror.adoc`.
+
+== Session 201 — Contrat musique/séquence `video-kernel 0.8.0` — 2026-11-12
+
+HF-MUSIC-LIBRARY US-2. `video.kernel.music` : `MusicLicence` (fail-closed),
+`MusicTrack`, `MusicLibrary`, `MusicSelection`/`MusicTrackSelector` (déterministe,
+sans LLM), `SoundCue`, `SoundSequence`, `SoundSequenceValidator`. `0.7.0 → 0.8.0`,
+manifeste +13 types, 27 tests. Local = Build vert ; CI `Test` `43143503043` verte ;
+publié JitPack `com.github.cccp-education:video-kernel-gradle:v0.8.0` (POM/JAR 200).
+Rapport `.agents/sessions/201-music-library-contract.adoc`.

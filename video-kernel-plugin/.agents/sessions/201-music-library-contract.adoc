@@ -1,0 +1,64 @@
+= Rapport de session 201 — Contrat musique/séquence (`video-kernel 0.8.0`)
+:session: 201
+:borough: video-kernel
+:date: 2026-11-12
+:statut: ✅ TERMINÉ (code compilé, CI verte, publié JitPack)
+
+== Mission
+
+US-2 de l'EPIC **HF-MUSIC-LIBRARY** (hyperframes S-050) : porter au noyau le
+**contrat musical neutre** partagé par le producteur (newpipe) et les
+consommateurs (hyperframes, capsule) — modèle, sélection déterministe et
+**séquence sonore** déclarée dans l'AsciiDoc.
+
+== Constat
+
+Le noyau n'avait aucun modèle de musique : chaque moteur aurait dupliqué le
+manifeste, la sélection et la validation des cues. Le seuil de factorisation
+« à 2 » (S-195) est atteint (hyperframes + capsule).
+
+== Livré (package `video.kernel.music`)
+
+* `MusicLicence` — énumération **fail-closed** (`OWN`, `CC0`, `CC_BY`,
+  `ROYALTY_FREE`, `LICENSED`, `UNKNOWN`) + `parse` tolérant (casse/`_`/`-`) +
+  `requiresAttribution` (CC-BY).
+* `MusicTrack` — modèle du manifeste (id, titre/artiste, fichier, sha256,
+  durée, licence, source, attribution, tags, mood, énergie) + invariants ;
+  `isUsable()` exige une licence déclarée **et** un fichier.
+* `MusicLibrary` — jeu de pistes + `schemaVersion`, `find`, `usable`, `byMood`.
+* `MusicSelection` + `MusicTrackSelector` — sélection **déterministe et sans
+  LLM** : id explicite (inconnu/inutilisable → rejet, jamais de substitution),
+  sinon mood, sinon première piste utilisable (ordre par `id`).
+* `SoundCue` — cue neutre déclaré dans le document (scène, track/mood, volume,
+  fondus, boucle, arrêt) + invariants (`volume 0..1`, fondus ≥ 0, track|mood|stop).
+* `SoundSequence` + `SoundSequenceValidator` — séquence ordonnée ; rejette
+  **avant rendu** (piste inconnue, licence inutilisable, mood sans piste, cue
+  dupliqué par scène) ; `stop` toujours valide.
+
+== Manifeste d'API
+
+`0.7.0 → 0.8.0`, **+13 types** ; `KernelApiSurface` et
+`KernelApiStabilityTest` mis à jour (gel 0_8_0 + assertions sur les getters,
+l'enum de licences et les fonctions du sélecteur/validateur).
+
+== Tests (délégués CI)
+
+3 fichiers de test (`MusicLicenceTest`, `MusicTrackSelectorTest`,
+`SoundSequenceTest`), 27 tests au total sur le module.
+
+== Gates
+
+* Local = Build : `compileKotlin` + `compileTestKotlin` + `ktlintCheck` **VERTS**.
+* **CI verte** : `Test` `43143503043`.
+* **Publié JitPack** : `com.github.cccp-education:video-kernel-gradle:v0.8.0`
+  (POM/JAR HTTP 200 ; le JAR contient `video/kernel/music/*`).
+  Note : JitPack relabelle ce dépôt au niveau **repo** (`video-kernel-gradle`,
+  version = tag `v0.8.0`) — il ne sert pas la coordonnée module
+  `education.cccp:video-kernel:0.8.0` (comportement constaté, documenté pour les
+  consommateurs US-3/US-6).
+
+== Suite
+
+US-1 (newpipe) : producteur `music-library.json` (licence obligatoire, audio
+gitignoré) consommant ce modèle ; puis US-3 (hyperframes : DSL de son +
+résolution) et US-6 (capsule).
