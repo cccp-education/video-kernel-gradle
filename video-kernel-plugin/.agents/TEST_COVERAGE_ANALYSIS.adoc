@@ -90,3 +90,18 @@ les tests s'exécutent en CI (`./gradlew build`).
 
 Total : 20 unit (noyau + garde). Local = Build (`compileKotlin compileTestKotlin`) ;
 les tests s'exécutent en CI (`./gradlew build`).
+
+== Couverture — session 201 (HF-MUSIC-LIBRARY US-2, `video-kernel 0.8.0`)
+
+.Bibliothèque musicale + séquence sonore (`video.kernel.music`, +13 types)
+|===
+| Élément | Nature | Tests
+
+| `video/kernel/music/MusicLicence.kt` | enum fail-closed + parse | +3 `MusicLicenceTest`
+| `video/kernel/music/MusicLibrary.kt` (`MusicTrack`, `MusicLibrary`) | modèle + invariants | +8 `MusicTrackSelectorTest` (usable/mood/find)
+| `video/kernel/music/MusicTrackSelector.kt` (`MusicSelection`) | sélection déterministe | +8 `MusicTrackSelectorTest`
+| `video/kernel/music/SoundSequence.kt` (`SoundCue`, `SoundSequence`, `SoundSequenceValidator`) | séquence + validation | +8 `SoundSequenceTest`
+| `video/ci/KernelApiSurface.kt` / `KernelApiStabilityTest.kt` | surface gelée **0.8.0** (+13 types) | ré-aligné + 6 assertions
+|===
+
+Total session : 27 tests. Local = Build ; CI `Test` `43143503043` verte.

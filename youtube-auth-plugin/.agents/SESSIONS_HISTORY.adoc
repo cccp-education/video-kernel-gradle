@@ -1,0 +1,34 @@
+= SESSIONS_HISTORY — youtube-auth-plugin
+:toc:
+
+_Historique synthétique du module (le détail de chaque session est dans `.agents/sessions/`)._
+
+== Session 005 (2026-11-11) — Preflight `verifyYouTubeCredentials` ✅
+
+US-5 : tâche `verifyYouTubeCredentials` (refresh du token + `channels.list?mine=true`
++ comparaison de chaîne, lecture seule) ; domaine pur `YouTubeChannelProbe` /
+`YouTubeChannelCheck` / `YouTubeRefreshRequest` ; seam `JsonGetTransport` ;
+`CredentialsFileRewriter.channelId` ; `GoogleTokenExchanger.refresh`. Tests : 10 unit
++ 4 scénarios BDD + 3 fonctionnels. Version source `0.0.4 → 0.0.5`, publiée
+**JitPack** (`v0.0.5`). Rapport `.agents/sessions/005-preflight-verify-credentials.adoc`.
+
+== Session 004 — Session navigateur isolée (US-4) ✅
+
+Profil Chromium dédié et neuf (`--user-data-dir`), auto-détection du binaire, repli
+par défaut averti, DSL `browserExecutable`/`browserProfileDir`/`freshBrowserProfile`.
+JitPack `0.0.4`. Rapport `.agents/sessions/004-isolated-browser-profile.adoc`.
+
+== Session 003 — Publication Central + adoption consommateurs (US-3) ✅
+
+Rapport `.agents/sessions/003-publication-0.0.2.adoc`.
+
+== Session 002 — Loopback hardening (US-2b) ✅
+
+Une requête sans `code`/`error` (ex. `/favicon.ico`) ne termine plus l'attente ;
+page « waiting ». `0.0.1 → 0.0.2`. Rapport `.agents/sessions/002-loopback-favicon-hardening.adoc`.
+
+== Session 001 — Domaine pur + plugin + tâche (US-1/US-2) ✅
+
+`YouTubeConsentUrl`, `YouTubeTokenParser`, `CredentialsFileRewriter` + plugin
+`education.cccp.video.auth` et tâche `obtainYouTubeRefreshToken` (loopback OAuth).
+Rapport `.agents/sessions/001-youtube-auth-plugin.adoc`.

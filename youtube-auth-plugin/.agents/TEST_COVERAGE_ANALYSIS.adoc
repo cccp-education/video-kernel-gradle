@@ -1,0 +1,19 @@
+= TEST_COVERAGE_ANALYSIS — youtube-auth-plugin
+:date: 2026-11-11
+:session: 005 preflight `verifyYouTubeCredentials` (US-5)
+
+== Couverture — session 005
+
+|===
+| Élément | Nature | Tests
+
+| `video/auth/YouTubeVerification.kt` (`YouTubeChannel`, `YouTubeChannelProbe`, `YouTubeChannelCheck`, `YouTubeRefreshRequest`) | domaine pur | +5 `YouTubeChannelProbeTest` +4 `YouTubeVerificationTest`
+| `video/auth/CredentialsFileRewriter.kt` (`channelId`) | parseur pur | +1 `CredentialsFileRewriterTest`
+| `video/auth/oauth/JsonGetTransport.kt` | seam N2 (fake en test) | couvert par la tâche (fonctionnel)
+| `video/auth/VerifyYouTubeCredentialsTask.kt` | tâche Gradle | +3 fonctionnels TestKit (tâche enregistrée, fichier absent, `refreshToken` manquant)
+| `youtube_auth.feature` | BDD | +4 scénarios (probe, grant refresh, concordance, discordance)
+|===
+
+Total : 10 unit + 4 BDD + 3 fonctionnels. Local = Build
+(`compileKotlin compileTestKotlin compileFunctionalTestKotlin`) ; les tests
+s'exécutent en CI.
