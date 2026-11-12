@@ -17,6 +17,15 @@ import video.kernel.VisualSource
 import video.kernel.audio.AudioSilenceDetector
 import video.kernel.audio.RmsEnvelope
 import video.kernel.audio.SilenceAnalysis
+import video.kernel.music.MusicLibrary
+import video.kernel.music.MusicLicence
+import video.kernel.music.MusicSelection
+import video.kernel.music.MusicTrack
+import video.kernel.music.MusicTrackSelector
+import video.kernel.music.SoundCue
+import video.kernel.music.SoundSequence
+import video.kernel.music.SoundSequenceValidation
+import video.kernel.music.SoundSequenceValidator
 import video.kernel.publish.ChapterLineParser
 import video.kernel.publish.DisabledVideoPublisher
 import video.kernel.publish.HttpTransport
@@ -117,6 +126,19 @@ object KernelApiSurface {
             AudioSilenceDetector::class.java,
             RmsEnvelope::class.java,
             SilenceAnalysis::class.java,
+            MusicLicence::class.java,
+            MusicTrack::class.java,
+            MusicLibrary::class.java,
+            MusicSelection::class.java,
+            MusicSelection.Selected::class.java,
+            MusicSelection.Rejected::class.java,
+            MusicTrackSelector::class.java,
+            SoundCue::class.java,
+            SoundSequence::class.java,
+            SoundSequenceValidation::class.java,
+            SoundSequenceValidation.Valid::class.java,
+            SoundSequenceValidation.Invalid::class.java,
+            SoundSequenceValidator::class.java,
         )
 
     /** Fully-qualified names of the exported types. */

@@ -18,6 +18,14 @@ import video.kernel.VideoRenderResult
 import video.kernel.audio.AudioSilenceDetector
 import video.kernel.audio.RmsEnvelope
 import video.kernel.audio.SilenceAnalysis
+import video.kernel.music.MusicLibrary
+import video.kernel.music.MusicLicence
+import video.kernel.music.MusicSelection
+import video.kernel.music.MusicTrack
+import video.kernel.music.MusicTrackSelector
+import video.kernel.music.SoundCue
+import video.kernel.music.SoundSequenceValidation
+import video.kernel.music.SoundSequenceValidator
 import video.kernel.publish.VideoChapter
 import video.kernel.publish.VideoLink
 import video.kernel.publish.VideoLinks
@@ -52,7 +60,7 @@ import video.kernel.segment.VideoSegment
  */
 class KernelApiStabilityTest {
     @Test
-    fun `the exported kernel type set is frozen at 0_7_0`() {
+    fun `the exported kernel type set is frozen at 0_8_0`() {
         assertThat(KernelApiSurface.typeNames())
             .containsExactlyInAnyOrder(
                 "video.kernel.VideoEngine",
@@ -98,6 +106,19 @@ class KernelApiStabilityTest {
                 "video.kernel.audio.AudioSilenceDetector",
                 "video.kernel.audio.RmsEnvelope",
                 "video.kernel.audio.SilenceAnalysis",
+                "video.kernel.music.MusicLicence",
+                "video.kernel.music.MusicTrack",
+                "video.kernel.music.MusicLibrary",
+                "video.kernel.music.MusicSelection",
+                "video.kernel.music.MusicSelection\$Selected",
+                "video.kernel.music.MusicSelection\$Rejected",
+                "video.kernel.music.MusicTrackSelector",
+                "video.kernel.music.SoundCue",
+                "video.kernel.music.SoundSequence",
+                "video.kernel.music.SoundSequenceValidation",
+                "video.kernel.music.SoundSequenceValidation\$Valid",
+                "video.kernel.music.SoundSequenceValidation\$Invalid",
+                "video.kernel.music.SoundSequenceValidator",
             )
     }
 
@@ -266,5 +287,77 @@ class KernelApiStabilityTest {
             )
         assertThat(KernelApiSurface.functionNames(SilenceAnalysis::class.java))
             .contains("isSilent")
+    }
+
+    @Test
+    fun `the music licence enum exposes the frozen constants`() {
+        assertThat(MusicLicence.entries.map { it.name })
+            .containsExactly("OWN", "CC0", "CC_BY", "ROYALTY_FREE", "LICENSED", "UNKNOWN")
+    }
+
+    @Test
+    fun `the MusicTrackSelector exposes only select`() {
+        assertThat(KernelApiSurface.functionNames(MusicTrackSelector::class.java))
+            .containsExactlyInAnyOrder("select")
+    }
+
+    @Test
+    fun `the music track data class exposes the frozen property set`() {
+        assertThat(KernelApiSurface.getterNames(MusicTrack::class.java))
+            .containsExactlyInAnyOrder(
+                "getId",
+                "getTitle",
+                "getArtist",
+                "getFile",
+                "getSha256",
+                "getDurationSeconds",
+                "getLicence",
+                "getSourceUrl",
+                "getAttribution",
+                "getTags",
+                "getMood",
+                "getEnergy",
+            )
+        assertThat(KernelApiSurface.functionNames(MusicTrack::class.java))
+            .contains("isUsable", "requiresAttribution", "hasMood")
+    }
+
+    @Test
+    fun `the music library exposes the frozen property set`() {
+        assertThat(KernelApiSurface.getterNames(MusicLibrary::class.java))
+            .containsExactlyInAnyOrder("getSchemaVersion", "getTracks")
+        assertThat(KernelApiSurface.functionNames(MusicLibrary::class.java))
+            .contains("find", "usable", "byMood")
+    }
+
+    @Test
+    fun `the music selection variants expose the frozen property set`() {
+        assertThat(KernelApiSurface.getterNames(MusicSelection.Selected::class.java))
+            .containsExactlyInAnyOrder("getTrack")
+        assertThat(KernelApiSurface.getterNames(MusicSelection.Rejected::class.java))
+            .containsExactlyInAnyOrder("getReason")
+    }
+
+    @Test
+    fun `the sound cue data class exposes the frozen property set`() {
+        assertThat(KernelApiSurface.getterNames(SoundCue::class.java))
+            .containsExactlyInAnyOrder(
+                "getSceneId",
+                "getTrackId",
+                "getMood",
+                "getVolume",
+                "getFadeInSeconds",
+                "getFadeOutSeconds",
+                "getLoop",
+                "getStop",
+            )
+    }
+
+    @Test
+    fun `the sound sequence validation variants expose the frozen property set`() {
+        assertThat(KernelApiSurface.getterNames(SoundSequenceValidation.Invalid::class.java))
+            .containsExactlyInAnyOrder("getReasons")
+        assertThat(KernelApiSurface.functionNames(SoundSequenceValidator::class.java))
+            .containsExactlyInAnyOrder("validate")
     }
 }

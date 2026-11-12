@@ -9,7 +9,7 @@ plugins {
 group = "education.cccp"
 // CNV-16 — JitPack derives the published version from the git tag; local/CI
 // builds keep the released default.
-version = providers.gradleProperty("version").getOrElse("0.7.0")
+version = providers.gradleProperty("version").getOrElse("0.8.0")
 // MEM-LINT-ADOPTION (S-326) — `VERSION_25.ordinal` is 24 (the enum counts
 // VERSION_1_1..1_8 as its first eight constants): the kernel was silently built
 // for JVM 24 while the rest of the workspace targets 25.
