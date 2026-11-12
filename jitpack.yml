@@ -13,6 +13,6 @@ install:
   # The version is derived from the git tag and forced into the sub-build so
   # the POM/module metadata matches the JitPack coordinate.
   - if [ "${VERSION#v}" = "0.7.1" ] || [ "${VERSION#v}" = "0.7.0" ]; then ./video-kernel-plugin/gradlew -p video-kernel-plugin publishToMavenLocal -Pversion="${VERSION#v}"; fi
-  - if [ "${VERSION#v}" = "0.0.4" ]; then ./youtube-auth-plugin/gradlew -p youtube-auth-plugin publishToMavenLocal -Pversion="${VERSION#v}"; fi
+  - if [ "${VERSION#v}" = "0.0.5" ] || [ "${VERSION#v}" = "0.0.4" ]; then ./youtube-auth-plugin/gradlew -p youtube-auth-plugin publishToMavenLocal -Pversion="${VERSION#v}"; fi
 env:
   CI: "true"
