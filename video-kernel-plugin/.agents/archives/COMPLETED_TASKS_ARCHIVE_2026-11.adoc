@@ -1,0 +1,24 @@
+= COMPLETED_TASKS_ARCHIVE — Novembre 2026
+:date: 2026-11-12
+
+== Session 201 — Contrat musique/séquence `video-kernel 0.8.0` ✅
+
+* `video.kernel.music` : `MusicLicence` (fail-closed), `MusicTrack`,
+  `MusicLibrary`, `MusicSelection`/`MusicTrackSelector` (déterministe, sans LLM),
+  `SoundCue`, `SoundSequence`, `SoundSequenceValidator`.
+* `0.7.0 → 0.8.0`, manifeste +13 types, 27 tests N1.
+* Publié JitPack `com.github.cccp-education:video-kernel-gradle:v0.8.0`
+  (POM/JAR HTTP 200) — Central reste `0.7.0` (canal Sonatype restreint).
+* Rapport `.agents/sessions/201-music-library-contract.adoc`.
+
+== Session 202 — Adoption du contrat `music` reportée ✅ (gouvernance)
+
+* Constat : `0.8.0` n'étant servi que par JitPack, un **plugin publié** ne peut
+  pas en dépendre (les dépôts du consommateur ne le résolvent pas) ; le pont
+  JitPack a été retiré côté hyperframes (S-053), qui porte une copie N2 verbatim
+  (`hyperframes.sound.MusicModel.kt`).
+* Décision : adoption réelle au **reset Central**
+  (`education.cccp:video-kernel:0.8.0` + BOM MEMPHIS), puis suppression de la
+  copie et ré-import `video.kernel.music.*` (hyperframes, puis capsule).
+* Aucun code modifié. Rapport
+  `.agents/sessions/202-music-contract-adoption-deferred.adoc`.

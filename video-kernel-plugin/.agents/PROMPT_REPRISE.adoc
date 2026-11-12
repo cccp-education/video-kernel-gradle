@@ -1,7 +1,7 @@
-= PROMPT_REPRISE — video-kernel (Session 201 TERMINÉE → 202)
-:session: 202
+= PROMPT_REPRISE — video-kernel (Session 202 TERMINÉE → 203)
+:session: 203
 :borough: video-kernel
-:session_precedente: 201 — Contrat musique/séquence `video-kernel 0.8.0` ✅
+:session_precedente: 202 — adoption du contrat `music` reportée (gouvernance) ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
 == Session 201 (TERMINÉE) — HF-MUSIC-LIBRARY US-2
@@ -30,7 +30,14 @@ _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
   et non le module — normaliser au reset Central (`education.cccp:video-kernel`
   + BOM MEMPHIS).
 
-== Mission Session 202 — au choix pilote
+== Session 202 (TERMINÉE) — gouvernance
+
+* Adoption du contrat `music` reportée au reset Central : `0.8.0` n'est servi
+  que par JitPack, un plugin publié ne peut en dépendre ; hyperframes porte une
+  copie N2 verbatim (`MusicModel.kt`). Aucun code modifié. Rapport
+  `.agents/sessions/202-music-contract-adoption-deferred.adoc`.
+
+== Mission Session 203 — US-1 `HF-SPEAKER-NOTES` (noyau)
 
 . *US-1 `HF-SPEAKER-NOTES`* (le noyau) : `video.kernel.notes.SpeakerNoteBlockParser`
    (grammaire `[NOTE.speaker]` + `-- `, paramétrable niveau de titre), adoption

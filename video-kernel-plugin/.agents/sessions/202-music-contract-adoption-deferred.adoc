@@ -1,0 +1,50 @@
+= Session 202 — Adoption du contrat `music` reportée (gouvernance)
+:toc:
+:_session_: 202
+:_date_: 2026-11-12
+:_borough_: video-kernel (N1) — session transverse déclenchée depuis Watts (hyperframes S-052→S-055)
+:_statut_: ✅ TERMINÉE (gouvernance pure, zéro code)
+
+== Mission
+
+Consigner la décision prise pendant l'EPIC `HF-MUSIC-LIBRARY` côté hyperframes :
+le contrat `video.kernel.music` (publié en `0.8.0`) **n'est pas encore consommé
+par un artefact publié**.
+
+== Constat
+
+`video-kernel 0.8.0` n'existe **que sur JitPack**
+(`com.github.cccp-education:video-kernel-gradle:v0.8.0`) ; Maven Central est
+bloqué à `0.7.0` tant que le canal Sonatype est restreint.
+
+Or un **plugin publié** ne peut dépendre que d'artefacts résolvables depuis les
+dépôts du **consommateur** (Maven Central / Gradle Plugin Portal). Le pont JitPack,
+tenté en hyperframes S-052, casse la configuration de tout consommateur
+(`Could not find com.github.cccp-education:video-kernel-gradle:v0.8.0`) — il a été
+**retiré** en S-053.
+
+Conséquence : `hyperframes.sound.MusicModel.kt` porte une **copie N2 verbatim** du
+contrat (fallback D4 du cadrage `CADRAGE_EPIC_HF_MUSIC_LIBRARY`), et le noyau
+reste épinglé à `0.7.0` (Central) côté hyperframes.
+
+== Décision
+
+* Le noyau **reste prêt** : `0.8.0` (source + JitPack) est stable, manifeste d'API
+  à jour, 27 tests N1.
+* **Adoption réelle à faire au reset Central** : publier
+  `education.cccp:video-kernel:0.8.0` (nmcp/Central) + BOM MEMPHIS, puis
+  supprimer `MusicModel.kt` et ré-importer `video.kernel.music.*` chez hyperframes
+  (et chez capsule quand elle adoptera `audioPost`).
+* Aucune action de code dans cette session (gouvernance pure).
+
+== Prochaine session (203)
+
+`HF-SPEAKER-NOTES` US-1 (le noyau) : `video.kernel.notes.SpeakerNoteBlockParser`
+(grammaire `[NOTE.speaker]` + bloc `--`, niveau de titre paramétrable), adoption
+capsule (`RevealJsSpeakerNoteParser` délègue), `0.8.0 → 0.9.0` (édition délibérée
+du manifeste d'API) + publication.
+
+== Hygiène
+
+Zéro code modifié, zéro secret, zéro Python. CI du commit de documentation :
+voir la section de preuve de l'`INDEX`.

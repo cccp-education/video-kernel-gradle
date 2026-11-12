@@ -8,9 +8,9 @@ _Coordonnées_ : `education.cccp:video-kernel:0.8.0` (package neutre `video.kern
  _Derniere mise a jour_ : 2026-11-12 (S-201 — **HF-MUSIC-LIBRARY US-2 : `video-kernel 0.8.0`** — contrat musical neutre `video.kernel.music` : `MusicLicence` (fail-closed), `MusicTrack`, `MusicLibrary`, `MusicTrackSelector` (déterministe, sans LLM), `SoundCue`, `SoundSequence`, `SoundSequenceValidator`. `0.7.0 → 0.8.0`, manifeste +13 types, 27 tests N1. **CI verte** : `Test` `43143503043` ; **publié JitPack** `com.github.cccp-education:video-kernel-gradle:v0.8.0` (POM/JAR HTTP 200, contient `video/kernel/music/*`). Rapport `.agents/sessions/201-music-library-contract.adoc`.)
  _Derniere mise a jour_ : 2026-10-31 (S-200 — **PUBLISH-ADAPTER-N1 : `video-kernel 0.7.0`** — briques pures de publication extraites au noyau : `ChapterLineParser`, `YouTubeCredentials`, `YouTubeCredentialsLoader`, `YouTubePublishCommand` (réécrit sans Jackson), `DisabledVideoPublisher`, `PublishHttpRequest`/`PublishHttpResponse`/`HttpTransport`. `0.6.0 → 0.7.0`, manifeste +8 types, 29 tests N1. Central bundle `583079e5-e8bd-4450-841b-479997b169ff`, propagation repo1 200 ; MEMPHIS `0.0.115` ; capsule `0.0.15` + hyperframes `0.0.14` adoptés. Réseau (`JdkHttpTransport`, `YouTubeDataApiPublisher`) reste N2. **CI verte** : `Test` `41243892599`.)
  _Derniere mise a jour (antérieure)_ : 2026-10-31 (S-199 — **VK-4 US-4e primitives audio** : `video.kernel.audio.RmsEnvelope` + `AudioSilenceDetector` + `SilenceAnalysis` promus au noyau (2 consommateurs réels : capsule `verifyCapsuleVoice`, hyperframes `generateHyperframesNarration`). `0.5.0 → 0.6.0`, manifeste +3 types, tests N1. Publication Central bundle `9911e841-8e51-4af3-b495-77c50550938c`, propagation repo1 200 ; MEMPHIS `0.0.112` ; capsule + hyperframes adoptés. **CI verte** : `Test` `41214453154` ; consommateurs `runAllTests` `41214459791` (21/21), `Full Tests` capsule `41214473586` (25/25), `Test` hyperframes `41214467362`.)
- _Derniere session terminee_ : 201 (noyau `0.8.0`, contrat musique/séquence).
+ _Derniere session terminee_ : 202 (gouvernance — adoption du contrat `music` reportee au reset Central ; noyau `0.8.0` inchange).
  _Depot_ : `https://github.com/cccp-education/video-kernel-gradle.git`.
- _Prochaine session_ : 202 — US-1 `HF-MUSIC-LIBRARY` (producteur newpipe : manifeste + gate de licence) puis US-3 (hyperframes).
+ _Prochaine session_ : 203 — US-1 `HF-SPEAKER-NOTES` (noyau `video.kernel.notes.SpeakerNoteBlockParser` + adoption capsule, `0.8.0 → 0.9.0`).
 
 == Portée
 
@@ -59,3 +59,13 @@ uniquement ; vocabulaire neutre). **Stabilité gardée** : `video.ci.KernelApiSt
 == Session 201 — JitPack mirror (CNV-16)
 
 Publication JitPack de video-kernel 0.7.0 et youtube-auth 0.0.2. JitPack : BLOQUÉ — SDKMAN ne télécharge pas le JDK 25 sur JitPack ; retry nécessaire.
+
+== Session 202 — Adoption du contrat `music` reportée (gouvernance)
+
+`video-kernel 0.8.0` (`video.kernel.music`) n'existe que sur JitPack ; un plugin
+publié ne peut dépendre que d'artefacts résolvables chez le consommateur → le pont
+JitPack a été retiré côté hyperframes (S-053) et `hyperframes.sound.MusicModel.kt`
+porte une copie N2 verbatim du contrat. **Adoption réelle au reset Central**
+(`education.cccp:video-kernel:0.8.0` + BOM MEMPHIS), puis suppression de la copie
+et ré-import `video.kernel.music.*`. Rapport
+`.agents/sessions/202-music-contract-adoption-deferred.adoc`. Aucun code modifié.

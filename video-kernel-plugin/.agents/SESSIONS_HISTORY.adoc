@@ -45,3 +45,15 @@ sans LLM), `SoundCue`, `SoundSequence`, `SoundSequenceValidator`. `0.7.0 → 0.8
 manifeste +13 types, 27 tests. Local = Build vert ; CI `Test` `43143503043` verte ;
 publié JitPack `com.github.cccp-education:video-kernel-gradle:v0.8.0` (POM/JAR 200).
 Rapport `.agents/sessions/201-music-library-contract.adoc`.
+
+== Session 202 — Adoption du contrat `music` reportée — 2026-11-12
+
+Gouvernance pure (zéro code). `video-kernel 0.8.0` (`video.kernel.music`) n'est
+servi que par JitPack ; un plugin publié ne peut pas en dépendre (les dépôts du
+consommateur ne le résolvent pas) — le pont a donc été retiré chez hyperframes
+(S-053), qui porte une copie N2 verbatim du contrat (`MusicModel.kt`). Adoption
+réelle à faire au reset Central (`education.cccp:video-kernel:0.8.0` + BOM
+MEMPHIS), puis suppression de la copie. Prochaine session : 203, US-1
+`HF-SPEAKER-NOTES` (`video.kernel.notes.SpeakerNoteBlockParser` + adoption
+capsule, `0.8.0 → 0.9.0`). Rapport
+`.agents/sessions/202-music-contract-adoption-deferred.adoc`.
