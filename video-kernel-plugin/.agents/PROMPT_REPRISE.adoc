@@ -1,56 +1,48 @@
-= PROMPT_REPRISE — video-kernel (Session 202 TERMINÉE → 203)
-:session: 203
+= PROMPT_REPRISE — video-kernel (Session 203 TERMINÉE → 204)
+:session: 204
 :borough: video-kernel
-:session_precedente: 202 — adoption du contrat `music` reportée (gouvernance) ✅
+:session_precedente: 203 — VK-SPEAKER-NOTES US-1 (grammaire partagée des notes d'orateur) ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
-== Session 201 (TERMINÉE) — HF-MUSIC-LIBRARY US-2
+== Session 203 (TERMINÉE) — VK-SPEAKER-NOTES US-1
 
-* `video.kernel.music` : `MusicLicence` (fail-closed), `MusicTrack`,
-  `MusicLibrary`, `MusicSelection`/`MusicTrackSelector` (déterministe, sans LLM),
-  `SoundCue`, `SoundSequence`, `SoundSequenceValidator`.
-* `0.7.0 → 0.8.0`, manifeste +13 types, 27 tests N1.
-* Local = Build : compiles + `ktlintCheck` VERTS ; **CI verte** `Test` `43143503043`.
-* **Publié JitPack** `com.github.cccp-education:video-kernel-gradle:v0.8.0`
-  (HTTP 200 ; JAR contient `video/kernel/music/*`).
-* Rapport `.agents/sessions/201-music-library-contract.adoc`.
+* EPIC **`VK-SPEAKER-NOTES`** créé (traçabilité manquante côté noyau) : la
+  grammaire `[NOTE.speaker]` est promue au noyau (doctrine « factoriser à 2 »,
+  capsule l'utilise déjà, hyperframes devient le 2ᵉ consommateur).
+* Livré : `video.kernel.notes.SpeakerNoteBlock` + `SpeakerNoteBlockParser`
+  (niveau de titre et marqueur configurables, parité legacy « la première note
+  gagne », note non fermée émise en fin d'entrée).
+* `0.8.0 → 0.9.0` : manifeste d'API `KernelApiSurface` +2 types,
+  `KernelApiStabilityTest` ré-alignée (`0_9_0`), 16 tests N1.
+* Local = Build : `compileKotlin compileTestKotlin` + `ktlintCheck` VERTS.
+* **Non publié** (canal consommé = Central, reset Sonatype jusqu'au 2026-12-01).
+* Rapport `.agents/sessions/203-speaker-note-block-parser.adoc`.
 
 == État
 
-* `education.cccp:video-kernel:0.8.0` (source) ; Central `0.7.0` ;
-  JitPack repo-level `v0.8.0`.
-* EPIC `HF-MUSIC-LIBRARY` : US-2 ✅ ; *US-1 ✅ S-004 (newpipe producteur)*,
-  *US-3 ✅ S-052 + US-4 ✅ S-053 (hyperframes : séquence sonore + copie des
-  assets)*. **Adoption du contrat `music` reportée** : hyperframes porte une
-  copie N2 verbatim (`MusicModel.kt`) car `0.8.0` n'est que sur JitPack et un
-  plugin publié ne peut pas en dépendre — adoption réelle au reset Central.
-  Reste US-5→US-9 (hyperframes), US-6 (capsule), US-7/8/9.
-* EPIC `HF-SPEAKER-NOTES` (hyperframes) : cadré, non démarré.
-* *Dette* : la coordonnée JitPack est *repo-level* (`video-kernel-gradle:v0.8.0`)
-  et non le module — normaliser au reset Central (`education.cccp:video-kernel`
-  + BOM MEMPHIS).
+* Source **`0.9.0`** ; Central **`0.7.0`** ; JitPack **`v0.8.0`**.
+* `VK-SPEAKER-NOTES` US-1 ✅ ; **US-1b 🟡 BLOQUÉ** (adoption capsule) tant que
+  `0.9.0` n'est pas résolvable depuis le canal du consommateur.
+* Dette héritée : contrat `music` (`0.8.0`) et coordonnée JitPack — même verrou.
 
-== Session 202 (TERMINÉE) — gouvernance
+== Mission Session 204 — débloquer, puis consommer
 
-* Adoption du contrat `music` reportée au reset Central : `0.8.0` n'est servi
-  que par JitPack, un plugin publié ne peut en dépendre ; hyperframes porte une
-  copie N2 verbatim (`MusicModel.kt`). Aucun code modifié. Rapport
-  `.agents/sessions/202-music-contract-adoption-deferred.adoc`.
-
-== Mission Session 203 — US-1 `HF-SPEAKER-NOTES` (noyau)
-
-. *US-1 `HF-SPEAKER-NOTES`* (le noyau) : `video.kernel.notes.SpeakerNoteBlockParser`
-   (grammaire `[NOTE.speaker]` + `-- `, paramétrable niveau de titre), adoption
-   capsule (`RevealJsSpeakerNoteParser` délègue), `0.8.0 → 0.9.0` + publication
-   (manifeste d'API édité délibérément).
-. Normalisation de la coordonnée (reset Central) — bloquée jusqu'à réouverture
-   du canal Sonatype.
-. `HF-SPEAKER-NOTES` US-2/3 (hyperframes) après le noyau.
+. **Publier `video-kernel 0.9.0`** sur le canal consommé (Central si rouvert,
+   sinon décision pilote explicite : JitPack + shim temporaire **interdit** dans
+   un POM publié). Vérifier la propagation (repo1 / page JitPack).
+. **US-1b** : adoption capsule — `RevealJsSpeakerNoteParser` délègue à
+   `SpeakerNoteBlockParser`, bump du pin `video-kernel` + `compileTestKotlin`
+   (parité des tests existants `AsciidocSpeakerNoteParserTest`).
+. Puis `HF-SPEAKER-NOTES` US-2→US-8 (hyperframes) : extraction, injection,
+   TTS par scène, **muxage** `muxHyperframesNarration`, traçabilité N3, BDD,
+   docs (cadrage `.agents/…/CADRAGE_EPIC_HF_SPEAKER_NOTES.adoc`).
+. MEMPHIS : entrée BOM/catalogue `video-kernel 0.9.0` (ordre DAG N0 → N1).
 
 == Points d'attention
 
-* **Local = Build, Tests = CI** ; **Règle 2** accord permanent (2026-11-11).
+* **Local = Build, Tests = CI** ; **Règle 2** accord permanent.
 * Frontière : `video.kernel` n'importe que `java/kotlin/contracts/video.kernel` ;
-  **interdit `processbuilder`**.
-* Stabilité : toute rupture = édition délibérée du manifeste `KernelApiSurface`.
-* Musique : aucune piste sans licence déclarée (fail-closed) ; audio jamais publié.
+  **interdit** `processbuilder` **et** le vocabulaire `slide/deck/asciidoc/reveal`
+  (`video.ci.KernelBoundaryTest`).
+* Stabilité : toute rupture = édition délibérée de `KernelApiSurface` + bump.
+* Zéro secret ; zéro Python ; English only code/tests/features.

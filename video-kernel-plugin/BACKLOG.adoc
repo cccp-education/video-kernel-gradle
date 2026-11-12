@@ -1,5 +1,21 @@
 = BACKLOG — video-kernel
-:last_update: 2026-10-31 (S-200 — PUBLISH-ADAPTER-N1 : briques pures de publication au noyau, `0.7.0` Central.)
+:last_update: 2026-11-12 (S-203 — VK-SPEAKER-NOTES US-1 : grammaire partagée des notes d'orateur au noyau, `0.9.0` source.)
+
+== 🟡 VK-SPEAKER-NOTES — grammaire partagée des notes d'orateur (noyau)
+
+_Origine_ : EPIC transverse `HF-SPEAKER-NOTES` (hyperframes, cadré S-049), qui
+promeut la grammaire `[NOTE.speaker]` au noyau (doctrine « factoriser à 2 » :
+capsule consomme déjà cette grammaire, hyperframes devient le 2ᵉ consommateur).
+
+[cols="1,3,1", options="header"]
+|===
+| US | Livrable | Statut
+
+| US-1 | `video.kernel.notes.SpeakerNoteBlock` + `SpeakerNoteBlockParser` (grammaire `[NOTE.speaker]` + bloc `--`, niveau de titre et marqueur configurables, parité legacy « la première note gagne ») ; `0.8.0 → 0.9.0` (manifeste d'API +2 types) ; 16 tests N1 + gardes frontière/stabilité ré-alignées. | ✅ S-203
+| US-1b | **Adoption capsule** (`RevealJsSpeakerNoteParser` délègue au noyau) — **bloquée** tant que `0.9.0` n'est pas publié sur le canal consommé (Central, reset Sonatype) ; l'adoption hyperframes (`hyperframes.notes`) est l'US-2 de l'EPIC transverse. | 🟡 BLOQUÉ (publication)
+|===
+
+_Rapport_ : `.agents/sessions/203-speaker-note-block-parser.adoc`.
 
 == ✅ VK-4 US-4e — primitives audio partagées (S-199)
 

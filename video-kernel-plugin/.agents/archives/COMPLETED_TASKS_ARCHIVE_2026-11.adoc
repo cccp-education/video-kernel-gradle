@@ -22,3 +22,16 @@
   copie et ré-import `video.kernel.music.*` (hyperframes, puis capsule).
 * Aucun code modifié. Rapport
   `.agents/sessions/202-music-contract-adoption-deferred.adoc`.
+
+== Session 203 — VK-SPEAKER-NOTES US-1 : grammaire partagée des notes d'orateur ✅
+
+* [x] EPIC `VK-SPEAKER-NOTES` créé côté noyau (traçabilité manquante : US-1
+  n'existait que dans `PROMPT_REPRISE`).
+* [x] `video.kernel.notes.SpeakerNoteBlock` + `SpeakerNoteBlockParser`
+  (grammaire `[NOTE.speaker]` + bloc `--`, `headingLevel`/`noteMarker`
+  configurables, parité legacy « la première note gagne »).
+* [x] `0.8.0 → 0.9.0`, manifeste d'API +2 types, 16 tests N1.
+* [x] Local = Build : `compileKotlin compileTestKotlin` + `ktlintCheck` VERTS.
+* [ ] **US-1b adoption capsule — BLOQUÉE** (publication `0.9.0` sur le canal
+  consommé ; reset Sonatype ≤ 2026-12-01).
+* [x] Rapport `.agents/sessions/203-speaker-note-block-parser.adoc`.

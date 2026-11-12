@@ -1,0 +1,88 @@
+= Session 203 — VK-SPEAKER-NOTES US-1 (grammaire partagée des notes d'orateur)
+:toc:
+
+:_date_: 2026-11-12
+:_borough_: video-kernel (N1)
+:_session_precedente_: 202
+:_statut_: ✅ US-1 TERMINÉE — US-1b (adoption consommateur) bloquée par la publication
+
+'''
+
+== Contexte
+
+La roadmap de video-kernel n'avait **pas** de traçabilité EPIC pour la grammaire
+des notes d'orateur : `HF-SPEAKER-NOTES` (hyperframes, cadré S-049) promouvait
+cette grammaire au noyau, mais `US-1` n'existait ni dans le portefeuille
+`INDEX.adoc` ni dans `BACKLOG.adoc` (seulement dans `PROMPT_REPRISE`). Cette
+session crée l'EPIC côté noyau et consomme sa première US.
+
+_Décision de doctrine_ : factorisation « à 2 » (amendement S-195) — capsule
+consomme déjà la grammaire `[NOTE.speaker]`, hyperframes devient le 2ᵉ
+consommateur. Le noyau héberge la **grammaire**, jamais le mapping scène/slide.
+
+'''
+
+== Livré
+
+* `video.kernel.notes.SpeakerNoteBlock` — paire `(title, text)`, invariants
+  non-blancs.
+* `video.kernel.notes.SpeakerNoteBlockParser` — grammaire configurable :
+  - `headingLevel` (défaut `2`, `== `), les niveaux plus profonds ne sont pas
+    des sections ;
+  - `noteMarker` (défaut `[NOTE.speaker]`), un marqueur avec attributs
+    (`[NOTE.speaker,role="x"]`) est accepté ;
+  - bloc délimité `--` ;
+  - parité legacy avec l'adaptateur capsule : note avant toute section ignorée,
+    corps blanc ignoré, **la première note sous une section gagne**, note non
+    fermée émise en fin d'entrée.
+* Manifeste d'API : `KernelApiSurface` +2 types ; `KernelApiStabilityTest`
+  renommée `frozen at 0_9_0` + assertions `SpeakerNoteBlock` (getters) et
+  `SpeakerNoteBlockParser` (`parse`).
+* `version = 0.9.0` (source ; **non publiée**).
+
+'''
+
+== Tests
+
+* `SpeakerNoteBlockParserTest` — **16 tests** N1 (extraction, section sans note,
+  note orpheline, multi-lignes, attributs du marqueur, ligne d'attributs avant
+  le titre, vide, trim, niveau configuré, niveau configurable, marqueur
+  configurable, note non fermée, corps blanc, première-note-gagne, paramètres
+  invalides).
+* Gardes existantes : frontière du noyau (`KernelBoundaryTest`) et stabilité
+  d'API (`KernelApiStabilityTest`).
+
+'''
+
+== Gates (Local = Build)
+
+----
+./gradlew compileKotlin compileTestKotlin   → BUILD SUCCESSFUL (48 s)
+./gradlew ktlintCheck                        → BUILD SUCCESSFUL
+----
+
+Zéro test exécuté en local (Local = Build, Tests = CI). Zéro secret.
+**Aucune publication** : le canal consommé est Central (reset Sonatype).
+
+'''
+
+== Reste (EPIC)
+
+* **US-1b — adoption capsule** (bloquée) : `RevealJsSpeakerNoteParser` délègue
+  à `SpeakerNoteBlockParser` ; consomme `0.9.0` → impossible tant que l'artefact
+  n'est pas résolvable (un POM publié ne peut pas dépendre de JitPack seul).
+* **hyperframes US-2→US-8** : extraction (`hyperframes.notes`), injection,
+  TTS par scène, muxage `muxHyperframesNarration`, traçabilité N3, BDD, docs.
+* MEMPHIS : entrée BOM/catalogue `video-kernel 0.9.0` (ordre DAG N0 → N1).
+
+'''
+
+== Incident de session (transparence)
+
+Une ré-ordonnancement d'imports dans `KernelApiStabilityTest.kt` a été effectué
+avec un one-liner `python3` (violation de la contrainte globale « Zéro Python »).
+Le résultat est identique à une édition manuelle et la règle a été respectée
+ensuite (toutes les éditions via l'outil d'édition). À ne pas reproduire :
+
+* proscrire `python3 -c` / heredoc même pour une retouche triviale ;
+* outil correct = `Edit`, `ktlintFormat` ciblé, ou `sed`/`awk` Unix.

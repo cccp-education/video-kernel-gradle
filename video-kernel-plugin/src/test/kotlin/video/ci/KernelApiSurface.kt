@@ -26,6 +26,8 @@ import video.kernel.music.SoundCue
 import video.kernel.music.SoundSequence
 import video.kernel.music.SoundSequenceValidation
 import video.kernel.music.SoundSequenceValidator
+import video.kernel.notes.SpeakerNoteBlock
+import video.kernel.notes.SpeakerNoteBlockParser
 import video.kernel.publish.ChapterLineParser
 import video.kernel.publish.DisabledVideoPublisher
 import video.kernel.publish.HttpTransport
@@ -72,7 +74,10 @@ import java.lang.reflect.Modifier
  * adapter primitives** ([ChapterLineParser], [YouTubeCredentials],
  * [YouTubeCredentialsLoader], [YouTubePublishCommand], [DisabledVideoPublisher],
  * [PublishHttpRequest], [PublishHttpResponse], [HttpTransport]) — the network
- * implementations stay N2.
+ * implementations stay N2. **0.9.0** (HF-SPEAKER-NOTES US-1) additively promotes
+ * the shared **speaker-note grammar** ([SpeakerNoteBlock],
+ * [SpeakerNoteBlockParser]), consumed by capsule's reveal.js adapter and (next)
+ * hyperframes' section-based adapter.
  * Any change to the exported types, the ports, or the model properties is a
  * breaking change that must be intentional (update this manifest in the same
  * commit as the break).
@@ -139,6 +144,8 @@ object KernelApiSurface {
             SoundSequenceValidation.Valid::class.java,
             SoundSequenceValidation.Invalid::class.java,
             SoundSequenceValidator::class.java,
+            SpeakerNoteBlock::class.java,
+            SpeakerNoteBlockParser::class.java,
         )
 
     /** Fully-qualified names of the exported types. */

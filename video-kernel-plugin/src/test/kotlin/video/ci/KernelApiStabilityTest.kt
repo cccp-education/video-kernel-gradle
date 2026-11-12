@@ -26,6 +26,8 @@ import video.kernel.music.MusicTrackSelector
 import video.kernel.music.SoundCue
 import video.kernel.music.SoundSequenceValidation
 import video.kernel.music.SoundSequenceValidator
+import video.kernel.notes.SpeakerNoteBlock
+import video.kernel.notes.SpeakerNoteBlockParser
 import video.kernel.publish.VideoChapter
 import video.kernel.publish.VideoLink
 import video.kernel.publish.VideoLinks
@@ -38,7 +40,7 @@ import video.kernel.segment.VideoScript
 import video.kernel.segment.VideoSegment
 
 /**
- * Contract-freeze guard (video-kernel 0.5.0).
+ * Contract-freeze guard (video-kernel 0.9.0).
  *
  * The engine-neutral kernel is a **shared contract** consumed by capsule and
  * hyperframes. It was frozen as 0.1.0 after being proven by both engines (S-018
@@ -51,7 +53,9 @@ import video.kernel.segment.VideoSegment
  * shared audio-quality primitives (`RmsEnvelope`, `AudioSilenceDetector`).
  * **0.7.0** (PUBLISH-ADAPTER-N1) additively promotes the shared publication
  * adapter primitives (chapter parser, credentials, command, degraded publisher,
- * HTTP seam).
+ * HTTP seam). **0.9.0** (HF-SPEAKER-NOTES US-1) additively promotes the shared
+ * speaker-note grammar (`SpeakerNoteBlock`, `SpeakerNoteBlockParser`), consumed
+ * by capsule's reveal.js adapter and (next) hyperframes' section-based adapter.
  * This guard pins the exported types, the ports and the model properties, so a
  * breaking change to the public surface cannot slip in silently — it must be a
  * deliberate manifest edit.
@@ -60,7 +64,7 @@ import video.kernel.segment.VideoSegment
  */
 class KernelApiStabilityTest {
     @Test
-    fun `the exported kernel type set is frozen at 0_8_0`() {
+    fun `the exported kernel type set is frozen at 0_9_0`() {
         assertThat(KernelApiSurface.typeNames())
             .containsExactlyInAnyOrder(
                 "video.kernel.VideoEngine",
@@ -119,6 +123,8 @@ class KernelApiStabilityTest {
                 "video.kernel.music.SoundSequenceValidation\$Valid",
                 "video.kernel.music.SoundSequenceValidation\$Invalid",
                 "video.kernel.music.SoundSequenceValidator",
+                "video.kernel.notes.SpeakerNoteBlock",
+                "video.kernel.notes.SpeakerNoteBlockParser",
             )
     }
 
@@ -359,5 +365,17 @@ class KernelApiStabilityTest {
             .containsExactlyInAnyOrder("getReasons")
         assertThat(KernelApiSurface.functionNames(SoundSequenceValidator::class.java))
             .containsExactlyInAnyOrder("validate")
+    }
+
+    @Test
+    fun `the speaker note block exposes the frozen property set`() {
+        assertThat(KernelApiSurface.getterNames(SpeakerNoteBlock::class.java))
+            .containsExactlyInAnyOrder("getTitle", "getText")
+    }
+
+    @Test
+    fun `the speaker note block parser exposes only parse`() {
+        assertThat(KernelApiSurface.functionNames(SpeakerNoteBlockParser::class.java))
+            .containsExactlyInAnyOrder("parse")
     }
 }
