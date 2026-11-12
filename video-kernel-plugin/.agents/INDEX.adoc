@@ -42,7 +42,7 @@ uniquement ; vocabulaire neutre). **Stabilité gardée** : `video.ci.KernelApiSt
 | video-kernel 0.7.0 | **PUBLISH-ADAPTER-N1** — briques pures de publication (`ChapterLineParser`, `YouTubeCredentials`, `YouTubeCredentialsLoader`, `YouTubePublishCommand` sans Jackson, `DisabledVideoPublisher`, seam HTTP) — manifeste +8 types ; réseau N2 | ✅ Publié (S-200, bundle `583079e5`)
 | Consommateurs capsule + hyperframes | dépendent de `education.cccp:video-kernel:0.7.0` (audio + post-production + narration + publication) | ✅ S-200 (adopté)
 | Consommateur hyperframes | Watts (2e moteur) — consomme le port `VideoEngine` en **production** | ✅ S-018
-| *1er consommateur `video.kernel.music`* | hyperframes (HF-MUSIC-LIBRARY US-3, S-052) consomme `0.8.0` *via JitPack* (`com.github.cccp-education:video-kernel-gradle:v0.8.0`) — la coordonnée repo-level est la dette VK connue, à normaliser au reset Central (`education.cccp:video-kernel` + BOM) | ✅ S-052 (adopté)
+| *Contrat `video.kernel.music` — adoption reportée* | hyperframes (HF-MUSIC-LIBRARY US-3/US-4) a d'abord consommé `0.8.0` via JitPack, puis **retiré** ce pont : un plugin publié doit rester résolvable depuis les dépôts du consommateur, et `0.8.0` n'est pas sur Central. `hyperframes.sound.MusicModel.kt` porte une copie N2 verbatim du contrat (fallback D4). **Adoption réelle à faire au reset Central** (`education.cccp:video-kernel:0.8.0` + BOM) | 🟡 S-053 (reporté)
 |===
 
 == Fichiers Associes

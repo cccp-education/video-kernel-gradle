@@ -20,8 +20,11 @@ _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 * `education.cccp:video-kernel:0.8.0` (source) ; Central `0.7.0` ;
   JitPack repo-level `v0.8.0`.
 * EPIC `HF-MUSIC-LIBRARY` : US-2 ✅ ; *US-1 ✅ S-004 (newpipe producteur)*,
-  *US-3 ✅ S-052 (hyperframes : 1er consommateur du contrat `music`)* ;
-  reste US-4/5 (hyperframes), US-6 (capsule), US-7/8/9.
+  *US-3 ✅ S-052 + US-4 ✅ S-053 (hyperframes : séquence sonore + copie des
+  assets)*. **Adoption du contrat `music` reportée** : hyperframes porte une
+  copie N2 verbatim (`MusicModel.kt`) car `0.8.0` n'est que sur JitPack et un
+  plugin publié ne peut pas en dépendre — adoption réelle au reset Central.
+  Reste US-5→US-9 (hyperframes), US-6 (capsule), US-7/8/9.
 * EPIC `HF-SPEAKER-NOTES` (hyperframes) : cadré, non démarré.
 * *Dette* : la coordonnée JitPack est *repo-level* (`video-kernel-gradle:v0.8.0`)
   et non le module — normaliser au reset Central (`education.cccp:video-kernel`
