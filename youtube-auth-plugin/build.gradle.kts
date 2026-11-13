@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     // Cross-borough versions (kotlin/cucumber/junit) ride the workspace BOM.
-    implementation(platform("education.cccp:workspace-bom:0.0.115"))
+    implementation(platform("com.github.cccp-education.workspace-bom:workspace-bom:0.0.136"))
     implementation(kotlin("stdlib-jdk8"))
 
     testImplementation(kotlin("test-junit5"))
