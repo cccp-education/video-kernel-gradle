@@ -6,6 +6,8 @@
 |===
 |# |Date |Type |Sujet |Score
 
+| 205 | 2026-11-14 | publication (JitPack) | **CNV-17 — JitPack canal unique.** `settings.gradle.kts` : JitPack ajouté aux dépôts de résolution projet (résolution `i18n-contracts`) + shim conventions repointé `0.0.17`. N0 `workspace-bom 0.0.136`. CI verte. Dette assumée : `video-kernel 0.9.1` et `youtube-auth-plugin v0.0.4` partagent le même dépôt à versions distinctes → US-3b (tag commun `0.9.2`, suppression du préfixe `v`). Rapport `.agents/sessions/205-cnv-17-jitpack-channel.adoc`. | 8/10
+
 | 204 | 2026-11-13 | release (JitPack) | **Publication `video-kernel 0.9.1` (repo-level).** Le tag `v0.9.0` était antérieur au gate `jitpack.yml` → build JitPack `Error`. Correctif : gate accepte `0.9.1`, default `0.9.1`, tag `v0.9.1` (commit `07d0a4e`). Build `ok`, POM repo-level `com.github.cccp-education.video-kernel-gradle:video-kernel-gradle:v0.9.1` **HTTP 200** (même convention que 0.8.0, `modules: []`). Central reste `0.7.0` (quota, reset 2026-12-01) ; `0.9.0` = tag mort. Rapport `.agents/sessions/204-jitpack-release-0.9.1.adoc`. | 8/10
 
 | 203 | 2026-11-12 | feat+test | **VK-SPEAKER-NOTES US-1 — grammaire partagée des notes d'orateur.** EPIC créé côté noyau (traçabilité manquante). `video.kernel.notes.SpeakerNoteBlock` + `SpeakerNoteBlockParser` (grammaire `[NOTE.speaker]` + bloc `--`, `headingLevel`/`noteMarker` configurables, parité legacy « la première note gagne »). `0.8.0 → 0.9.0`, manifeste d'API +2 types, 16 tests N1, gardes frontière/stabilité ré-alignées. Local = Build : `compileKotlin compileTestKotlin` + `ktlintCheck` VERTS. **Non publié** (canal Central, reset Sonatype) → **US-1b adoption capsule bloquée**. Rapport `.agents/sessions/203-speaker-note-block-parser.adoc`. | 9/10

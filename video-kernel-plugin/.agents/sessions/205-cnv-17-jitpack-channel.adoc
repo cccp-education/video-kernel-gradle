@@ -1,0 +1,50 @@
+= Session 205 — CNV-17 : JitPack canal unique (video-kernel)
+:toc: left
+:icons: font
+
+:session: 205
+:date: 2026-11-14
+:type: cross-borough / publication JitPack
+:statut: TERMINÉE
+
+== Contexte
+
+Décision pilote S-045 (2026-11-13) : « mise en sécurité de la chaîne de
+publication en optant pour la **totalité** vers JitPack ». JitPack devient le
+**canal unique** des artefacts publics `education.cccp` ; Maven Central (nmcp)
+et le Gradle Plugin Portal cessent d'être publiés pour `foundry/public/**`.
+Un artefact = un canal = un nom = une version. `foundry/private/**` et `office/**` restent inchangés. Cadrage : `conventions-gradle/conventions-plugin/.agents/CADRAGE_EPIC_CNV_17_JITPACK_PRIMARY.adoc`.
+
+== Changements
+
+* `video-kernel-plugin/settings.gradle.kts` : JitPack ajouté aux dépôts de **résolution projet** (`dependencyResolutionManagement`)
+  pour résoudre `i18n-contracts` (contrat N0) sans passer par Central.
+* Shim des conventions (`education.cccp.build.*`) repointé sur le tag JitPack `0.0.17`
+  (`com.github.cccp-education.conventions-gradle:conventions-plugin`).
+* N0 amont : `workspace-bom 0.0.136` + `conventions-plugin 0.0.17`.
+* Aucun changement de code source, aucune version bumpée. Aucun test local
+  (Local = Build, Tests = CI).
+
+== Preuves
+
+|===
+| Élément | Statut
+| CI du dépôt | ✅ verte (session S-045)
+| Coordonnée `video-kernel` | `com.github.cccp-education:video-kernel-gradle` (repo-level, version = tag)
+| Coordonnée `youtube-auth-plugin` | `…video-kernel-gradle:youtube-auth-plugin:v0.0.4` (préfixe `v` à retirer)
+| Double canal `education.cccp:*` | ✅ aucun (canal JitPack seul)
+|===
+
+== Fichiers touchés
+
+* `video-kernel-plugin/settings.gradle.kts` — dépôt JitPack projet + shim `0.0.17`.
+* Gouvernance : `.agents/sessions/205-cnv-17-jitpack-channel.adoc`,
+  `.agents/SESSIONS_HISTORY.adoc`, `.agents/INDEX.adoc`, `.agents/PROMPT_REPRISE.adoc`, `BACKLOG.adoc`.
+
+== Points d'attention et suite
+
+* Le dépôt héberge **deux artefacts à versions distinctes** : `video-kernel 0.9.1`
+  (sans préfixe) et `youtube-auth-plugin v0.0.4` (avec préfixe `v`). JitPack
+  relabelle tous les modules à la version du tag → dette structurelle.
+* `video-kernel 0.9.0` reste un **tag mort** (build `Error`) ; ne pas réutiliser.
+* **Suite (US-3b)** — unifier sur **une seule version de dépôt** : tag commun `0.9.2`, suppression du préfixe `v`, puis reprise `VK-SPEAKER-NOTES` US-1b.

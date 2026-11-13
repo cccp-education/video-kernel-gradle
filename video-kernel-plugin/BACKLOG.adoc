@@ -1,5 +1,20 @@
 = BACKLOG — video-kernel
-:last_update: 2026-11-13 (S-204 — publication JitPack `0.9.1` (repo-level) ; 0.9.0 = tag antérieur au gate.)
+:last_update: 2026-11-14 (S-205 — CNV-17 JitPack canal unique ; US-3b : unification des versions de dépôt.)
+
+== ✅ CNV-17 — JitPack canal unique (S-205)
+
+* Décision pilote S-045 : JitPack = **canal unique** des artefacts publics
+  (`foundry/private/**` et `office/**` exclus). Cadrage
+  `conventions-gradle/conventions-plugin/.agents/CADRAGE_EPIC_CNV_17_JITPACK_PRIMARY.adoc`.
+* `video-kernel-plugin/settings.gradle.kts` : JitPack ajouté aux dépôts de
+  **résolution projet** (résolution `i18n-contracts`) ; shim conventions
+  repointé `0.0.17`. N0 `workspace-bom 0.0.136`.
+* CI verte ; zéro coordonnée `education.cccp:*` résiduelle.
+* **Reste à faire — US-3b** : le dépôt héberge `video-kernel 0.9.1` (sans
+  préfixe) et `youtube-auth-plugin v0.0.4` (avec préfixe `v`) ; JitPack relabelle
+  tous les modules à la version du tag → unifier sur le tag commun **`0.9.2`**
+  et supprimer le préfixe `v`.
+* Rapport `.agents/sessions/205-cnv-17-jitpack-channel.adoc`.
 
 == ✅ Publication JitPack `0.9.1` (S-204)
 

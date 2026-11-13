@@ -1,41 +1,46 @@
-= PROMPT_REPRISE — video-kernel (Session 204 TERMINÉE → 205)
-:session: 205
+= PROMPT_REPRISE — video-kernel (Session 205 TERMINÉE → 206)
+:session: 206
 :borough: video-kernel
-:session_precedente: 204 — publication JitPack `0.9.1` (repo-level) ✅
+:session_precedente: 205 — CNV-17 JitPack canal unique ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
-== Session 204 (TERMINÉE) — publication JitPack `0.9.1`
+== Session 205 (TERMINÉE) — CNV-17 : JitPack canal unique
 
-* Le tag `v0.9.0` avait été posé **avant** l'ajout de `0.9.0` au gate
-  `jitpack.yml` → build JitPack **`Error`** (aucun artefact).
-* Correctif : `jitpack.yml` accepte `0.9.1`, default `build.gradle.kts` `0.9.1`,
-  tag annoté **`v0.9.1`** (commit `07d0a4e`).
-* JitPack build **`ok`** ; artefact **repo-level**
-  `com.github.cccp-education.video-kernel-gradle:video-kernel-gradle:v0.9.1`
-  (POM **HTTP 200**), même convention que `v0.8.0`.
-* `0.9.0` = **tag mort** (Error) — ne pas réutiliser.
-* Central : `0.7.0` (quota, reset 2026-12-01).
-* Rapport `.agents/sessions/204-jitpack-release-0.9.1.adoc`.
+* Décision pilote S-045 : JitPack = **canal unique** des artefacts publics
+  (`foundry/private/**` et `office/**` exclus). Cadrage
+  `conventions-gradle/conventions-plugin/.agents/CADRAGE_EPIC_CNV_17_JITPACK_PRIMARY.adoc`.
+* `video-kernel-plugin/settings.gradle.kts` : JitPack ajouté aux dépôts de
+  **résolution projet** pour `i18n-contracts` ; shim conventions repointé
+  `0.0.17` (`com.github.cccp-education.conventions-gradle:conventions-plugin`).
+* N0 amont : `workspace-bom 0.0.136`.
+* CI verte ; zéro double canal `education.cccp:*`.
+* Rapport `.agents/sessions/205-cnv-17-jitpack-channel.adoc`.
 
 == État
 
-* Source `0.9.1` ; **JitPack repo-level `v0.9.1`** ; Central `0.7.0`.
-* `VK-SPEAKER-NOTES` : US-1 ✅ ; **US-1b** (adoption consommateurs) bloquée tant
-  que le kernel n'est pas sur le canal qu'un POM publié peut résoudre (Central).
+* Source `0.9.1` ; **JitPack repo-level `v0.9.1`** (POM 200) ; Central `0.7.0`
+  (quota, reset 2026-12-01).
+* **Dette structurelle** : le dépôt porte deux artefacts à versions distinctes —
+  `video-kernel 0.9.1` (sans préfixe) et `youtube-auth-plugin v0.0.4` (avec
+  préfixe `v`). JitPack relabelle tous les modules à la version du tag.
+* `video-kernel 0.9.0` = **tag mort** (build `Error`) — ne pas réutiliser.
+* `VK-SPEAKER-NOTES` : US-1 ✅ ; US-1b (adoption consommateurs) en attente.
 
-== Mission Session 205 — adopter (ou décider le canal)
+== Mission Session 206 — US-3b (version de dépôt unifiée)
 
-. **Attendre Central** (2026-12-01) : publier `education.cccp:video-kernel:0.9.1`
-   (POM valide) puis adoption capsule (`RevealJsSpeakerNoteParser` délègue) et
-   hyperframes (`hyperframes.notes`).
-. **Ou décision pilote** : shim de **build** JitPack documenté (repo-level
-   `com.github.cccp-education.video-kernel-gradle:video-kernel-gradle:v0.9.1`)
-   pour compiler/adopter en local — **jamais** dans un POM publié.
-. Ne pas réutiliser `v0.9.0` (tag mort) ni republier une version existante.
+. **Unifier** `video-kernel` et `youtube-auth-plugin` sur **une seule version
+   de dépôt** : tag commun **`0.9.2`**, suppression du préfixe `v`.
+. Mettre à jour `jitpack.yml` (gate des deux sous-builds sur `0.9.2`) et les
+   valeurs par défaut des deux `build.gradle.kts`.
+. Preuve : build JitPack `ok` + POM 200 pour `video-kernel-gradle:v0.9.2` et
+   `youtube-auth-plugin:0.9.2` (sans `v`).
+. Puis reprendre **US-1b** (adoption capsule/hyperframes) sur le canal stabilisé.
 
 == Points d'attention
 
 * **Local = Build, Tests = CI** ; **Règle 2** accord permanent.
 * Frontière : `video.kernel` n'importe que `java/kotlin/contracts/video.kernel` ;
   pas de `processbuilder`, pas de vocabulaire `slide/deck/asciidoc/reveal`.
+* Version = tag (`-Pversion="${VERSION#v}"`), bump avant tag ; jamais republier
+  une version existante ; zéro `education.cccp:<x>` résiduel dans un catalogue.
 * Zéro secret ; zéro Python ; English only code/tests/features.
