@@ -1,48 +1,41 @@
-= PROMPT_REPRISE — video-kernel (Session 203 TERMINÉE → 204)
-:session: 204
+= PROMPT_REPRISE — video-kernel (Session 204 TERMINÉE → 205)
+:session: 205
 :borough: video-kernel
-:session_precedente: 203 — VK-SPEAKER-NOTES US-1 (grammaire partagée des notes d'orateur) ✅
+:session_precedente: 204 — publication JitPack `0.9.1` (repo-level) ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
-== Session 203 (TERMINÉE) — VK-SPEAKER-NOTES US-1
+== Session 204 (TERMINÉE) — publication JitPack `0.9.1`
 
-* EPIC **`VK-SPEAKER-NOTES`** créé (traçabilité manquante côté noyau) : la
-  grammaire `[NOTE.speaker]` est promue au noyau (doctrine « factoriser à 2 »,
-  capsule l'utilise déjà, hyperframes devient le 2ᵉ consommateur).
-* Livré : `video.kernel.notes.SpeakerNoteBlock` + `SpeakerNoteBlockParser`
-  (niveau de titre et marqueur configurables, parité legacy « la première note
-  gagne », note non fermée émise en fin d'entrée).
-* `0.8.0 → 0.9.0` : manifeste d'API `KernelApiSurface` +2 types,
-  `KernelApiStabilityTest` ré-alignée (`0_9_0`), 16 tests N1.
-* Local = Build : `compileKotlin compileTestKotlin` + `ktlintCheck` VERTS.
-* **Non publié** (canal consommé = Central, reset Sonatype jusqu'au 2026-12-01).
-* Rapport `.agents/sessions/203-speaker-note-block-parser.adoc`.
+* Le tag `v0.9.0` avait été posé **avant** l'ajout de `0.9.0` au gate
+  `jitpack.yml` → build JitPack **`Error`** (aucun artefact).
+* Correctif : `jitpack.yml` accepte `0.9.1`, default `build.gradle.kts` `0.9.1`,
+  tag annoté **`v0.9.1`** (commit `07d0a4e`).
+* JitPack build **`ok`** ; artefact **repo-level**
+  `com.github.cccp-education.video-kernel-gradle:video-kernel-gradle:v0.9.1`
+  (POM **HTTP 200**), même convention que `v0.8.0`.
+* `0.9.0` = **tag mort** (Error) — ne pas réutiliser.
+* Central : `0.7.0` (quota, reset 2026-12-01).
+* Rapport `.agents/sessions/204-jitpack-release-0.9.1.adoc`.
 
 == État
 
-* Source **`0.9.0`** ; Central **`0.7.0`** ; JitPack **`v0.8.0`**.
-* `VK-SPEAKER-NOTES` US-1 ✅ ; **US-1b 🟡 BLOQUÉ** (adoption capsule) tant que
-  `0.9.0` n'est pas résolvable depuis le canal du consommateur.
-* Dette héritée : contrat `music` (`0.8.0`) et coordonnée JitPack — même verrou.
+* Source `0.9.1` ; **JitPack repo-level `v0.9.1`** ; Central `0.7.0`.
+* `VK-SPEAKER-NOTES` : US-1 ✅ ; **US-1b** (adoption consommateurs) bloquée tant
+  que le kernel n'est pas sur le canal qu'un POM publié peut résoudre (Central).
 
-== Mission Session 204 — débloquer, puis consommer
+== Mission Session 205 — adopter (ou décider le canal)
 
-. **Publier `video-kernel 0.9.0`** sur le canal consommé (Central si rouvert,
-   sinon décision pilote explicite : JitPack + shim temporaire **interdit** dans
-   un POM publié). Vérifier la propagation (repo1 / page JitPack).
-. **US-1b** : adoption capsule — `RevealJsSpeakerNoteParser` délègue à
-   `SpeakerNoteBlockParser`, bump du pin `video-kernel` + `compileTestKotlin`
-   (parité des tests existants `AsciidocSpeakerNoteParserTest`).
-. Puis `HF-SPEAKER-NOTES` US-2→US-8 (hyperframes) : extraction, injection,
-   TTS par scène, **muxage** `muxHyperframesNarration`, traçabilité N3, BDD,
-   docs (cadrage `.agents/…/CADRAGE_EPIC_HF_SPEAKER_NOTES.adoc`).
-. MEMPHIS : entrée BOM/catalogue `video-kernel 0.9.0` (ordre DAG N0 → N1).
+. **Attendre Central** (2026-12-01) : publier `education.cccp:video-kernel:0.9.1`
+   (POM valide) puis adoption capsule (`RevealJsSpeakerNoteParser` délègue) et
+   hyperframes (`hyperframes.notes`).
+. **Ou décision pilote** : shim de **build** JitPack documenté (repo-level
+   `com.github.cccp-education.video-kernel-gradle:video-kernel-gradle:v0.9.1`)
+   pour compiler/adopter en local — **jamais** dans un POM publié.
+. Ne pas réutiliser `v0.9.0` (tag mort) ni republier une version existante.
 
 == Points d'attention
 
 * **Local = Build, Tests = CI** ; **Règle 2** accord permanent.
 * Frontière : `video.kernel` n'importe que `java/kotlin/contracts/video.kernel` ;
-  **interdit** `processbuilder` **et** le vocabulaire `slide/deck/asciidoc/reveal`
-  (`video.ci.KernelBoundaryTest`).
-* Stabilité : toute rupture = édition délibérée de `KernelApiSurface` + bump.
+  pas de `processbuilder`, pas de vocabulaire `slide/deck/asciidoc/reveal`.
 * Zéro secret ; zéro Python ; English only code/tests/features.

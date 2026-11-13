@@ -35,3 +35,13 @@
 * [ ] **US-1b adoption capsule — BLOQUÉE** (publication `0.9.0` sur le canal
   consommé ; reset Sonatype ≤ 2026-12-01).
 * [x] Rapport `.agents/sessions/203-speaker-note-block-parser.adoc`.
+
+== Session 204 — Publication JitPack `video-kernel 0.9.1` (repo-level) ✅
+
+* [x] `jitpack.yml` accepte `0.9.1` ; default `build.gradle.kts` = `0.9.1` ;
+  tag annoté `v0.9.1` (commit `07d0a4e`).
+* [x] JitPack build `ok` ; POM repo-level `...video-kernel-gradle:v0.9.1` HTTP 200
+  (même convention que 0.8.0).
+* [!] `v0.9.0` = tag mort (`Error`, tag antérieur au gate) — ne pas réutiliser.
+* [ ] Central `0.9.1` (quota, ≥ 2026-12-01) ; adoption consommateurs en attente.
+* [x] Rapport `.agents/sessions/204-jitpack-release-0.9.1.adoc`.

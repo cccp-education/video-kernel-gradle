@@ -1,5 +1,18 @@
 = BACKLOG — video-kernel
-:last_update: 2026-11-12 (S-203 — VK-SPEAKER-NOTES US-1 : grammaire partagée des notes d'orateur au noyau, `0.9.0` source.)
+:last_update: 2026-11-13 (S-204 — publication JitPack `0.9.1` (repo-level) ; 0.9.0 = tag antérieur au gate.)
+
+== ✅ Publication JitPack `0.9.1` (S-204)
+
+* Le tag **`v0.9.0`** avait été créé **avant** l'ajout de la version au gate
+  `jitpack.yml` → build JitPack **`Error`** (rien de publié).
+* Correctif : `jitpack.yml` accepte `0.9.1`, `build.gradle.kts` default `0.9.1`,
+  tag annoté **`v0.9.1`** (commit `07d0a4e`).
+* JitPack build **`ok`** ; artefact **repo-level**
+  `com.github.cccp-education.video-kernel-gradle:video-kernel-gradle:v0.9.1`
+  (POM **HTTP 200**), même convention que `v0.8.0` (pas de module séparé).
+* `0.9.0` reste un tag **mort** (Error) ; ne jamais le réutiliser.
+* Central : `0.7.0` (le kernel 0.9.1 n'est pas sur Central — quota, reset 2026-12-01).
+* Rapport `.agents/sessions/204-jitpack-release-0.9.1.adoc`.
 
 == 🟡 VK-SPEAKER-NOTES — grammaire partagée des notes d'orateur (noyau)
 

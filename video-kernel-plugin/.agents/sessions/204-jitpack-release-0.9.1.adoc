@@ -1,0 +1,56 @@
+= Session 204 — Publication JitPack `video-kernel 0.9.1` (repo-level)
+:toc:
+
+:_date_: 2026-11-13
+:_borough_: video-kernel (N1)
+:_session_precedente_: 203
+:_statut_: ✅ `v0.9.1` publié sur JitPack (POM repo-level 200) — `v0.9.0` mort
+
+'''
+
+== Contexte
+
+Central est bloqué (quota Sonatype, reset 2026-12-01). Le canal retenu est
+**JitPack**. Le tag `v0.9.0` (précédent) avait été posé avant l'ajout de `0.9.0`
+au **gate** de `jitpack.yml` → JitPack a répondu `Error` (aucun artefact).
+
+'''
+
+== Livré
+
+* `jitpack.yml` : la condition d'install accepte **`0.9.1`** (en plus de 0.8.0,
+  0.7.1, 0.7.0).
+* `build.gradle.kts` : défaut `version = 0.9.1`.
+* Tag annoté **`v0.9.1`** (commit `07d0a4e`).
+* JitPack : build **`ok`** ; artefact **repo-level**
+  `com.github.cccp-education.video-kernel-gradle:video-kernel-gradle:v0.9.1`
+  (POM **HTTP 200**) — même convention que `v0.8.0` (le module n'est pas publié
+  séparément ; `modules: []` est normal pour ce dépôt).
+
+'''
+
+== Preuves
+
+|===
+| Élément | Statut
+
+| API build `v0.9.1` | `status: ok`, commit `07d0a4e`
+| POM repo-level `v0.9.1` | **HTTP 200**
+| API build `0.9.0` | **`Error`** (tag antérieur au gate)
+|===
+
+'''
+
+== Hygiène
+
+* Aucun test local (Local = Build) ; aucune publication Central.
+* `0.9.0` = **tag mort** : ne pas le réutiliser ni le déplacer.
+* Zéro secret.
+
+'''
+
+== Reste
+
+* **Central** `0.9.1` : bloqué jusqu'au 2026-12-01.
+* Adoption consommateurs (capsule/hyperframes) : attendre Central ou décision
+  pilote de shim de build JitPack (jamais dans un POM publié).
