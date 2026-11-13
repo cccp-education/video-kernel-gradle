@@ -18,6 +18,7 @@ kotlin.jvmToolchain(25)
 repositories {
     mavenLocal()
     mavenCentral()
+    maven("https://jitpack.io")
 }
 
 dependencies {
