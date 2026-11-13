@@ -1,8 +1,17 @@
-= PROMPT_REPRISE — video-kernel (Session 205 TERMINÉE → 206)
-:session: 206
+= PROMPT_REPRISE — video-kernel (Session 206 TERMINÉE → 207)
+:session: 207
 :borough: video-kernel
-:session_precedente: 205 — CNV-17 JitPack canal unique ✅
+:session_precedente: 206 — GBL-013 vague 2 (CI sur l'image de runtime) ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
+
+== Session 206 (TERMINÉE) — GBL-013 vague 2 : les deux builds dans l'image
+
+* `ci/run.sh` (`COMPONENT` = `video-kernel` / `youtube-auth` / `all`).
+* Les deux jobs de `test.yml` épinglés sur
+  `cccpeducation/cccp-ci-base@sha256:4722c1bc…` ; `setup-java` supprimé.
+* Run `43501408247` **VERT** (commit `c79fac1`). Rapport
+  `.agents/sessions/206-gbl-013-wave2.adoc`.
+* Suite : US-3b (tag commun `0.9.2`, suppression du préfixe `v`).
 
 == Session 205 (TERMINÉE) — CNV-17 : JitPack canal unique
 

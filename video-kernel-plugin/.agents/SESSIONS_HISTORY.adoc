@@ -63,3 +63,11 @@ MEMPHIS), puis suppression de la copie. Prochaine session : 203, US-1
 `HF-SPEAKER-NOTES` (`video.kernel.notes.SpeakerNoteBlockParser` + adoption
 capsule, `0.8.0 → 0.9.0`). Rapport
 `.agents/sessions/202-music-contract-adoption-deferred.adoc`.
+
+== Session 206 — GBL-013 vague 2 : les deux builds dans l'image — 2026-11-14
+
+`ci/run.sh` (`COMPONENT` = `video-kernel` / `youtube-auth` / `all`) ; les deux
+jobs de `test.yml` épinglés sur `cccpeducation/cccp-ci-base@sha256:4722c1bc…`,
+`setup-java` supprimé. Run `43501408247` **VERT** (commit `c79fac1`). Rapport
+`.agents/sessions/206-gbl-013-wave2.adoc`.
+

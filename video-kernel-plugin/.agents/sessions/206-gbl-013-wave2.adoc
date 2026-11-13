@@ -1,0 +1,21 @@
+= Session 206 — GBL-013 vague 2 : les deux builds dans l'image de runtime
+:date: 2026-11-14
+:borough: video-kernel (video-kernel-gradle)
+
+== Livré
+
+* `ci/run.sh` — `fast`/`test` avec `COMPONENT` (`video-kernel`,
+  `youtube-auth`, ou les deux par défaut).
+* `.github/workflows/test.yml` migré : les deux jobs ont un `container:` épinglé
+  sur `cccpeducation/cccp-ci-base@sha256:4722c1bc…`, `setup-java` supprimé,
+  `ci/run.sh test` avec `COMPONENT` dans `env`.
+* Run `43501408247` **VERT** (commit `c79fac1`).
+
+== Notes
+
+Le resolver foojay reste dans le build : la toolchain est fournie par l'image,
+les toolchains secondaires sont provisionnées si nécessaire. Aucune publication.
+
+== Suivant
+
+US-5 se poursuit sur les dépôts restants de la vague 2.

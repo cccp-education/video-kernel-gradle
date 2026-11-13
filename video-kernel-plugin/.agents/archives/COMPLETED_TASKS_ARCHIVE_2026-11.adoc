@@ -45,3 +45,12 @@
 * [!] `v0.9.0` = tag mort (`Error`, tag antérieur au gate) — ne pas réutiliser.
 * [ ] Central `0.9.1` (quota, ≥ 2026-12-01) ; adoption consommateurs en attente.
 * [x] Rapport `.agents/sessions/204-jitpack-release-0.9.1.adoc`.
+
+== S-206 — GBL-013 vague 2 : les deux builds dans l'image ✅
+
+* `ci/run.sh` (`COMPONENT` = `video-kernel` / `youtube-auth` / `all`).
+* Les deux jobs de `test.yml` épinglés sur
+  `cccpeducation/cccp-ci-base@sha256:4722c1bc…`, `setup-java` supprimé.
+* Run `43501408247` VERT (commit `c79fac1`).
+* Rapport `.agents/sessions/206-gbl-013-wave2.adoc`.
+
