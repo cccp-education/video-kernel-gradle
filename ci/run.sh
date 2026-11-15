@@ -10,10 +10,12 @@ component="${COMPONENT:-all}"
 
 run_component() {
   local name="$1"
-  ( cd "$ROOT/$name" && ./gradlew build --no-daemon --console=plain )
+  ( cd "$ROOT/$name" && ./gradlew build -Pchannel="$channel" --no-daemon --console=plain )
 }
 
 job="${1:-}"
+# GBL-014 — publication channel (jitpack default until the Sonatype reset).
+channel="${CHANNEL:-jitpack}"
 case "$job" in
   fast|test)
     case "$component" in
