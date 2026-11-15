@@ -6,6 +6,8 @@
 |===
 |# |Date |Type |Sujet |Score
 
+| 207 | 2026-11-15 | build / ci | **GBL-014-5 / GBL-014-4 / GBL-013-10.** Canal conditionnel (`-Pchannel`, défaut `jitpack`) sur `video-kernel-plugin` **et** `youtube-auth-plugin` ; `ci/run.sh` passe `-Pchannel` pour les trois `COMPONENT` (`85b9808`). Shim `conventions-plugin 0.0.19` (`72d7ad4`). `checkout@v7` + `setup-gradle@v6` sur les deux jobs de `test.yml` (`e9358dd`) ; image `cccp-ci-base@sha256:03ead378…` Node 26.13.1 (`0714bcb`). CI `Test` verte sur les 4 commits. Zéro code métier modifié, zéro test local. Rapport `.agents/sessions/207-gbl-014-5-channel-rollout.adoc`. | 8/10
+
 | 205 | 2026-11-14 | publication (JitPack) | **CNV-17 — JitPack canal unique.** `settings.gradle.kts` : JitPack ajouté aux dépôts de résolution projet (résolution `i18n-contracts`) + shim conventions repointé `0.0.17`. N0 `workspace-bom 0.0.136`. CI verte. Dette assumée : `video-kernel 0.9.1` et `youtube-auth-plugin v0.0.4` partagent le même dépôt à versions distinctes → US-3b (tag commun `0.9.2`, suppression du préfixe `v`). Rapport `.agents/sessions/205-cnv-17-jitpack-channel.adoc`. | 8/10
 
 | 204 | 2026-11-13 | release (JitPack) | **Publication `video-kernel 0.9.1` (repo-level).** Le tag `v0.9.0` était antérieur au gate `jitpack.yml` → build JitPack `Error`. Correctif : gate accepte `0.9.1`, default `0.9.1`, tag `v0.9.1` (commit `07d0a4e`). Build `ok`, POM repo-level `com.github.cccp-education.video-kernel-gradle:video-kernel-gradle:v0.9.1` **HTTP 200** (même convention que 0.8.0, `modules: []`). Central reste `0.7.0` (quota, reset 2026-12-01) ; `0.9.0` = tag mort. Rapport `.agents/sessions/204-jitpack-release-0.9.1.adoc`. | 8/10

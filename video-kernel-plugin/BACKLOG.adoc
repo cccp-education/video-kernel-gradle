@@ -213,3 +213,13 @@ déplacée en `capsule.kernel.segment`. Publié Central (bundle `6cac928b`).
 
 Publication Maven Central faite (S-193 `0.1.0`, S-194 `0.2.0`) + consommateurs
 alignés. VK-2 (package `video.kernel.*`) et VK-3 (entrée BOM MEMPHIS) terminés S-194.
+
+== Session 207 — GBL-014-5 (canal) + GBL-014-4 (shim) + GBL-013-10 (Node 26)
+
+_Note de gouvernance (aucune US créée)._ Canal conditionnel (`-Pchannel`,
+défaut `jitpack`) sur `video-kernel-plugin` et `youtube-auth-plugin` +
+`ci/run.sh -Pchannel` (`85b9808`) ; shim `conventions-plugin 0.0.19`
+(`72d7ad4`) ; actions `node24`-natives sur les deux jobs et image
+`cccp-ci-base` re-pinée `sha256:03ead378…` (Node 26.13.1) (`e9358dd`,
+`0714bcb`). **✅ TERMINÉ (S-207)** — CI `Test` verte sur les 4 commits. Rapport
+`.agents/sessions/207-gbl-014-5-channel-rollout.adoc`.

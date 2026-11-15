@@ -1,0 +1,69 @@
+= Session 207 — GBL-014-5 / GBL-014-4 / GBL-013-10 (video-kernel)
+:toc:
+
+:_date_: 2026-11-15
+:_borough_: video-kernel (N1 — `video-kernel-plugin` + `youtube-auth-plugin`)
+:_session_precedente_: 206 (GBL-013 vague 2 : les deux builds dans l'image)
+:_statut_: ✅ rollout livré, CI verte
+
+== Contexte
+
+Session globale 229 (2026-11-15). Deux chantiers transverses touchent le
+borough (les **deux** sous-builds du dépôt) :
+
+. **GBL-014-5** — le canal de publication devient une **propriété du build**
+   (`-Pchannel`, défaut `jitpack`), jamais une branche. Un tag `vX.Y.Z` sert le
+   même commit sur les deux canaux.
+. **GBL-014-4** — shim `conventions-plugin` `0.0.18 → 0.0.19`.
+. **GBL-013-10** — dernière LTS Node : actions `node24`-natives et image CI
+   `cccp-ci-base` rebâtie sur Node 26.13.1.
+
+Cadrages : `.agents/CADRAGE_EPIC_GBL_014_DUAL_CHANNEL.adoc` et
+`.agents/CADRAGE_EPIC_GBL_013_PORTABILITE_CI.adoc` (racine workspace).
+
+== Changements
+
+* `85b9808` — **GBL-014-5** : `video-kernel-plugin/settings.gradle.kts` **et**
+  `youtube-auth-plugin/settings.gradle.kts` conditionnels sur
+  `providers.gradleProperty("channel").getOrElse("jitpack")` ; dépôt JitPack +
+  shim `useModule(...)` **seulement** en `jitpack` ; `ci/run.sh` passe
+  `-Pchannel="$channel"` sur tous les `COMPONENT` (`video-kernel`,
+  `youtube-auth`, `all`). Note : le noyau n'applique pas `.publishing`
+  directement → pas de gate `verifyChannel`.
+* `72d7ad4` — **GBL-014-4** : shim `conventions-plugin` `0.0.18 → 0.0.19`
+  (les deux sous-builds). Aucun pin `0.0.20` disponible dans ce lot.
+* `e9358dd` — **GBL-013-10** : `actions/checkout@v4 → v7` et
+  `gradle/actions/setup-gradle@v4 → v6` sur les **deux** jobs de `test.yml`.
+* `0714bcb` — **GBL-013-10** : image `cccp-ci-base` re-pinée sur les deux jobs
+  `sha256:03ead3787ed8f09068cc582191e4cd8f5e48e3ce696fe53836ecd826de57ea1f`
+  (Node 26.13.1).
+* Aucun code de production modifié ; aucun test exécuté en local
+  (Local = Build, Tests = CI).
+
+== Preuves CI
+
+| Commit | Workflow | Run | Résultat
+| `85b9808` | `Test` | `43660618970` | ✅
+| `72d7ad4` | `Test` | `43670893704` | ✅
+| `e9358dd` | `Test` | `43685739332` | ✅
+| `0714bcb` | `Test` | `43690104663` | ✅
+
+Zéro secret, zéro publication, zéro bump de version.
+
+== Fichiers touchés
+
+* `video-kernel-plugin/settings.gradle.kts`
+* `youtube-auth-plugin/settings.gradle.kts`
+* `ci/run.sh`
+* `.github/workflows/test.yml`
+
+== Reste à faire
+
+* **US-3b** — version de dépôt unifiée : tag commun `0.9.2`, suppression du
+  préfixe `v` (le dépôt porte encore `video-kernel 0.9.1` et
+  `youtube-auth-plugin v0.0.4` ; JitPack relabelle tous les modules au tag).
+* **`VK-SPEAKER-NOTES` US-1b** — adoption consommateurs (capsule/hyperframes)
+  sur le canal stabilisé.
+* Transverse : `bakery` (catalogue relabellé reverté), `container-provision` et
+  racines agrégateurs sans `verifyChannel`, Sonatype 130791 après reset
+  (GBL-014 US-6/US-7), GBL-013 US-7 (workflows `office` bloqués).

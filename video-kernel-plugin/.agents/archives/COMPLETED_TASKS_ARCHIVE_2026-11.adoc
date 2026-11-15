@@ -54,3 +54,13 @@
 * Run `43501408247` VERT (commit `c79fac1`).
 * Rapport `.agents/sessions/206-gbl-013-wave2.adoc`.
 
+== S-207 — GBL-014-5 / GBL-014-4 / GBL-013-10 ✅
+
+* Canal conditionnel (`-Pchannel`, défaut `jitpack`) sur les deux sous-builds ;
+  `ci/run.sh` passe `-Pchannel` (`85b9808`).
+* Shim `conventions-plugin 0.0.19` (`72d7ad4`) ; `checkout@v7` +
+  `setup-gradle@v6` sur les deux jobs (`e9358dd`) ; image
+  `cccp-ci-base@sha256:03ead378…` Node 26.13.1 (`0714bcb`).
+* CI `Test` verte sur les 4 commits (`43660618970` → `43690104663`).
+* Rapport `.agents/sessions/207-gbl-014-5-channel-rollout.adoc`.
+
