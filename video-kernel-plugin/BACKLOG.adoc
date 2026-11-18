@@ -1,5 +1,27 @@
 = BACKLOG — video-kernel
-:last_update: 2026-11-14 (S-205 — CNV-17 JitPack canal unique ; US-3b : unification des versions de dépôt.)
+:last_update: 2026-11-18 (S-208 — US-3b : version de dépôt unifiée `0.9.2` ; adoptions N1 capsule + hyperframes faites.)
+
+== ✅ US-3b — version de dépôt unifiée `0.9.2` (S-208)
+
+* Le dépôt portait deux artefacts à versions distinctes (`video-kernel 0.9.1`
+  sans préfixe, `youtube-auth-plugin v0.0.4`/`0.0.5` avec préfixe `v`) ; JitPack
+  relabelle **tous** les modules à la version du tag → coordonnées incohérentes.
+* Correctif : un tag unique **`0.9.2`** (sans préfixe `v`).
+  - `video-kernel-plugin/build.gradle.kts` et
+    `youtube-auth-plugin/build.gradle.kts` : défaut `0.9.2` ;
+  - `jitpack.yml` : `install` construit **les deux** sous-builds pour `0.9.2`
+    (les tags legacy `0.9.1`/`0.0.5`… restent servis par leur propre artefact).
+* **Preuve JitPack** (build `ok`) :
+  - repo-level `com.github.cccp-education:video-kernel-gradle:0.9.2` (POM 200) ;
+  - modules `…video-kernel-gradle:video-kernel:0.9.2` (POM + JAR 200) et
+    `…video-kernel-gradle:youtube-auth-plugin:0.9.2` (POM + JAR 200) ;
+  - tag `0.9.2` présent sur `origin` (`git ls-remote --tags`).
+* CI `Test` verte : run `44220214325` (commit `1f5628c`).
+* **Adoptions N1 faites dans la même vague** (source) : capsule (`0.7.0 → 0.9.2`,
+  notes d'orateur + music) et hyperframes (`v0.9.1 → 0.9.2`, suppression de la
+  copie N2 `MusicModel.kt`). Elles seront **servies** au prochain tag de chaque
+  consommateur (DAG MEMPHIS → N2).
+* Rapport `.agents/sessions/208-us-3b-unified-repository-version.adoc`.
 
 == ✅ CNV-17 — JitPack canal unique (S-205)
 
@@ -40,7 +62,7 @@ capsule consomme déjà cette grammaire, hyperframes devient le 2ᵉ consommateu
 | US | Livrable | Statut
 
 | US-1 | `video.kernel.notes.SpeakerNoteBlock` + `SpeakerNoteBlockParser` (grammaire `[NOTE.speaker]` + bloc `--`, niveau de titre et marqueur configurables, parité legacy « la première note gagne ») ; `0.8.0 → 0.9.0` (manifeste d'API +2 types) ; 16 tests N1 + gardes frontière/stabilité ré-alignées. | ✅ S-203
-| US-1b | **Adoption capsule** (`RevealJsSpeakerNoteParser` délègue au noyau) — **bloquée** tant que `0.9.0` n'est pas publié sur le canal consommé (Central, reset Sonatype) ; l'adoption hyperframes (`hyperframes.notes`) est l'US-2 de l'EPIC transverse. | 🟡 BLOQUÉ (publication)
+| US-1b | **Adoption capsule** (`RevealJsSpeakerNoteParser` délègue au noyau) — ✅ **S-229** (capsule, `video-kernel 0.9.2`) ; hyperframes consomme déjà la grammaire (`hyperframes.notes`, US-2). | ✅ S-229
 |===
 
 _Rapport_ : `.agents/sessions/203-speaker-note-block-parser.adoc`.

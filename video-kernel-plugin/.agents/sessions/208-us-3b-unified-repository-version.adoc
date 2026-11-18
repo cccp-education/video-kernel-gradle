@@ -1,0 +1,56 @@
+= Session 208 — US-3b : version de dépôt unifiée `0.9.2`
+:date: 2026-11-18
+:borough: video-kernel (N1)
+:statut: ✅ TERMINÉE
+
+== Mission
+
+Dette structurelle documentée S-205 : le dépôt portait deux artefacts à versions
+distinctes (`video-kernel 0.9.1` sans préfixe, `youtube-auth-plugin v0.0.4`/`0.0.5`
+avec préfixe `v`). JitPack relabelle **tous** les modules à la version du tag →
+un tag ne pouvait pas servir les deux artefacts de façon cohérente.
+
+== Ce qui a été fait
+
+* `video-kernel-plugin/build.gradle.kts` : défaut `0.9.1 → 0.9.2`.
+* `youtube-auth-plugin/build.gradle.kts` : défaut `0.0.5 → 0.9.2`.
+* `jitpack.yml` : nouvelle branche `install` pour `0.9.2` qui publie **les deux**
+  sous-builds au même tag ; les branches legacy (`0.9.1`, `0.8.0`, `0.7.x`,
+  `0.0.4/0.0.5`) sont conservées pour que les anciennes coordonnées restent
+  résolvables.
+* `compileKotlin` + `compileTestKotlin` (+ `compileFunctionalTestKotlin` côté
+  youtube-auth) VERTS en local (Local = Build, aucun test local).
+* Commit `1f5628c`, tag annoté **`0.9.2`** (sans préfixe), push `main` + tag.
+
+== Preuves
+
+[cols="3,1"]
+|===
+| Vérification | Résultat
+
+| `git ls-remote --tags origin 0.9.2` | `a676bf5…` présent
+| `…/video-kernel-gradle/0.9.2/video-kernel-gradle-0.9.2.pom` (repo-level) | HTTP 200
+| `…/video-kernel-gradle/video-kernel/0.9.2/video-kernel-0.9.2.pom` | HTTP 200
+| `…/video-kernel-gradle/video-kernel/0.9.2/video-kernel-0.9.2.jar` | HTTP 200
+| `…/video-kernel-gradle/youtube-auth-plugin/0.9.2/youtube-auth-plugin-0.9.2.pom` | HTTP 200
+| `…/video-kernel-gradle/youtube-auth-plugin/0.9.2/youtube-auth-plugin-0.9.2.jar` | HTTP 200
+| CI `Test` (run `44220214325`, commit `1f5628c`) | ✅ success
+|===
+
+Le POM repo-level publié dépend bien des **deux** modules à `0.9.2`.
+
+== Adoptions N1 réalisées dans la même vague
+
+* **capsule** (S-229) : `video-kernel 0.7.0 → 0.9.2` ; `RevealJsSpeakerNoteParser`
+  délègue à `SpeakerNoteBlockParser` ; copie `capsule.audio.music.MusicLibrary`
+  supprimée (types `video.kernel.music.*`).
+* **hyperframes** (S-064) : `v0.9.1 → 0.9.2` ; `hyperframes.sound.MusicModel.kt`
+  supprimé, imports `video.kernel.music.*`.
+
+== Reste
+
+* Les deux consommateurs **portent** l'adoption mais ne la **servent** pas :
+  leurs artefacts publiés sont `capsule-plugin 0.0.21` et
+  `hyperframes-plugin 0.0.16`. Servir exige le DAG MEMPHIS (catalogue) puis un
+  tag `0.0.22` / `0.0.17` — session 209.
+* Central reste `0.7.0` (quota org, reset 2026-12-01).

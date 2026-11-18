@@ -1,63 +1,53 @@
-= PROMPT_REPRISE — video-kernel (Session 207 TERMINÉE → 208)
-:session: 208
+= PROMPT_REPRISE — video-kernel (Session 208 TERMINÉE → 209)
+:session: 209
 :borough: video-kernel
-:date: 2026-11-15
-:session_precedente: 207 — GBL-014-5 / GBL-014-4 / GBL-013-10 (canal dual + Node LTS) ✅
+:date: 2026-11-18
+:session_precedente: 208 — US-3b version de dépôt unifiée 0.9.2 ✅
 _note_ : fichier canonique = `.agents/PROMPT_REPRISE.adoc`.
 
-== Session 207 (TERMINÉE) — canal dual + shim + Node LTS
+== Session 208 (TERMINÉE) — US-3b : version de dépôt unifiée
 
-* **GBL-014-5** : `video-kernel-plugin/settings.gradle.kts` **et**
-  `youtube-auth-plugin/settings.gradle.kts` conditionnels sur `-Pchannel`
-  (défaut `jitpack`) ; dépôt JitPack + shim `useModule(...)` seulement en
-  `jitpack` ; `ci/run.sh` passe `-Pchannel` pour `video-kernel` /
-  `youtube-auth` / `all` (`85b9808`).
-* **GBL-014-4** : shim `conventions-plugin 0.0.18 → 0.0.19` (les deux
-  sous-builds) (`72d7ad4`).
-* **GBL-013-10** : `checkout@v7` + `setup-gradle@v6` sur les deux jobs de
-  `test.yml` (`e9358dd`) ; image `cccp-ci-base@sha256:03ead378…` Node 26.13.1
-  (`0714bcb`).
-* CI `Test` **verte** sur les 4 commits. Rapport
-  `.agents/sessions/207-gbl-014-5-channel-rollout.adoc`.
+* Un tag **`0.9.2`** (sans préfixe `v`) sert **les deux** sous-builds :
+  `jitpack.yml` construit `video-kernel-plugin` **et** `youtube-auth-plugin`
+  pour cette version ; les tags legacy (`0.9.1`, `0.0.5`…) gardent leur gate.
+* Défauts `0.9.2` dans les deux `build.gradle.kts` (`1f5628c`), tag annoté
+  `0.9.2`, poussés sur `origin`.
+* **Preuve JitPack** : repo-level `com.github.cccp-education:video-kernel-gradle:0.9.2`
+  (POM 200) + modules `…video-kernel-gradle:video-kernel:0.9.2` et
+  `…video-kernel-gradle:youtube-auth-plugin:0.9.2` (POM + JAR 200).
+* CI `Test` verte : `44220214325`.
+* Rapport `.agents/sessions/208-us-3b-unified-repository-version.adoc`.
 
-== Session 206 (TERMINÉE) — GBL-013 vague 2 : les deux builds dans l'image
+== Session 229 capsule (faite en parallèle) — adoptions N1
 
-`ci/run.sh` (`COMPONENT`) + les deux jobs de `test.yml` épinglés sur l'image ;
-`setup-java` supprimé. Run `43501408247` VERT. Rapport
-`.agents/sessions/206-gbl-013-wave2.adoc`.
-
-== Session 205 (TERMINÉE) — CNV-17 : JitPack canal unique
-
-JitPack ajouté aux dépôts de résolution projet (`i18n-contracts`) ; shim
-conventions repointé `0.0.17` ; N0 `workspace-bom 0.0.136`. Rapport
-`.agents/sessions/205-cnv-17-jitpack-channel.adoc`.
+* capsule : `video-kernel 0.7.0 → 0.9.2`, `RevealJsSpeakerNoteParser` délègue à
+  `SpeakerNoteBlockParser`, copie `capsule.audio.music.MusicLibrary` supprimée.
+* hyperframes : `v0.9.1 → 0.9.2`, `hyperframes.sound.MusicModel.kt` supprimé.
+* Aucune version consommateur bumpée → les artefacts **publiés** ne portent pas
+  encore l'adoption (dette de release, pas de code).
 
 == État
 
-* Source `0.9.1` ; **JitPack repo-level `v0.9.1`** (POM 200) ; Central `0.7.0`
-  (quota, reset 2026-12-01).
-* **Dette structurelle** : le dépôt porte deux artefacts à versions distinctes —
-  `video-kernel 0.9.1` (sans préfixe) et `youtube-auth-plugin v0.0.4` (avec
-  préfixe `v`). JitPack relabelle tous les modules à la version du tag.
-* `video-kernel 0.9.0` = **tag mort** (build `Error`) — ne pas réutiliser.
-* `VK-SPEAKER-NOTES` : US-1 ✅ ; US-1b (adoption consommateurs) en attente.
+* Source `0.9.2` ; JitPack `0.9.2` (les deux modules) ; Central `0.7.0`
+  (quota org, reset **2026-12-01**).
+* `VK-SPEAKER-NOTES` : US-1 ✅ + US-1b ✅ (capsule S-229, hyperframes S-059).
+* Contrat `video.kernel.music` : adopté par hyperframes + capsule (copies N2
+  supprimées).
 
-== Mission Session 208 — US-3b (version de dépôt unifiée)
+== Mission Session 209 — release des consommateurs (DAG) puis `GBL-002`
 
-. **Unifier** `video-kernel` et `youtube-auth-plugin` sur **une seule version
-   de dépôt** : tag commun **`0.9.2`**, suppression du préfixe `v`.
-. Mettre à jour `jitpack.yml` (gate des deux sous-builds sur `0.9.2`) et les
-   valeurs par défaut des deux `build.gradle.kts`.
-. Preuve : build JitPack `ok` + POM 200 pour `video-kernel-gradle:v0.9.2` et
-   `youtube-auth-plugin:0.9.2` (sans `v`).
-. Puis reprendre **US-1b** (adoption capsule/hyperframes) sur le canal stabilisé.
+. **Servir les adoptions** : DAG MEMPHIS-first — catalogue `workspace-bom`
+   déclare `capsule-plugin 0.0.22` + `hyperframes-plugin 0.0.17`, puis bumps
+   `0.0.22`/`0.0.17` et tags JitPack ; vérifier POM/JAR 200.
+. Puis **`GBL-002`** (distribution) : `GBL-002-1` TikTok, `GBL-002-2` calendrier,
+   `GBL-002-3` analytics (cadrage racine `.agents/`).
+. Ne pas republier un tag existant ; `0.9.0`/`v0.9.0` restent des tags morts.
 
 == Points d'attention
 
-* **Local = Build, Tests = CI** ; **Règle 2** accord permanent (JitPack par
-  défaut, `central` opt-in après le reset du 2026-12-01).
+* **Local = Build, Tests = CI** ; **Règle 2** accord permanent (JitPack défaut,
+  `central` opt-in après le 2026-12-01).
 * Frontière : `video.kernel` n'importe que `java/kotlin/contracts/video.kernel` ;
   pas de `processbuilder`, pas de vocabulaire `slide/deck/asciidoc/reveal`.
-* Canal = propriété du build (`-Pchannel`), jamais une branche ; version = tag
-  (`-Pversion="${VERSION#v}"`), bump avant tag ; jamais republier.
+* Canal = propriété du build (`-Pchannel`), jamais une branche ; version = tag.
 * Zéro secret ; zéro Python ; English only code/tests/features.
