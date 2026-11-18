@@ -1,6 +1,9 @@
 # CNV-16 — JitPack build recipe for the video-kernel repo.
-# Two independent sub-builds with different versions; each tag publishes only
-# the matching artifact so the served version stays correct.
+# US-3b — one repository version (`0.9.2`, no `v` prefix) publishes **both**
+# sub-builds: JitPack relabels every module at the tag, so a single tag must
+# serve `video-kernel-gradle` and `youtube-auth-plugin` consistently.
+# Legacy tags still publish only their own artifact so old coordinates stay
+# resolvable.
 before_install:
   # JitPack defaults to JDK 8; the workspace requires Java 25.
   # `25-open` is the SDKMAN candidate that resolves on the JitPack image
@@ -12,6 +15,7 @@ before_install:
 install:
   # The version is derived from the git tag and forced into the sub-build so
   # the POM/module metadata matches the JitPack coordinate.
+  - if [ "${VERSION#v}" = "0.9.2" ]; then ./video-kernel-plugin/gradlew -p video-kernel-plugin publishToMavenLocal -Pversion="${VERSION#v}" && ./youtube-auth-plugin/gradlew -p youtube-auth-plugin publishToMavenLocal -Pversion="${VERSION#v}"; fi
   - if [ "${VERSION#v}" = "0.9.1" ] || [ "${VERSION#v}" = "0.8.0" ] || [ "${VERSION#v}" = "0.7.1" ] || [ "${VERSION#v}" = "0.7.0" ]; then ./video-kernel-plugin/gradlew -p video-kernel-plugin publishToMavenLocal -Pversion="${VERSION#v}"; fi
   - if [ "${VERSION#v}" = "0.0.5" ] || [ "${VERSION#v}" = "0.0.4" ]; then ./youtube-auth-plugin/gradlew -p youtube-auth-plugin publishToMavenLocal -Pversion="${VERSION#v}"; fi
 env:
